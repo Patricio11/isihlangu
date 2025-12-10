@@ -8,6 +8,7 @@ import '../../../core/utils/haptics.dart';
 import '../../../core/widgets/custom_toast.dart';
 import '../../../core/data/fake_family_data.dart';
 import '../../../core/data/fake_transactions.dart';
+import '../../../core/security/duress_state_manager.dart';
 
 /// Child Control Panel Screen
 /// ROADMAP: Task 1.15.4 - Child Control Panel (THE CORE FEATURE)
@@ -27,6 +28,8 @@ class ChildControlPanelScreen extends StatefulWidget {
 class _ChildControlPanelScreenState extends State<ChildControlPanelScreen> {
   late FamilyMember child;
   late FamilyMemberPermissions permissions;
+  bool isCheckingDuressState = true;
+  DuressDetails? duressDetails;
 
   @override
   void initState() {
@@ -39,6 +42,34 @@ class _ChildControlPanelScreenState extends State<ChildControlPanelScreen> {
     } else {
       child = member;
       permissions = member.permissions;
+    }
+
+    // CRITICAL: Check if this child is in duress mode
+    _checkDuressState();
+  }
+
+  /// Check if child is currently in duress mode
+  Future<void> _checkDuressState() async {
+    final manager = await DuressStateManager.getInstance();
+    final isDuressActive = await manager.isDuressActive();
+
+    if (isDuressActive) {
+      final details = await manager.getDuressDetails();
+      // Only show duress alert if it's for THIS child
+      if (details?.userId == widget.childId) {
+        setState(() {
+          duressDetails = details;
+          isCheckingDuressState = false;
+        });
+      } else {
+        setState(() {
+          isCheckingDuressState = false;
+        });
+      }
+    } else {
+      setState(() {
+        isCheckingDuressState = false;
+      });
     }
   }
 
@@ -104,6 +135,138 @@ class _ChildControlPanelScreenState extends State<ChildControlPanelScreen> {
         ],
       ),
     );
+  }
+
+  /// CRITICAL: Remote unlock duress mode
+  /// This is the ONLY way to exit duress mode
+  void _showRemoteUnlockConfirmation() {
+    HapticService.mediumImpact();
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.glassSurface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: Row(
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: AppColors.danger.withValues(alpha: 0.2),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.warning_rounded,
+                color: AppColors.danger,
+                size: 20,
+              ),
+            ),
+            const SizedBox(width: 12),
+            const Expanded(
+              child: Text(
+                'Reset to Safe Mode?',
+                style: TextStyle(color: AppColors.textPrimary),
+              ),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'This will restore ${child.name}\'s account to normal mode.',
+              style: const TextStyle(color: AppColors.textSecondary),
+            ),
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppColors.warning.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: AppColors.warning.withValues(alpha: 0.3),
+                ),
+              ),
+              child: const Row(
+                children: [
+                  Icon(Icons.info_outline, color: AppColors.warning, size: 20),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Only do this if the child is safe.',
+                      style: TextStyle(
+                        color: AppColors.warning,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              HapticService.lightImpact();
+              context.pop();
+            },
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              context.pop();
+              await _performRemoteUnlock();
+            },
+            child: const Text(
+              'Reset to Safe Mode',
+              style: TextStyle(
+                color: AppColors.success,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Perform the remote unlock
+  Future<void> _performRemoteUnlock() async {
+    HapticService.mediumImpact();
+
+    // Show loading
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(color: AppColors.primary),
+      ),
+    );
+
+    // Deactivate duress mode
+    final manager = await DuressStateManager.getInstance();
+    await manager.deactivateDuressMode(
+      parentUserId: 'parent-user-id', // TODO Phase 2: Get actual parent user ID
+    );
+
+    // Update UI
+    setState(() {
+      duressDetails = null;
+    });
+
+    if (mounted) {
+      Navigator.of(context).pop(); // Close loading dialog
+
+      CustomToast.showSuccess(
+        context,
+        '${child.name}\'s account restored to safe mode',
+      );
+    }
   }
 
   @override
@@ -197,6 +360,151 @@ class _ChildControlPanelScreenState extends State<ChildControlPanelScreen> {
               const SliverToBoxAdapter(
                 child: SizedBox(height: 24),
               ),
+
+              // CRITICAL: Duress Mode Alert Banner
+              if (duressDetails != null)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [
+                            Color(0xFFFF3B30),
+                            Color(0xFFFF6B6B),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.danger.withValues(alpha: 0.3),
+                            blurRadius: 20,
+                            offset: const Offset(0, 10),
+                          ),
+                        ],
+                      ),
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                width: 48,
+                                height: 48,
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withValues(alpha: 0.2),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(
+                                  Icons.emergency_rounded,
+                                  color: Colors.white,
+                                  size: 24,
+                                ),
+                              )
+                                  .animate(onPlay: (controller) => controller.repeat())
+                                  .shake(duration: 1000.ms, hz: 2),
+                              const SizedBox(width: 12),
+                              const Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '🚨 SAFETY ALERT',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: 0.5,
+                                      ),
+                                    ),
+                                    SizedBox(height: 4),
+                                    Text(
+                                      'Duress Mode Active',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withValues(alpha: 0.2),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Column(
+                              children: [
+                                _DuressInfoRow(
+                                  icon: Icons.access_time_rounded,
+                                  label: 'Duration',
+                                  value: '${duressDetails!.durationMinutes} minutes',
+                                  isUrgent: duressDetails!.isOverdue,
+                                ),
+                                const SizedBox(height: 8),
+                                _DuressInfoRow(
+                                  icon: Icons.location_on_rounded,
+                                  label: 'Location',
+                                  value: duressDetails!.location ?? 'Unknown',
+                                  isUrgent: false,
+                                ),
+                                const SizedBox(height: 8),
+                                _DuressInfoRow(
+                                  icon: Icons.shield_rounded,
+                                  label: 'Status',
+                                  value: 'Funds Protected (R200 limit)',
+                                  isUrgent: false,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          SizedBox(
+                            width: double.infinity,
+                            child: GlassButton(
+                              onPressed: _showRemoteUnlockConfirmation,
+                              height: 48,
+                              gradient: const LinearGradient(
+                                colors: [Colors.white, Color(0xFFF0F0F0)],
+                              ),
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.lock_open_rounded,
+                                    color: AppColors.danger,
+                                  ),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    'Reset to Safe Mode',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.danger,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                        .animate()
+                        .fadeIn(duration: 400.ms)
+                        .slideY(begin: -0.1, end: 0, duration: 400.ms),
+                  ),
+                ),
+
+              if (duressDetails != null)
+                const SliverToBoxAdapter(
+                  child: SizedBox(height: 24),
+                ),
 
               // Emergency Freeze Button
               SliverToBoxAdapter(
@@ -732,6 +1040,56 @@ class _SpendingLimitSlider extends StatelessWidget {
               HapticService.lightImpact();
               onChanged(newValue);
             },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Duress Info Row Widget
+/// Shows duress mode details in the alert banner
+class _DuressInfoRow extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String value;
+  final bool isUrgent;
+
+  const _DuressInfoRow({
+    required this.icon,
+    required this.label,
+    required this.value,
+    this.isUrgent = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(
+          icon,
+          color: isUrgent ? Colors.yellow : Colors.white.withValues(alpha: 0.9),
+          size: 16,
+        ),
+        const SizedBox(width: 8),
+        Text(
+          '$label:',
+          style: TextStyle(
+            color: Colors.white.withValues(alpha: 0.9),
+            fontSize: 13,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const SizedBox(width: 6),
+        Expanded(
+          child: Text(
+            value,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 13,
+              fontWeight: isUrgent ? FontWeight.bold : FontWeight.w600,
+            ),
+            textAlign: TextAlign.right,
           ),
         ),
       ],
