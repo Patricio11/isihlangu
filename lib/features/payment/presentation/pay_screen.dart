@@ -7,6 +7,8 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/glass_container.dart';
 import '../../../core/widgets/animated_mesh_gradient.dart';
 import '../../auth/providers/session_provider.dart';
+import '../../auth/domain/user_session.dart';
+import '../../../core/security/transaction_validator.dart';
 import 'widgets/slide_to_pay.dart';
 
 /// Pay Screen - Payment Flow
@@ -59,30 +61,120 @@ class _PayScreenState extends ConsumerState<PayScreen> {
     });
   }
 
-  void _onPaymentConfirmed() {
+  void _onPaymentConfirmed() async {
     final amount = double.tryParse(_amountController.text) ?? 0;
     final contact = _frequentContacts.firstWhere((c) => c.id == _selectedContact);
+    final session = ref.read(sessionProvider).session;
 
+    if (session == null) return;
+
+    // PHASE 1.6: Duress-aware transaction handling
+    // Check if in duress mode (restricted scope)
+    final isDuressMode = session.isRestricted;
+
+    if (isDuressMode) {
+      // DURESS MODE: Use Transaction Validator with R200 limit
+      await _processDuressTransaction(
+        amount: amount,
+        merchantName: contact.name,
+        category: 'Payment',
+        session: session,
+      );
+    } else {
+      // SAFE MODE: Normal transaction processing
+      await _processSafeTransaction(
+        amount: amount,
+        contactName: contact.name,
+        session: session,
+      );
+    }
+  }
+
+  /// Process transaction in DURESS mode (with R200 limit)
+  Future<void> _processDuressTransaction({
+    required double amount,
+    required String merchantName,
+    required String category,
+    required UserSession session,
+  }) async {
+    // Show loading indicator
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+
+    // Simulate network delay (makes fake errors more realistic)
+    await TransactionValidator.simulateNetworkDelay();
+
+    // Validate transaction with R200 limit
+    final result = TransactionValidator.validateDuressTransaction(
+      merchantName: merchantName,
+      amount: amount,
+      category: category,
+      userId: session.userId,
+    );
+
+    // Close loading dialog
+    if (mounted) Navigator.of(context).pop();
+
+    if (result.success) {
+      // SUCCESS: Show normal success dialog (attacker sees nothing suspicious)
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (context) => _PaymentSuccessDialog(
+            amount: amount,
+            contactName: merchantName,
+            showEvidenceIndicator: result.shouldShowEvidence,
+          ),
+        );
+
+        // Update balance to ghost balance
+        Future.delayed(const Duration(seconds: 2), () {
+          ref.read(sessionProvider.notifier).updateBalance(result.newBalance ?? 0);
+        });
+      }
+    } else {
+      // BLOCKED: Show realistic network error (no indication of limit)
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (context) => _PaymentErrorDialog(
+            errorMessage: result.message,
+            isNetworkError: result.isNetworkError,
+          ),
+        );
+      }
+    }
+  }
+
+  /// Process transaction in SAFE mode (normal flow)
+  Future<void> _processSafeTransaction({
+    required double amount,
+    required String contactName,
+    required UserSession session,
+  }) async {
     // PHASE 1: Mock payment
-    // PHASE 3: Will integrate with Stitch API
+    // PHASE 2: Will integrate with Stitch API
 
     // Show success dialog
     showDialog(
       context: context,
       builder: (context) => _PaymentSuccessDialog(
         amount: amount,
-        contactName: contact.name,
+        contactName: contactName,
+        showEvidenceIndicator: false,
       ),
     );
 
     // Update balance (mock)
     Future.delayed(const Duration(seconds: 2), () {
-      final session = ref.read(sessionProvider).session;
-      if (session != null) {
-        ref.read(sessionProvider.notifier).updateBalance(
-              session.balance - amount,
-            );
-      }
+      ref.read(sessionProvider.notifier).updateBalance(
+            session.balance - amount,
+          );
     });
   }
 
@@ -361,10 +453,12 @@ class _ContactChip extends StatelessWidget {
 class _PaymentSuccessDialog extends StatelessWidget {
   final double amount;
   final String contactName;
+  final bool showEvidenceIndicator;
 
   const _PaymentSuccessDialog({
     required this.amount,
     required this.contactName,
+    this.showEvidenceIndicator = false,
   });
 
   @override
@@ -429,6 +523,122 @@ class _PaymentSuccessDialog extends StatelessWidget {
             GlassButton.primary(
               onPressed: () => Navigator.of(context).pop(),
               child: const Text('Done'),
+            ),
+
+            // Subtle evidence indicator (only visible in duress mode)
+            if (showEvidenceIndicator)
+              Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 6,
+                      height: 6,
+                      decoration: BoxDecoration(
+                        color: AppColors.success.withOpacity(0.5),
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      'Secured',
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: AppColors.textTertiary.withOpacity(0.6),
+                        fontSize: 9,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Payment Error Dialog
+/// Shows realistic network errors when duress transaction exceeds R200
+class _PaymentErrorDialog extends StatelessWidget {
+  final String errorMessage;
+  final bool isNetworkError;
+
+  const _PaymentErrorDialog({
+    required this.errorMessage,
+    this.isNetworkError = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      child: GlassContainer(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Error icon
+            Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.danger.withOpacity(0.2),
+                border: Border.all(color: AppColors.danger, width: 3),
+              ),
+              child: const Icon(
+                Icons.error_outline,
+                color: AppColors.danger,
+                size: 40,
+              ),
+            )
+                .animate()
+                .scale(duration: 400.ms, curve: Curves.elasticOut),
+
+            const SizedBox(height: 24),
+
+            // Error title
+            Text(
+              isNetworkError ? 'Connection Error' : 'Payment Failed',
+              style: theme.textTheme.headlineSmall?.copyWith(
+                color: AppColors.textPrimary,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(height: 8),
+
+            // Error message
+            Text(
+              errorMessage,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: AppColors.textSecondary,
+              ),
+              textAlign: TextAlign.center,
+            ),
+
+            const SizedBox(height: 24),
+
+            // Action buttons
+            Row(
+              children: [
+                Expanded(
+                  child: GlassButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Cancel'),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: GlassButton.primary(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Try Again'),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

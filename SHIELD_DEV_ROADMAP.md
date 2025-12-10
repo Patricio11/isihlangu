@@ -1034,39 +1034,299 @@ lib/
 
 ---
 
-## PHASE 1.6: THE "SECURITY SIMULATION" (NEW CRITICAL LOGIC) 🚧
+## PHASE 1.6: THE "SECURITY SIMULATION" (CRITICAL DURESS LOGIC) 🚧 IN PROGRESS
 *Goal: Simulate the sophisticated "Duress" logic locally so the UX can be fully demonstrated before backend integration.*
-*Status: NEXT PRIORITY*
+*Status: ACTIVE - Week 2*
+*Started: 2025-12-10*
 
-### Task 1.6.1: "Sacrificial Wallet" Simulation
-- [ ] **Ghost Ledger Logic:**
-    - [ ] Create a separate `fake_ghost_wallet.dart` (Balance: R185.50).
-    - [ ] **Logic:** If in Duress Mode, transactions under R200 **SUCCEED** visually.
-    - [ ] **Visuals:** The "Success" screen appears normal to the attacker, but shows a subtle "Evidence Recorded" icon to the user (if they know where to look).
-    - [ ] **Block Large Amounts:** If transaction > R200 in Duress Mode → Show "System Error: Network Timeout" (Fake Error).
+**Strategic Importance:**
+This phase implements the CORE security simulation that makes Shield unique:
+1. **Sacrificial Wallet Protocol** - Transactions under R200 succeed in duress mode
+2. **Persistent Lockdown** - App stays in duress mode even after restart (reboot-proof)
+3. **Parent Remote Unlock** - Only parents can restore safe mode
+4. **Permission Priming** - Critical permissions granted during onboarding (not during duress)
 
-### Task 1.6.2: Persistent Ghost Mode (The "Trap Door")
-- [ ] **Lockdown Logic (Mock):**
-    - [ ] Use `shared_preferences` to store a flag `is_in_duress = true` when PIN 9999 is used.
-    - [ ] **App Restart Check:** On `main.dart` init, check this flag.
-    - [ ] **Behavior:** If `true`, bypass Login Screen and go straight to `GhostDashboard`.
-    - [ ] **Reasoning:** Simulates the child being unable to "reset" the app if the attacker forces a reboot.
+---
 
-### Task 1.6.3: Parent Remote Unlock (Mock)
-- [ ] **Parent Override:**
-    - [ ] In Parent Mode (PIN 1234), go to Child Control Panel.
-    - [ ] Add "Mark Safe / Reset Status" button.
-    - [ ] **Action:** Clearing this flag in Parent Mode updates the `shared_preferences` so the Child can log in normally again.
+### Task 1.6.1: "Sacrificial Wallet" Simulation ⏳
+**Priority:** CRITICAL - This is the core security innovation
 
-### Task 1.6.4: The "Permission Gotcha" (Critical Onboarding) ⚠️
-- [ ] **Permission Priming Screen:**
-    - [ ] Create a specific onboarding step: "Emergency Features Setup."
-    - [ ] **Requirement:** Force user to select "Allow All the Time" for Location and Microphone.
-    - [ ] **Gotcha Note:** *If we wait until Duress Mode to ask for permissions, the OS popup will alert the attacker. We must secure these permissions during the "Happy Path" setup.*
+- [ ] **Ghost Wallet Data Structure:**
+    - [ ] Create `lib/core/data/fake_ghost_wallet.dart`
+    - [ ] Define ghost balance: R185.50 (appears authentic, covers small purchases)
+    - [ ] Create 3-5 fake transactions for ghost history
+    - [ ] Ensure ghost data looks realistic to attackers
+
+- [ ] **Transaction Success Logic (Under R200):**
+    - [ ] Update PayScreen to check duress mode status
+    - [ ] If duress + amount < R200:
+        - [ ] Show normal success animation
+        - [ ] Update ghost balance (visual only)
+        - [ ] Add subtle "Evidence Recorded" indicator (tiny dot in corner)
+        - [ ] Log transaction details to mock evidence log
+    - [ ] Transaction appears completely normal to attacker
+
+- [ ] **Transaction Block Logic (Over R200):**
+    - [ ] If duress + amount >= R200:
+        - [ ] Show realistic "Network Error" dialog
+        - [ ] Error message: "Unable to connect. Please try again later."
+        - [ ] NO mention of limits or restrictions
+        - [ ] Identical timing to real network errors (2-3 second delay)
+
+- [ ] **Evidence Recording (Silent):**
+    - [ ] Create `lib/core/security/evidence_logger.dart`
+    - [ ] Log all duress transactions with:
+        - [ ] Timestamp
+        - [ ] Amount
+        - [ ] Recipient details
+        - [ ] Device location (if available)
+    - [ ] Store in local encrypted storage (mock Phase 2 backend)
+    - [ ] NO visible indicators to attacker
 
 **Deliverables:**
-- `lib/core/security/security_simulation_service.dart`
-- `lib/features/onboarding/presentation/permission_prime_screen.dart`
+- `lib/core/data/fake_ghost_wallet.dart` - Ghost wallet data
+- `lib/core/security/evidence_logger.dart` - Evidence recording service
+- `lib/core/security/transaction_validator.dart` - R200 limit logic
+- Updated `lib/features/payment/presentation/pay_screen.dart` - Duress-aware transactions
+
+**Mock Data:**
+```dart
+// Ghost Wallet
+balance: R185.50
+recent_transactions: [
+  "Shoprite - R42.50 (Yesterday)",
+  "Taxi Fare - R15.00 (2 days ago)",
+  "Airtime - R30.00 (3 days ago)"
+]
+```
+
+---
+
+### Task 1.6.2: Persistent Ghost Mode ("The Trap Door") ⏳
+**Priority:** CRITICAL - Prevents attacker from resetting app
+
+- [ ] **Duress State Persistence:**
+    - [ ] Install `shared_preferences` package (if not already installed)
+    - [ ] Create `lib/core/security/duress_state_manager.dart`
+    - [ ] Store `is_in_duress` boolean flag
+    - [ ] Store `duress_entered_at` timestamp
+    - [ ] Store `user_id` who entered duress mode
+
+- [ ] **App Startup Logic (Reboot-Proof):**
+    - [ ] Update `lib/main.dart`:
+        - [ ] Check `is_in_duress` flag on app init
+        - [ ] If `true`, bypass normal auth flow
+        - [ ] Navigate directly to HomeScreen with duress data
+        - [ ] Show ghost balance immediately
+        - [ ] NO escape route for user
+
+- [ ] **Session Restoration:**
+    - [ ] If duress flag active:
+        - [ ] Create session with `isRestricted: true`
+        - [ ] Load user profile from stored `user_id`
+        - [ ] Initialize ghost wallet data
+        - [ ] Start evidence logging service
+
+- [ ] **Security Considerations:**
+    - [ ] Flag stored in secure storage (encrypted)
+    - [ ] Cannot be cleared by app uninstall (prepare for cloud sync in Phase 2)
+    - [ ] User cannot access settings to clear data in duress mode
+
+**Deliverables:**
+- `lib/core/security/duress_state_manager.dart` - Persistent state service
+- Updated `lib/main.dart` - Startup duress check
+- Updated `lib/features/auth/providers/session_provider.dart` - Session restoration
+
+**Mock Flow:**
+```
+1. User enters PIN 9999 → Duress flag set to TRUE
+2. Attacker forces phone restart
+3. App opens → Checks flag → Flag is TRUE
+4. App bypasses login → Shows ghost dashboard immediately
+5. User CANNOT exit duress mode (trapped)
+```
+
+---
+
+### Task 1.6.3: Parent Remote Unlock (Mock Safety Override) ⏳
+**Priority:** HIGH - Critical for testing and real-world safety
+
+- [ ] **Parent Dashboard Addition:**
+    - [ ] Update `lib/features/family/presentation/child_control_panel_screen.dart`
+    - [ ] Add "Safety Status" section at the top
+    - [ ] Show current status: "Safe Mode ✅" or "DURESS MODE 🚨"
+    - [ ] Add "Reset to Safe Mode" button (only visible if child in duress)
+
+- [ ] **Remote Unlock Logic:**
+    - [ ] Button triggers `DuressStateManager.clearDuressState(childId)`
+    - [ ] Clears `is_in_duress` flag for that child
+    - [ ] Sends notification to child device (mock push notification)
+    - [ ] Next time child opens app → Normal login flow resumes
+
+- [ ] **Parent Notification:**
+    - [ ] When child enters duress mode:
+        - [ ] Immediately show banner on parent's home screen
+        - [ ] "⚠️ [Child Name] entered Duress Mode [Time]"
+        - [ ] Show child's last known location (mock GPS)
+        - [ ] Provide quick access to "Mark Safe" button
+
+- [ ] **Confirmation Flow:**
+    - [ ] Parent taps "Reset to Safe Mode"
+    - [ ] Show confirmation dialog:
+        - [ ] "Are you sure [Child Name] is safe?"
+        - [ ] Require parent PIN re-entry for security
+    - [ ] Success toast: "[Child Name] marked as safe. Status cleared."
+
+**Deliverables:**
+- Updated `lib/features/family/presentation/child_control_panel_screen.dart` - Safety controls
+- `lib/features/family/presentation/widgets/duress_status_banner.dart` - Alert banner
+- Updated `lib/core/security/duress_state_manager.dart` - Remote clear method
+- `lib/core/notifications/duress_alert_service.dart` - Parent notifications
+
+**Mock Implementation:**
+```dart
+// Parent sees:
+DuressStatusBanner(
+  child: "Lesedi",
+  enteredAt: DateTime.now().subtract(Duration(minutes: 15)),
+  lastLocation: "School - 2.3 km away",
+  onMarkSafe: () => DuressStateManager.clearDuressState("child-1"),
+)
+```
+
+---
+
+### Task 1.6.4: The "Permission Gotcha" (Critical Onboarding) ⏳ ⚠️
+**Priority:** CRITICAL - Permissions MUST be granted before duress event
+
+**Security Principle:**
+> If we ask for Location/Microphone permissions DURING a duress event, the OS permission dialog will alert the attacker. We MUST obtain these permissions during the "happy path" onboarding when everything seems normal.
+
+- [ ] **Permission Requirements Analysis:**
+    - [ ] Location: "Always Allow" (background tracking in duress)
+    - [ ] Microphone: "Allow" (audio evidence recording)
+    - [ ] Camera: "Allow" (optional - for evidence photos)
+    - [ ] Notifications: "Allow" (parent alerts)
+
+- [ ] **Onboarding Screen Addition:**
+    - [ ] Create `lib/features/onboarding/presentation/permission_prime_screen.dart`
+    - [ ] Position AFTER role selection, BEFORE PIN setup
+    - [ ] Title: "Safety Features Setup"
+    - [ ] Explanation: "Shield protects you in emergencies by:"
+        - [ ] "📍 Tracking your location if you need help"
+        - [ ] "🔊 Recording evidence if forced to use your account"
+        - [ ] "🚨 Alerting your family instantly"
+
+- [ ] **Permission Request Flow:**
+    - [ ] Use `permission_handler` package
+    - [ ] Request each permission with context:
+        - [ ] "We need location access to protect you in emergencies"
+        - [ ] "We need microphone access to record evidence if needed"
+    - [ ] BLOCK onboarding progress until ALL critical permissions granted
+    - [ ] Show "Skip for now" option (but warn: "Emergency features won't work")
+
+- [ ] **Permission Status Checking:**
+    - [ ] Create `lib/core/security/permission_validator.dart`
+    - [ ] Check all permissions on app launch
+    - [ ] If revoked later:
+        - [ ] Show banner: "⚠️ Emergency features disabled. Re-enable permissions?"
+        - [ ] Provide quick access to system settings
+
+- [ ] **Testing Scenarios:**
+    - [ ] User grants all permissions → Onboarding continues
+    - [ ] User denies location → Warning shown, can proceed with limitations
+    - [ ] User revokes permissions later → Banner appears on home screen
+
+**Deliverables:**
+- `lib/features/onboarding/presentation/permission_prime_screen.dart` - Permission education
+- `lib/core/security/permission_validator.dart` - Permission checking service
+- Updated `lib/features/onboarding/presentation/onboarding_screen.dart` - Add permission step
+- Updated `lib/core/navigation/app_router.dart` - Permission screen route
+
+**Dependencies:**
+```yaml
+# Add to pubspec.yaml
+permission_handler: ^11.0.0
+geolocator: ^10.1.0
+record: ^5.0.0  # For audio recording
+```
+
+**Mock UI Flow:**
+```
+1. Splash Screen
+2. Onboarding Carousel (3 slides)
+3. Role Selection (Parent/Child)
+4. → Permission Prime Screen (NEW) ←
+5. PIN Setup
+6. Duress PIN Education
+7. Home Screen
+```
+
+---
+
+## 📊 PHASE 1.6 STATISTICS (Target)
+
+**Tasks:** 4
+**New Screens:** 2 (Permission Prime, Duress Status Banner)
+**New Services:** 4 (Evidence Logger, Duress State Manager, Transaction Validator, Permission Validator)
+**Updated Screens:** 3 (PayScreen, Child Control Panel, main.dart)
+**Dependencies Added:** 3 (shared_preferences, permission_handler, geolocator)
+**Estimated Duration:** 3-5 days
+**Complexity:** HIGH (Critical security logic)
+
+---
+
+## ✅ PHASE 1.6 COMPLETION CHECKLIST
+
+**Sacrificial Wallet:**
+- [ ] Ghost wallet data created
+- [ ] Transactions under R200 succeed in duress mode
+- [ ] Transactions over R200 show fake network error
+- [ ] Evidence logging works silently
+- [ ] No visual tells to attacker
+
+**Persistent Lockdown:**
+- [ ] Duress flag persists across app restarts
+- [ ] App bypasses login when flag is true
+- [ ] Ghost dashboard loads automatically
+- [ ] User cannot self-exit duress mode
+
+**Parent Override:**
+- [ ] Parent sees duress status in control panel
+- [ ] Parent can mark child as safe
+- [ ] Duress flag clears remotely
+- [ ] Child receives notification
+- [ ] Normal login flow resumes
+
+**Permission Priming:**
+- [ ] Permission screen added to onboarding
+- [ ] Location "Always Allow" requested
+- [ ] Microphone access requested
+- [ ] Onboarding blocked until granted
+- [ ] Permission status validated on launch
+
+---
+
+## 🎯 WHY PHASE 1.6 IS CRITICAL
+
+**Before Phase 2 Backend:**
+We need to demonstrate the COMPLETE duress flow locally:
+
+1. ✅ User enters duress PIN
+2. ✅ App locks into ghost mode (reboot-proof)
+3. ✅ Small transactions succeed (attacker satisfied)
+4. ✅ Large transactions blocked (funds protected)
+5. ✅ Evidence logged silently (legal protection)
+6. ✅ Parent can remotely unlock (safety override)
+
+**This phase proves the concept works BEFORE we build the expensive backend infrastructure.**
+
+---
+
+**Priority:** CRITICAL PATH TO PHASE 2
+**Dependencies:** Phase 1.5 ✅ Complete
+**Blocks:** Phase 2 (Supabase Integration)
+**Status:** 🚧 IN PROGRESS
 
 ---
 
