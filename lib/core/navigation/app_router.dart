@@ -33,8 +33,8 @@ class AppRouter {
       final isLoginRoute = state.matchedLocation == '/login';
       final isOnboardingRoute = state.matchedLocation == '/onboarding';
 
-      // Allow onboarding route without authentication
-      if (isOnboardingRoute) {
+      // Allow onboarding and permission routes without authentication
+      if (isOnboardingRoute || state.matchedLocation.startsWith('/onboarding/')) {
         return null;
       }
 
@@ -57,6 +57,12 @@ class AppRouter {
         name: 'onboarding',
         builder: (context, state) => const OnboardingScreen(),
         routes: [
+          // Permission prime screen (request location/microphone)
+          GoRoute(
+            path: 'permissions',
+            name: 'permissions',
+            builder: (context, state) => const PermissionPrimeScreen(),
+          ),
           // Role selection
           GoRoute(
             path: 'role-selection',
