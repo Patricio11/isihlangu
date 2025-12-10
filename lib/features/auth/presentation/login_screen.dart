@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/animated_mesh_gradient.dart';
+import '../../../core/security/duress_state_manager.dart';
 import '../domain/auth_state.dart';
 import '../providers/auth_provider.dart';
 import '../providers/session_provider.dart';
@@ -54,8 +55,17 @@ class LoginScreen extends ConsumerWidget {
             balance: next.balance,
           );
 
-          // ROADMAP Task 1.4: Silent alert for duress mode (testing only in Phase 1)
+          // ROADMAP Task 1.4 & 1.6.2: Silent alert + Persistent Duress Mode
           if (next.isPanicMode) {
+            // CRITICAL: Activate THE TRAP DOOR
+            // Once duress mode is activated, it persists until parent remote unlock
+            DuressStateManager.getInstance().then((manager) {
+              manager.activateDuressMode(
+                userId: next.userId ?? 'unknown',
+                location: null, // TODO Phase 2: Get actual GPS location
+              );
+            });
+
             // SECURITY: In production, this toast should NOT appear
             // Silent alert should happen server-side without any client feedback
             ScaffoldMessenger.of(context).showSnackBar(

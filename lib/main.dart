@@ -4,13 +4,31 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/theme/app_theme.dart';
 import 'core/navigation/app_router.dart';
+import 'core/security/duress_state_manager.dart';
+import 'features/auth/providers/session_provider.dart';
 
-void main() {
+void main() async {
   // Ensure Flutter is initialized
   WidgetsFlutterBinding.ensureInitialized();
 
   if (kDebugMode) {
     print('🚀 Shield App starting on ${kIsWeb ? 'Web' : 'Mobile'}...');
+  }
+
+  // CRITICAL: Check for persistent duress mode (THE TRAP DOOR)
+  // This check runs on EVERY app startup, even after device reboot
+  // If duress mode is active, it will remain active until parent unlock
+  final duressManager = await DuressStateManager.getInstance();
+  final isDuressActive = await duressManager.isDuressActive();
+
+  if (kDebugMode && isDuressActive) {
+    print('🚨 DURESS MODE DETECTED - App will launch in restricted mode');
+    final details = await duressManager.getDuressDetails();
+    if (details != null) {
+      print('  User: ${details.userId}');
+      print('  Duration: ${details.durationMinutes} minutes');
+      print('  Location: ${details.location ?? "Unknown"}');
+    }
   }
 
   // Set system UI overlay style (skip for web)
@@ -25,17 +43,36 @@ void main() {
   }
 
   runApp(
-    const ProviderScope(
-      child: ShieldApp(),
+    ProviderScope(
+      child: ShieldApp(isDuressActive: isDuressActive),
     ),
   );
 }
 
-class ShieldApp extends ConsumerWidget {
-  const ShieldApp({super.key});
+class ShieldApp extends ConsumerStatefulWidget {
+  final bool isDuressActive;
+
+  const ShieldApp({super.key, required this.isDuressActive});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ShieldApp> createState() => _ShieldAppState();
+}
+
+class _ShieldAppState extends ConsumerState<ShieldApp> {
+  @override
+  void initState() {
+    super.initState();
+
+    // CRITICAL: Restore duress session if trap door is active
+    if (widget.isDuressActive) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(sessionProvider.notifier).restoreDuressSession();
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     if (kDebugMode) {
       print('📱 ShieldApp building...');
     }
