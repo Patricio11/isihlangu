@@ -8,6 +8,7 @@ import '../../features/onboarding/presentation/onboarding_screen.dart';
 import '../../features/onboarding/presentation/role_selection_screen.dart';
 import '../../features/onboarding/presentation/create_family_screen.dart';
 import '../../features/onboarding/presentation/join_family_screen.dart';
+import '../../features/onboarding/presentation/permission_prime_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/profile/presentation/settings_screen.dart';
 import '../../features/card/presentation/card_screen.dart';

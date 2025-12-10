@@ -80,7 +80,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
   void _completeOnboarding() {
     ref.read(onboardingProvider.notifier).completeOnboarding();
-    context.go('/login');
+    // Navigate to permission screen to request critical permissions
+    context.go('/onboarding/permissions');
   }
 
   @override

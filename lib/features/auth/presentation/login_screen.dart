@@ -100,134 +100,133 @@ class LoginScreen extends ConsumerWidget {
       backgroundColor: AppColors.background,
       body: AnimatedMeshGradient(
         child: SafeArea(
-          child: Column(
-            children: [
-              const Spacer(),
-
-              // App Logo/Shield Icon
-              _buildLogo(context)
-                  .animate()
-                  .fadeIn(duration: 800.ms)
-                  .scale(
-                    duration: 800.ms,
-                    curve: Curves.easeOutBack,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight,
                   ),
+                  child: IntrinsicHeight(
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 40),
 
-              const SizedBox(height: 48),
+                        // App Logo/Shield Icon
+                        _buildLogo(context)
+                            .animate()
+                            .fadeIn(duration: 800.ms)
+                            .scale(
+                              duration: 800.ms,
+                              curve: Curves.easeOutBack,
+                            ),
 
-              // App Title
-              Text(
-                'SHIELD',
-                style: theme.textTheme.headlineLarge?.copyWith(
-                  letterSpacing: 8,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
-                ),
-              )
-                  .animate()
-                  .fadeIn(duration: 800.ms, delay: 200.ms)
-                  .slideY(begin: 0.2, end: 0, duration: 800.ms, delay: 200.ms),
+                        const SizedBox(height: 32),
 
-              const SizedBox(height: 8),
+                        // App Title
+                        Text(
+                          'SHIELD',
+                          style: theme.textTheme.headlineLarge?.copyWith(
+                            letterSpacing: 8,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textPrimary,
+                          ),
+                        )
+                            .animate()
+                            .fadeIn(duration: 800.ms, delay: 200.ms)
+                            .slideY(begin: 0.2, end: 0, duration: 800.ms, delay: 200.ms),
 
-              // Subtitle
-              Text(
-                'Secure Banking',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  letterSpacing: 2,
-                  color: AppColors.textTertiary,
-                ),
-              )
-                  .animate()
-                  .fadeIn(duration: 800.ms, delay: 300.ms)
-                  .slideY(begin: 0.2, end: 0, duration: 800.ms, delay: 300.ms),
+                        const SizedBox(height: 8),
 
-              const Spacer(),
+                        // Subtitle
+                        Text(
+                          'Secure Banking',
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            letterSpacing: 2,
+                            color: AppColors.textTertiary,
+                          ),
+                        )
+                            .animate()
+                            .fadeIn(duration: 800.ms, delay: 300.ms)
+                            .slideY(begin: 0.2, end: 0, duration: 800.ms, delay: 300.ms),
 
-              // Biometric Icon
-              _buildBiometricIcon(context)
-                  .animate()
-                  .fadeIn(duration: 600.ms, delay: 400.ms)
-                  .scale(duration: 600.ms, delay: 400.ms),
+                        const SizedBox(height: 48),
 
-              const SizedBox(height: 32),
+                        // Instruction Text
+                        Text(
+                          'Enter your PIN',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
+                        )
+                            .animate()
+                            .fadeIn(duration: 600.ms, delay: 400.ms)
+                            .slideY(begin: 0.2, end: 0, duration: 600.ms, delay: 400.ms),
 
-              // Instruction Text
-              Text(
-                'Enter your PIN',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: AppColors.textSecondary,
-                ),
-              )
-                  .animate()
-                  .fadeIn(duration: 600.ms, delay: 500.ms)
-                  .slideY(begin: 0.2, end: 0, duration: 600.ms, delay: 500.ms),
+                        const SizedBox(height: 24),
 
-              const SizedBox(height: 24),
+                        // PIN Dots
+                        PinDots(
+                          filledCount: authState.pin.length,
+                          hasError: authState.error != null,
+                        )
+                            .animate()
+                            .fadeIn(duration: 600.ms, delay: 500.ms)
+                            .slideY(begin: 0.2, end: 0, duration: 600.ms, delay: 500.ms),
 
-              // PIN Dots
-              PinDots(
-                filledCount: authState.pin.length,
-                hasError: authState.error != null,
-              )
-                  .animate()
-                  .fadeIn(duration: 600.ms, delay: 600.ms)
-                  .slideY(begin: 0.2, end: 0, duration: 600.ms, delay: 600.ms),
+                        const SizedBox(height: 16),
 
-              const SizedBox(height: 16),
-
-              // Error Message
-              SizedBox(
-                height: 24,
-                child: authState.error != null
-                    ? Text(
-                        authState.error!,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: AppColors.danger,
+                        // Error Message
+                        SizedBox(
+                          height: 24,
+                          child: authState.error != null
+                              ? Text(
+                                  authState.error!,
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: AppColors.danger,
+                                  ),
+                                )
+                                    .animate()
+                                    .fadeIn(duration: 200.ms)
+                                    .shake(duration: 400.ms)
+                              : const SizedBox.shrink(),
                         ),
-                      )
-                          .animate()
-                          .fadeIn(duration: 200.ms)
-                          .shake(duration: 400.ms)
-                    : const SizedBox.shrink(),
-              ),
 
-              const Spacer(),
+                        const Spacer(),
 
-              // PIN Keypad
-              PinKeypad(
-                onDigitPressed: authNotifier.addDigit,
-                onDeletePressed: authNotifier.removeDigit,
-              ),
+                        // PIN Keypad
+                        PinKeypad(
+                          onDigitPressed: authNotifier.addDigit,
+                          onDeletePressed: authNotifier.removeDigit,
+                        ),
 
-              const SizedBox(height: 32),
+                        const SizedBox(height: 24),
 
-              // Biometric Alternative (Optional)
-              _buildBiometricButton(context)
-                  .animate()
-                  .fadeIn(duration: 600.ms, delay: 800.ms),
+                        // New User Button
+                        TextButton.icon(
+                          onPressed: () {
+                            // Navigate to onboarding which will handle permission requests
+                            context.push('/onboarding');
+                          },
+                          icon: const Icon(
+                            Icons.arrow_forward_rounded,
+                            size: 18,
+                          ),
+                          label: const Text('New User? Get Started'),
+                          style: TextButton.styleFrom(
+                            foregroundColor: AppColors.primary,
+                          ),
+                        )
+                            .animate()
+                            .fadeIn(duration: 600.ms, delay: 600.ms),
 
-              const SizedBox(height: 24),
-
-              // Learn More Button
-              TextButton.icon(
-                onPressed: () {
-                  context.push('/onboarding');
-                },
-                icon: const Icon(
-                  Icons.info_outline,
-                  size: 18,
+                        const SizedBox(height: 24),
+                      ],
+                    ),
+                  ),
                 ),
-                label: const Text('Learn More About Shield'),
-                style: TextButton.styleFrom(
-                  foregroundColor: AppColors.textTertiary,
-                ),
-              )
-                  .animate()
-                  .fadeIn(duration: 600.ms, delay: 900.ms),
-
-              const SizedBox(height: 32),
-            ],
+              );
+            },
           ),
         ),
       ),
@@ -247,47 +246,6 @@ class LoginScreen extends ConsumerWidget {
         Icons.shield_outlined,
         size: 50,
         color: AppColors.background,
-      ),
-    );
-  }
-
-  Widget _buildBiometricIcon(BuildContext context) {
-    return Container(
-      width: 80,
-      height: 80,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: AppColors.glassSurface,
-        border: Border.all(
-          color: AppColors.glassBorder,
-          width: 1,
-        ),
-      ),
-      child: const Icon(
-        Icons.fingerprint,
-        size: 40,
-        color: AppColors.primary,
-      ),
-    );
-  }
-
-  Widget _buildBiometricButton(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return TextButton.icon(
-      onPressed: () {
-        // TODO: Implement biometric authentication
-      },
-      icon: const Icon(
-        Icons.fingerprint,
-        size: 20,
-        color: AppColors.textTertiary,
-      ),
-      label: Text(
-        'Use Biometrics',
-        style: theme.textTheme.bodyMedium?.copyWith(
-          color: AppColors.textTertiary,
-        ),
       ),
     );
   }

@@ -35,13 +35,18 @@ class GlassContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Use theme-aware colors
+    final glassColor = color ?? context.colors.glassSurface;
+    final borderColor = border?.top.color ?? context.colors.glassBorder;
+    final shadows = boxShadow ?? context.colors.glassShadow;
+
     return Container(
       width: width,
       height: height,
       margin: margin,
       decoration: BoxDecoration(
         borderRadius: borderRadius,
-        boxShadow: boxShadow ?? AppColors.glassShadow,
+        boxShadow: shadows,
       ),
       child: ClipRRect(
         borderRadius: borderRadius,
@@ -51,11 +56,11 @@ class GlassContainer extends StatelessWidget {
                 padding: padding,
                 decoration: BoxDecoration(
                   gradient: gradient,
-                  color: color ?? AppColors.glassSurface,
+                  color: glassColor,
                   borderRadius: borderRadius,
                   border: border ??
                       Border.all(
-                        color: AppColors.glassBorder,
+                        color: borderColor,
                         width: 1,
                       ),
                 ),
@@ -67,11 +72,11 @@ class GlassContainer extends StatelessWidget {
                   padding: padding,
                   decoration: BoxDecoration(
                     gradient: gradient,
-                    color: color ?? AppColors.glassSurface,
+                    color: glassColor,
                     borderRadius: borderRadius,
                     border: border ??
                         Border.all(
-                          color: AppColors.glassBorder,
+                          color: borderColor,
                           width: 1,
                         ),
                   ),
@@ -143,6 +148,8 @@ class GlassButton extends StatelessWidget {
     );
   }
 
+  // Note: This factory cannot use context, so it uses null color
+  // The build method will apply theme-aware color automatically
   factory GlassButton.secondary({
     required VoidCallback? onPressed,
     required Widget child,
@@ -152,7 +159,7 @@ class GlassButton extends StatelessWidget {
   }) {
     return GlassButton(
       onPressed: onPressed,
-      color: AppColors.glassSurface,
+      color: null, // Will use theme-aware default in container
       width: width,
       height: height,
       padding: padding,
@@ -224,7 +231,7 @@ class CircularGlassButton extends StatelessWidget {
           height: size,
           padding: EdgeInsets.zero,
           borderRadius: BorderRadius.circular(size / 2),
-          color: backgroundColor ?? AppColors.glassSurface,
+          color: backgroundColor, // Will use theme-aware default if null
           child: Material(
             color: Colors.transparent,
             child: InkWell(
@@ -279,12 +286,12 @@ class GlassCard extends StatelessWidget {
     final effectiveGlow = hasGlow
         ? [
             BoxShadow(
-              color: (glowColor ?? AppColors.primary).withOpacity(0.3),
+              color: (glowColor ?? AppColors.primary).withValues(alpha: 0.3),
               blurRadius: 20,
               spreadRadius: 0,
             ),
           ]
-        : AppColors.glassShadow;
+        : null; // Will use theme-aware default shadow
 
     return GlassContainer(
       padding: padding ?? const EdgeInsets.all(20),
