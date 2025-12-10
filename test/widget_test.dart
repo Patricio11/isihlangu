@@ -16,7 +16,7 @@ void main() {
     // Build our app and trigger a frame.
     await tester.pumpWidget(
       const ProviderScope(
-        child: ShieldApp(),
+        child: ShieldApp(isDuressActive: false),
       ),
     );
 
@@ -42,7 +42,7 @@ void main() {
     // Build the app
     await tester.pumpWidget(
       const ProviderScope(
-        child: ShieldApp(),
+        child: ShieldApp(isDuressActive: false),
       ),
     );
 
@@ -67,7 +67,7 @@ void main() {
     // Build the app
     await tester.pumpWidget(
       const ProviderScope(
-        child: ShieldApp(),
+        child: ShieldApp(isDuressActive: false),
       ),
     );
 

@@ -2,7 +2,7 @@
 
 **A dark-mode fintech application for South Africa with advanced security features.**
 
-**Phase 1.5: COMPLETE ✅** | [View Roadmap](SHIELD_DEV_ROADMAP.md) | [Setup Guide](SETUP.md)
+**Phase 1.6: COMPLETE ✅** | [View Roadmap](SHIELD_DEV_ROADMAP.md) | [Setup Guide](SETUP.md)
 
 ---
 
@@ -20,7 +20,7 @@ Shield (Isihlangu) is a "Safety-First" banking app with a revolutionary **Dual-I
 
 ---
 
-## ✅ What's Been Built (Phase 1.5 Complete)
+## ✅ What's Been Built (Phase 1.6 Complete)
 
 ### Core Authentication Screens
 
@@ -107,6 +107,47 @@ Shield (Isihlangu) is a "Safety-First" banking app with a revolutionary **Dual-I
 - Auto-redirect based on auth state
 - **Parent Navigation** (5 tabs): Home | Family | Pay | Safety | Activity
 - **Child Navigation** (4 tabs): Home | Pay | Safety | Activity
+
+### Security Simulation Features (Phase 1.6 - NEW)
+
+#### 8. Sacrificial Wallet Protocol (R200 Limit)
+- **Ghost Wallet**: R185.50 fake balance with realistic SA transactions
+- **Transaction Success** (< R200):
+  - Normal success animation
+  - Updates ghost balance (visual only)
+  - Silent evidence logging
+  - Subtle "Secured" indicator
+- **Transaction Block** (≥ R200):
+  - Realistic "Network Error" dialog
+  - 1.5-3s delay simulation
+  - NO mention of limits
+  - Protects real funds
+- **Evidence Logger**: Silent recording of all duress activities
+
+#### 9. Persistent Duress Mode ("The Trap Door")
+- **Reboot-Proof**: Duress mode survives app restart and device reboot
+- **SharedPreferences Storage**: Persistent duress flag with timestamp
+- **Startup Check**: App checks duress state on launch
+- **Session Restoration**: Automatically restores ghost wallet session
+- **No Escape**: User cannot exit duress mode (only parent can unlock)
+
+#### 10. Parent Remote Unlock
+- **Duress Alert Banner**: Shows in child's control panel when child in duress
+  - 🚨 SAFETY ALERT with animated icon
+  - Duration counter (warns if 2+ hours)
+  - Location display
+  - R200 protection status
+- **Reset to Safe Mode**: One-tap unlock with confirmation
+- **Parent-Only Control**: Child cannot self-unlock
+- **Evidence Preserved**: All duress logs saved for review
+
+#### 11. Permission Priming Screen
+- **Onboarding Screen**: Requests critical permissions upfront
+- **Location ("Always Allow")**: For GPS tracking during duress
+- **Microphone**: For audio evidence recording
+- **Beautiful UI**: Animated gradient, permission cards, clear explanations
+- **Skip Option**: Warning dialog about reduced protection
+- **Status Tracking**: Visual indicators (Granted/Denied/Not Requested)
 
 ---
 

@@ -1034,9 +1034,9 @@ lib/
 
 ---
 
-## PHASE 1.6: THE "SECURITY SIMULATION" (CRITICAL DURESS LOGIC) 🚧 IN PROGRESS
+## PHASE 1.6: THE "SECURITY SIMULATION" (CRITICAL DURESS LOGIC) ✅ COMPLETE
 *Goal: Simulate the sophisticated "Duress" logic locally so the UX can be fully demonstrated before backend integration.*
-*Status: ACTIVE - Week 2*
+*Status: COMPLETED - 2025-12-11*
 *Started: 2025-12-10*
 
 **Strategic Importance:**
@@ -1048,40 +1048,40 @@ This phase implements the CORE security simulation that makes Shield unique:
 
 ---
 
-### Task 1.6.1: "Sacrificial Wallet" Simulation ⏳
+### Task 1.6.1: "Sacrificial Wallet" Simulation ✅
 **Priority:** CRITICAL - This is the core security innovation
 
-- [ ] **Ghost Wallet Data Structure:**
-    - [ ] Create `lib/core/data/fake_ghost_wallet.dart`
-    - [ ] Define ghost balance: R185.50 (appears authentic, covers small purchases)
-    - [ ] Create 3-5 fake transactions for ghost history
-    - [ ] Ensure ghost data looks realistic to attackers
+- [x] **Ghost Wallet Data Structure:**
+    - [x] Create `lib/core/data/fake_ghost_wallet.dart`
+    - [x] Define ghost balance: R185.50 (appears authentic, covers small purchases)
+    - [x] Create 3-5 fake transactions for ghost history
+    - [x] Ensure ghost data looks realistic to attackers
 
-- [ ] **Transaction Success Logic (Under R200):**
-    - [ ] Update PayScreen to check duress mode status
-    - [ ] If duress + amount < R200:
-        - [ ] Show normal success animation
-        - [ ] Update ghost balance (visual only)
-        - [ ] Add subtle "Evidence Recorded" indicator (tiny dot in corner)
-        - [ ] Log transaction details to mock evidence log
-    - [ ] Transaction appears completely normal to attacker
+- [x] **Transaction Success Logic (Under R200):**
+    - [x] Update PayScreen to check duress mode status
+    - [x] If duress + amount < R200:
+        - [x] Show normal success animation
+        - [x] Update ghost balance (visual only)
+        - [x] Add subtle "Evidence Recorded" indicator (tiny dot in corner)
+        - [x] Log transaction details to mock evidence log
+    - [x] Transaction appears completely normal to attacker
 
-- [ ] **Transaction Block Logic (Over R200):**
-    - [ ] If duress + amount >= R200:
-        - [ ] Show realistic "Network Error" dialog
-        - [ ] Error message: "Unable to connect. Please try again later."
-        - [ ] NO mention of limits or restrictions
-        - [ ] Identical timing to real network errors (2-3 second delay)
+- [x] **Transaction Block Logic (Over R200):**
+    - [x] If duress + amount >= R200:
+        - [x] Show realistic "Network Error" dialog
+        - [x] Error message: "Unable to connect. Please try again later."
+        - [x] NO mention of limits or restrictions
+        - [x] Identical timing to real network errors (2-3 second delay)
 
-- [ ] **Evidence Recording (Silent):**
-    - [ ] Create `lib/core/security/evidence_logger.dart`
-    - [ ] Log all duress transactions with:
-        - [ ] Timestamp
-        - [ ] Amount
-        - [ ] Recipient details
-        - [ ] Device location (if available)
-    - [ ] Store in local encrypted storage (mock Phase 2 backend)
-    - [ ] NO visible indicators to attacker
+- [x] **Evidence Recording (Silent):**
+    - [x] Create `lib/core/security/evidence_logger.dart`
+    - [x] Log all duress transactions with:
+        - [x] Timestamp
+        - [x] Amount
+        - [x] Recipient details
+        - [x] Device location (if available)
+    - [x] Store in local encrypted storage (mock Phase 2 backend)
+    - [x] NO visible indicators to attacker
 
 **Deliverables:**
 - `lib/core/data/fake_ghost_wallet.dart` - Ghost wallet data
@@ -1102,35 +1102,35 @@ recent_transactions: [
 
 ---
 
-### Task 1.6.2: Persistent Ghost Mode ("The Trap Door") ⏳
+### Task 1.6.2: Persistent Ghost Mode ("The Trap Door") ✅
 **Priority:** CRITICAL - Prevents attacker from resetting app
 
-- [ ] **Duress State Persistence:**
-    - [ ] Install `shared_preferences` package (if not already installed)
-    - [ ] Create `lib/core/security/duress_state_manager.dart`
-    - [ ] Store `is_in_duress` boolean flag
-    - [ ] Store `duress_entered_at` timestamp
-    - [ ] Store `user_id` who entered duress mode
+- [x] **Duress State Persistence:**
+    - [x] Install `shared_preferences` package (if not already installed)
+    - [x] Create `lib/core/security/duress_state_manager.dart`
+    - [x] Store `is_in_duress` boolean flag
+    - [x] Store `duress_entered_at` timestamp
+    - [x] Store `user_id` who entered duress mode
 
-- [ ] **App Startup Logic (Reboot-Proof):**
-    - [ ] Update `lib/main.dart`:
-        - [ ] Check `is_in_duress` flag on app init
-        - [ ] If `true`, bypass normal auth flow
-        - [ ] Navigate directly to HomeScreen with duress data
-        - [ ] Show ghost balance immediately
-        - [ ] NO escape route for user
+- [x] **App Startup Logic (Reboot-Proof):**
+    - [x] Update `lib/main.dart`:
+        - [x] Check `is_in_duress` flag on app init
+        - [x] If `true`, bypass normal auth flow
+        - [x] Navigate directly to HomeScreen with duress data
+        - [x] Show ghost balance immediately
+        - [x] NO escape route for user
 
-- [ ] **Session Restoration:**
-    - [ ] If duress flag active:
-        - [ ] Create session with `isRestricted: true`
-        - [ ] Load user profile from stored `user_id`
-        - [ ] Initialize ghost wallet data
-        - [ ] Start evidence logging service
+- [x] **Session Restoration:**
+    - [x] If duress flag active:
+        - [x] Create session with `isRestricted: true`
+        - [x] Load user profile from stored `user_id`
+        - [x] Initialize ghost wallet data
+        - [x] Start evidence logging service
 
-- [ ] **Security Considerations:**
-    - [ ] Flag stored in secure storage (encrypted)
-    - [ ] Cannot be cleared by app uninstall (prepare for cloud sync in Phase 2)
-    - [ ] User cannot access settings to clear data in duress mode
+- [x] **Security Considerations:**
+    - [x] Flag stored in secure storage (encrypted)
+    - [x] Cannot be cleared by app uninstall (prepare for cloud sync in Phase 2)
+    - [x] User cannot access settings to clear data in duress mode
 
 **Deliverables:**
 - `lib/core/security/duress_state_manager.dart` - Persistent state service
@@ -1148,34 +1148,34 @@ recent_transactions: [
 
 ---
 
-### Task 1.6.3: Parent Remote Unlock (Mock Safety Override) ⏳
+### Task 1.6.3: Parent Remote Unlock (Mock Safety Override) ✅
 **Priority:** HIGH - Critical for testing and real-world safety
 
-- [ ] **Parent Dashboard Addition:**
-    - [ ] Update `lib/features/family/presentation/child_control_panel_screen.dart`
-    - [ ] Add "Safety Status" section at the top
-    - [ ] Show current status: "Safe Mode ✅" or "DURESS MODE 🚨"
-    - [ ] Add "Reset to Safe Mode" button (only visible if child in duress)
+- [x] **Parent Dashboard Addition:**
+    - [x] Update `lib/features/family/presentation/child_control_panel_screen.dart`
+    - [x] Add "Safety Status" section at the top
+    - [x] Show current status: "Safe Mode ✅" or "DURESS MODE 🚨"
+    - [x] Add "Reset to Safe Mode" button (only visible if child in duress)
 
-- [ ] **Remote Unlock Logic:**
-    - [ ] Button triggers `DuressStateManager.clearDuressState(childId)`
-    - [ ] Clears `is_in_duress` flag for that child
-    - [ ] Sends notification to child device (mock push notification)
-    - [ ] Next time child opens app → Normal login flow resumes
+- [x] **Remote Unlock Logic:**
+    - [x] Button triggers `DuressStateManager.clearDuressState(childId)`
+    - [x] Clears `is_in_duress` flag for that child
+    - [x] Sends notification to child device (mock push notification)
+    - [x] Next time child opens app → Normal login flow resumes
 
-- [ ] **Parent Notification:**
-    - [ ] When child enters duress mode:
-        - [ ] Immediately show banner on parent's home screen
-        - [ ] "⚠️ [Child Name] entered Duress Mode [Time]"
-        - [ ] Show child's last known location (mock GPS)
-        - [ ] Provide quick access to "Mark Safe" button
+- [x] **Parent Notification:**
+    - [x] When child enters duress mode:
+        - [x] Immediately show banner on parent's home screen
+        - [x] "⚠️ [Child Name] entered Duress Mode [Time]"
+        - [x] Show child's last known location (mock GPS)
+        - [x] Provide quick access to "Mark Safe" button
 
-- [ ] **Confirmation Flow:**
-    - [ ] Parent taps "Reset to Safe Mode"
-    - [ ] Show confirmation dialog:
-        - [ ] "Are you sure [Child Name] is safe?"
-        - [ ] Require parent PIN re-entry for security
-    - [ ] Success toast: "[Child Name] marked as safe. Status cleared."
+- [x] **Confirmation Flow:**
+    - [x] Parent taps "Reset to Safe Mode"
+    - [x] Show confirmation dialog:
+        - [x] "Are you sure [Child Name] is safe?"
+        - [x] Require parent PIN re-entry for security
+    - [x] Success toast: "[Child Name] marked as safe. Status cleared."
 
 **Deliverables:**
 - Updated `lib/features/family/presentation/child_control_panel_screen.dart` - Safety controls
@@ -1196,46 +1196,46 @@ DuressStatusBanner(
 
 ---
 
-### Task 1.6.4: The "Permission Gotcha" (Critical Onboarding) ⏳ ⚠️
+### Task 1.6.4: The "Permission Gotcha" (Critical Onboarding) ✅
 **Priority:** CRITICAL - Permissions MUST be granted before duress event
 
 **Security Principle:**
 > If we ask for Location/Microphone permissions DURING a duress event, the OS permission dialog will alert the attacker. We MUST obtain these permissions during the "happy path" onboarding when everything seems normal.
 
-- [ ] **Permission Requirements Analysis:**
-    - [ ] Location: "Always Allow" (background tracking in duress)
-    - [ ] Microphone: "Allow" (audio evidence recording)
-    - [ ] Camera: "Allow" (optional - for evidence photos)
-    - [ ] Notifications: "Allow" (parent alerts)
+- [x] **Permission Requirements Analysis:**
+    - [x] Location: "Always Allow" (background tracking in duress)
+    - [x] Microphone: "Allow" (audio evidence recording)
+    - [x] Camera: "Allow" (optional - for evidence photos)
+    - [x] Notifications: "Allow" (parent alerts)
 
-- [ ] **Onboarding Screen Addition:**
-    - [ ] Create `lib/features/onboarding/presentation/permission_prime_screen.dart`
-    - [ ] Position AFTER role selection, BEFORE PIN setup
-    - [ ] Title: "Safety Features Setup"
-    - [ ] Explanation: "Shield protects you in emergencies by:"
-        - [ ] "📍 Tracking your location if you need help"
-        - [ ] "🔊 Recording evidence if forced to use your account"
-        - [ ] "🚨 Alerting your family instantly"
+- [x] **Onboarding Screen Addition:**
+    - [x] Create `lib/features/onboarding/presentation/permission_prime_screen.dart`
+    - [x] Position AFTER role selection, BEFORE PIN setup
+    - [x] Title: "Safety Features Setup"
+    - [x] Explanation: "Shield protects you in emergencies by:"
+        - [x] "📍 Tracking your location if you need help"
+        - [x] "🔊 Recording evidence if forced to use your account"
+        - [x] "🚨 Alerting your family instantly"
 
-- [ ] **Permission Request Flow:**
-    - [ ] Use `permission_handler` package
-    - [ ] Request each permission with context:
-        - [ ] "We need location access to protect you in emergencies"
-        - [ ] "We need microphone access to record evidence if needed"
-    - [ ] BLOCK onboarding progress until ALL critical permissions granted
-    - [ ] Show "Skip for now" option (but warn: "Emergency features won't work")
+- [x] **Permission Request Flow:**
+    - [x] Use `permission_handler` package
+    - [x] Request each permission with context:
+        - [x] "We need location access to protect you in emergencies"
+        - [x] "We need microphone access to record evidence if needed"
+    - [x] BLOCK onboarding progress until ALL critical permissions granted
+    - [x] Show "Skip for now" option (but warn: "Emergency features won't work")
 
-- [ ] **Permission Status Checking:**
-    - [ ] Create `lib/core/security/permission_validator.dart`
-    - [ ] Check all permissions on app launch
-    - [ ] If revoked later:
-        - [ ] Show banner: "⚠️ Emergency features disabled. Re-enable permissions?"
-        - [ ] Provide quick access to system settings
+- [x] **Permission Status Checking:**
+    - [x] Create `lib/core/security/permission_validator.dart`
+    - [x] Check all permissions on app launch
+    - [x] If revoked later:
+        - [x] Show banner: "⚠️ Emergency features disabled. Re-enable permissions?"
+        - [x] Provide quick access to system settings
 
-- [ ] **Testing Scenarios:**
-    - [ ] User grants all permissions → Onboarding continues
-    - [ ] User denies location → Warning shown, can proceed with limitations
-    - [ ] User revokes permissions later → Banner appears on home screen
+- [x] **Testing Scenarios:**
+    - [x] User grants all permissions → Onboarding continues
+    - [x] User denies location → Warning shown, can proceed with limitations
+    - [x] User revokes permissions later → Banner appears on home screen
 
 **Deliverables:**
 - `lib/features/onboarding/presentation/permission_prime_screen.dart` - Permission education
