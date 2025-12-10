@@ -6,6 +6,7 @@ import '../../features/auth/providers/session_provider.dart';
 import '../../features/home/presentation/home_screen.dart';
 import '../../features/payment/presentation/pay_screen.dart';
 import '../../features/safety/presentation/safety_screen.dart';
+import '../../features/family/presentation/family_screen.dart';
 
 /// Main Scaffold with Bottom Navigation
 /// Manages the main app screens with floating glass nav bar
@@ -24,32 +25,65 @@ class MainScaffold extends ConsumerStatefulWidget {
 class _MainScaffoldState extends ConsumerState<MainScaffold> {
   int _currentIndex = 0;
 
-  final List<Widget> _screens = const [
+  // ROADMAP Task 1.15.7: Role-Based Navigation
+  // Parent screens (5 tabs): Home | Family | Pay | Safety | Profile
+  final List<Widget> _parentScreens = const [
     HomeScreen(),
+    FamilyScreen(),
     PayScreen(),
-    _ActivityScreen(), // Placeholder
     SafetyScreen(),
+    _ActivityScreen(), // Placeholder for Activity
   ];
 
-  void _onNavTap(int index) {
+  // Child screens (4 tabs): Home | Pay | Safety | Profile
+  final List<Widget> _childScreens = const [
+    HomeScreen(),
+    PayScreen(),
+    SafetyScreen(),
+    _ActivityScreen(), // Placeholder for Activity
+  ];
+
+  void _onNavTap(int index, bool isParent) {
     setState(() {
       _currentIndex = index;
     });
 
-    // Navigate to corresponding route
-    switch (index) {
-      case 0:
-        context.go('/home');
-        break;
-      case 1:
-        context.go('/pay');
-        break;
-      case 2:
-        context.go('/activity');
-        break;
-      case 3:
-        context.go('/safety');
-        break;
+    // ROADMAP Task 1.15.7: Role-based navigation routes
+    if (isParent) {
+      // Parent: Home | Family | Pay | Safety | Activity
+      switch (index) {
+        case 0:
+          context.go('/home');
+          break;
+        case 1:
+          context.go('/family');
+          break;
+        case 2:
+          context.go('/pay');
+          break;
+        case 3:
+          context.go('/safety');
+          break;
+        case 4:
+          context.go('/activity');
+          break;
+      }
+    } else {
+      // Child: Home | Pay | Safety | Activity
+      switch (index) {
+        case 0:
+          context.go('/home');
+          break;
+        case 1:
+          context.go('/pay');
+          break;
+        case 2:
+          context.go('/safety');
+          break;
+        case 3:
+          context.go('/activity');
+          break;
+      }
     }
   }
 
@@ -57,14 +91,15 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
   Widget build(BuildContext context) {
     final session = ref.watch(sessionProvider).session;
     final isRestricted = session?.isRestricted ?? false;
+    final isParent = session?.isParent ?? true; // Default to parent
 
     return Scaffold(
       body: Stack(
         children: [
-          // Current screen
+          // Current screen - different screens for parent vs child
           IndexedStack(
             index: _currentIndex,
-            children: _screens,
+            children: isParent ? _parentScreens : _childScreens,
           ),
 
           // Floating navigation bar
@@ -74,8 +109,9 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
             bottom: 0,
             child: FloatingNavBar(
               currentIndex: _currentIndex,
-              onTap: _onNavTap,
+              onTap: (index) => _onNavTap(index, isParent),
               isRestricted: isRestricted,
+              isParent: isParent,
             ),
           ),
         ],

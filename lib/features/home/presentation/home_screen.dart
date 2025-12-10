@@ -14,6 +14,7 @@ import '../../auth/providers/session_provider.dart';
 import 'widgets/gyroscope_balance_card.dart';
 import 'widgets/pulse_indicator.dart';
 import 'widgets/transaction_list.dart';
+import 'widgets/family_overview_section.dart';
 
 /// Home Screen - The Main Dashboard
 /// ROADMAP: Task 1.3 - The Home Dashboard (The "Wow" Factor)
@@ -47,6 +48,9 @@ class HomeScreen extends ConsumerWidget {
     if (kDebugMode) {
       print('🏠 HomeScreen: Mode = ${isDuressMode ? 'DURESS' : 'SAFE'}');
     }
+
+    // Check if user is a parent (for family overview section)
+    final isParent = session.isParent;
 
     final transactions = FakeTransactions.getTransactions(isDuressMode: isDuressMode);
 
@@ -163,6 +167,31 @@ class HomeScreen extends ConsumerWidget {
               const SliverToBoxAdapter(
                 child: SizedBox(height: 32),
               ),
+
+              // Family Overview Section (Parent only)
+              if (isParent) ...[
+                SliverToBoxAdapter(
+                  child: FamilyOverviewSection(
+                    onViewAllTapped: () {
+                      HapticService.lightImpact();
+                      context.push('/family');
+                    },
+                    onMemberTapped: (member) {
+                      HapticService.lightImpact();
+                      if (member.role == 'child') {
+                        // Navigate to child control panel
+                        context.push('/family/child-control/${member.id}');
+                      }
+                    },
+                  )
+                      .animate()
+                      .fadeIn(duration: 600.ms, delay: 200.ms)
+                      .slideY(begin: 0.1, end: 0, duration: 600.ms, delay: 200.ms),
+                ),
+                const SliverToBoxAdapter(
+                  child: SizedBox(height: 32),
+                ),
+              ],
 
               // Action Buttons
               SliverToBoxAdapter(

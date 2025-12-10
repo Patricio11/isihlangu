@@ -176,10 +176,13 @@ class _PayScreenState extends ConsumerState<PayScreen> {
                       color: AppColors.textPrimary,
                       fontWeight: FontWeight.bold,
                     ),
+                    cursorColor: AppColors.primary,
                     decoration: InputDecoration(
+                      filled: false,
+                      fillColor: Colors.transparent,
                       hintText: '0.00',
                       hintStyle: theme.textTheme.displayMedium?.copyWith(
-                        color: AppColors.textTertiary,
+                        color: AppColors.textTertiary.withValues(alpha: 0.4),
                         fontWeight: FontWeight.bold,
                       ),
                       prefixText: 'R ',
@@ -190,6 +193,8 @@ class _PayScreenState extends ConsumerState<PayScreen> {
                       border: InputBorder.none,
                       enabledBorder: InputBorder.none,
                       focusedBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
                     ),
                     textAlign: TextAlign.center,
                     onChanged: _onAmountChanged,

@@ -45,8 +45,13 @@ class LoginScreen extends ConsumerWidget {
         if (next.isAuthenticated && context.mounted) {
           // PHASE 1: Create mock session
           // PHASE 2: Session will be created from Supabase Edge Function response
+          // ROADMAP Task 1.15: Pass role and user info to session
           ref.read(sessionProvider.notifier).createMockSession(
             isDuressMode: next.isPanicMode,
+            userId: next.userId,
+            userName: next.userName,
+            role: next.role,
+            balance: next.balance,
           );
 
           // ROADMAP Task 1.4: Silent alert for duress mode (testing only in Phase 1)

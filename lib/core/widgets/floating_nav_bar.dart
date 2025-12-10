@@ -4,16 +4,19 @@ import 'glass_container.dart';
 
 /// Floating Glass Bottom Navigation Bar
 /// Floats above the screen content with glass morphism effect
+/// ROADMAP Task 1.15.7: Role-Based Navigation
 class FloatingNavBar extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
   final bool isRestricted;
+  final bool isParent;
 
   const FloatingNavBar({
     super.key,
     required this.currentIndex,
     required this.onTap,
     this.isRestricted = false,
+    this.isParent = true,
   });
 
   @override
@@ -29,48 +32,98 @@ class FloatingNavBar extends StatelessWidget {
         borderRadius: BorderRadius.circular(28),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withValues(alpha: 0.2),
             blurRadius: 24,
             offset: const Offset(0, 8),
           ),
         ],
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _NavBarItem(
-              icon: Icons.home_outlined,
-              activeIcon: Icons.home,
-              label: 'Home',
-              isActive: currentIndex == 0,
-              onTap: () => onTap(0),
-            ),
-            _NavBarItem(
-              icon: Icons.payment_outlined,
-              activeIcon: Icons.payment,
-              label: 'Pay',
-              isActive: currentIndex == 1,
-              onTap: () => onTap(1),
-              isDisabled: isRestricted,
-            ),
-            _NavBarItem(
-              icon: Icons.receipt_long_outlined,
-              activeIcon: Icons.receipt_long,
-              label: 'Activity',
-              isActive: currentIndex == 2,
-              onTap: () => onTap(2),
-            ),
-            _NavBarItem(
-              icon: Icons.shield_outlined,
-              activeIcon: Icons.shield,
-              label: 'Safety',
-              isActive: currentIndex == 3,
-              onTap: () => onTap(3),
-              isHighlight: !isRestricted,
-            ),
-          ],
+          children: isParent
+              ? _buildParentNavItems()
+              : _buildChildNavItems(),
         ),
       ),
     );
+  }
+
+  // Parent: Home | Family | Pay | Safety | Activity (5 tabs)
+  List<Widget> _buildParentNavItems() {
+    return [
+      _NavBarItem(
+        icon: Icons.home_outlined,
+        activeIcon: Icons.home,
+        label: 'Home',
+        isActive: currentIndex == 0,
+        onTap: () => onTap(0),
+      ),
+      _NavBarItem(
+        icon: Icons.family_restroom_outlined,
+        activeIcon: Icons.family_restroom,
+        label: 'Family',
+        isActive: currentIndex == 1,
+        onTap: () => onTap(1),
+      ),
+      _NavBarItem(
+        icon: Icons.payment_outlined,
+        activeIcon: Icons.payment,
+        label: 'Pay',
+        isActive: currentIndex == 2,
+        onTap: () => onTap(2),
+        isDisabled: isRestricted,
+      ),
+      _NavBarItem(
+        icon: Icons.shield_outlined,
+        activeIcon: Icons.shield,
+        label: 'Safety',
+        isActive: currentIndex == 3,
+        onTap: () => onTap(3),
+        isHighlight: !isRestricted,
+      ),
+      _NavBarItem(
+        icon: Icons.receipt_long_outlined,
+        activeIcon: Icons.receipt_long,
+        label: 'Activity',
+        isActive: currentIndex == 4,
+        onTap: () => onTap(4),
+      ),
+    ];
+  }
+
+  // Child: Home | Pay | Safety | Activity (4 tabs)
+  List<Widget> _buildChildNavItems() {
+    return [
+      _NavBarItem(
+        icon: Icons.home_outlined,
+        activeIcon: Icons.home,
+        label: 'Home',
+        isActive: currentIndex == 0,
+        onTap: () => onTap(0),
+      ),
+      _NavBarItem(
+        icon: Icons.payment_outlined,
+        activeIcon: Icons.payment,
+        label: 'Pay',
+        isActive: currentIndex == 1,
+        onTap: () => onTap(1),
+        isDisabled: isRestricted,
+      ),
+      _NavBarItem(
+        icon: Icons.shield_outlined,
+        activeIcon: Icons.shield,
+        label: 'Safety',
+        isActive: currentIndex == 2,
+        onTap: () => onTap(2),
+        isHighlight: !isRestricted,
+      ),
+      _NavBarItem(
+        icon: Icons.receipt_long_outlined,
+        activeIcon: Icons.receipt_long,
+        label: 'Activity',
+        isActive: currentIndex == 3,
+        onTap: () => onTap(3),
+      ),
+    ];
   }
 }
 
@@ -120,7 +173,7 @@ class _NavBarItem extends StatelessWidget {
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: isActive
-                        ? AppColors.primary.withOpacity(0.15)
+                        ? AppColors.primary.withValues(alpha: 0.15)
                         : Colors.transparent,
                     borderRadius: BorderRadius.circular(12),
                   ),

@@ -16,6 +16,7 @@ class UserSession {
   final SessionScope scope;
   final double balance; // Will be real or fake depending on scope
   final String? sessionToken;
+  final String role; // 'parent' or 'child' - ROADMAP Task 1.15: Role-Based Screens
 
   const UserSession({
     required this.userId,
@@ -23,10 +24,13 @@ class UserSession {
     required this.scope,
     required this.balance,
     this.sessionToken,
+    this.role = 'parent', // Default to parent for backward compatibility
   });
 
   bool get isAdmin => scope == SessionScope.admin;
   bool get isRestricted => scope == SessionScope.restricted;
+  bool get isParent => role == 'parent';
+  bool get isChild => role == 'child';
 
   UserSession copyWith({
     String? userId,
@@ -34,6 +38,7 @@ class UserSession {
     SessionScope? scope,
     double? balance,
     String? sessionToken,
+    String? role,
   }) {
     return UserSession(
       userId: userId ?? this.userId,
@@ -41,6 +46,7 @@ class UserSession {
       scope: scope ?? this.scope,
       balance: balance ?? this.balance,
       sessionToken: sessionToken ?? this.sessionToken,
+      role: role ?? this.role,
     );
   }
 }

@@ -2,7 +2,7 @@
 
 **A dark-mode fintech application for South Africa with advanced security features.**
 
-**Phase 1: COMPLETE ✅** | [View Roadmap](SHIELD_DEV_ROADMAP.md) | [Setup Guide](SETUP.md)
+**Phase 1.5: COMPLETE ✅** | [View Roadmap](SHIELD_DEV_ROADMAP.md) | [Setup Guide](SETUP.md)
 
 ---
 
@@ -12,31 +12,42 @@ Shield (Isihlangu) is a "Safety-First" banking app with a revolutionary **Dual-I
 
 ### The Core Concept
 
-1. **Safe Mode**: User enters Real PIN (1234) → Full banking access
+1. **Safe Mode**: User enters Real PIN → Full banking access with role-based features
 2. **Duress Mode**: User enters Panic PIN (9999) → Simulates low-balance account + Silent GPS alerts + Locks real funds
+3. **Family Control**: Parents manage children's accounts with granular permissions and spending limits
 
 **Security by Stealth**: Both modes look identical - attackers cannot tell which mode is active.
 
 ---
 
-## ✅ What's Been Built (Phase 1 Complete)
+## ✅ What's Been Built (Phase 1.5 Complete)
 
-### 4 Core Screens
+### Core Authentication Screens
 
 #### 1. LoginScreen - Stealth Authentication
 - 4-digit PIN entry with animated mesh gradient
 - Glass morphism keypad
 - Identical UI for both PIN types (security by stealth)
-- **Test PINs**: `1234` (Safe) | `9999` (Duress)
+- **Role-based authentication** with multiple test PINs
+- **Test PINs**:
+  - `1234` → Parent (Thabo) - Safe Mode - 5 tabs
+  - `5678` → Child (Lesedi - 14) - Safe Mode - 4 tabs
+  - `4321` → Child (Amogelang - 10) - Safe Mode - 4 tabs
+  - `9999` → Current Role - Duress Mode
 
 #### 2. HomeScreen - Premium Dashboard
 - **Gyroscope-tilting balance card** (moves with phone)
 - **Pulsing shield status indicator** (green = active)
 - **Staggered transaction feed** (slides in one-by-one)
+- **Family overview section** (parents only):
+  - Horizontal scroll of family member cards
+  - Total family balance display
+  - Tap to access child control panel
 - **4 circular action buttons**: Pay, Top Up, Freeze, More
 - **Different data per mode**:
-  - Safe Mode: R 12,450.50 | 8 transactions
-  - Duress Mode: R 150.00 | 3 transactions
+  - Safe Mode: Full balance, all transactions
+  - Duress Mode: Fake low balance, minimal transactions
+- **Role-based content**: Parents see family section, children don't
 
 #### 3. PayScreen - Secure Payments
 - Large centered amount input
@@ -50,11 +61,52 @@ Shield (Isihlangu) is a "Safety-First" banking app with a revolutionary **Dual-I
 - Configuration options (Duress PIN, Trusted Contacts, Alerts)
 - **Admin-only access** (restricted in duress mode)
 
+### Family Control Screens (Phase 1.5 - NEW)
+
+#### 5. Role Selection & Onboarding
+- **Role Selection Screen**: Choose Parent or Child account
+- **Create Family Flow** (Parent):
+  - Enter family name
+  - Generate shareable family code (SHIELD-7X4K)
+  - Copy and share functionality
+- **Join Family Flow** (Child):
+  - Enter family code
+  - Validation with success state
+  - Welcome message
+
+#### 6. Family Screen (Parents Only)
+- **Family info card**: Name, member count, total balance
+- **Family code section**: Display code with copy button
+- **Parent card**: Non-tappable overview
+- **Children cards**: Tappable to access controls
+  - Avatar with gradient
+  - Name and age badge
+  - Balance display
+  - Frozen status indicator
+
+#### 7. Child Control Panel (THE CORE FEATURE)
+- **Child header**: Avatar, name, age, balance
+- **Emergency freeze button**: Instant card freeze/unfreeze
+- **Permission toggles** (4):
+  - Can make payments
+  - View full balance
+  - Online purchases
+  - ATM withdrawals
+- **Spending limits** (2 sliders):
+  - Daily limit (R0 - R500)
+  - Per-transaction limit (R0 - R250)
+- **Notification settings**:
+  - Notify on all transactions
+  - Notify on large transactions (with threshold slider)
+- **Recent transactions**: Last 5 child transactions inline
+- **Real-time updates**: All changes with haptic feedback
+
 ### Navigation System
 - **GoRouter** with authentication guards
-- **Floating glass bottom nav bar**
+- **Floating glass bottom nav bar** with role-based tabs
 - Auto-redirect based on auth state
-- 4 tabs: Home, Pay, Activity, Safety
+- **Parent Navigation** (5 tabs): Home | Family | Pay | Safety | Activity
+- **Child Navigation** (4 tabs): Home | Pay | Safety | Activity
 
 ---
 
@@ -93,16 +145,34 @@ flutter run
 ```
 
 ### Test the App
-- **Safe Mode**: Enter PIN `1234`
-  - See R 12,450.50 balance
-  - All features enabled
-  - 8 transaction items
 
-- **Duress Mode**: Enter PIN `9999`
-  - See R 150.00 fake balance
-  - Restricted features (Top Up, Freeze disabled)
-  - 3 minimal transactions
-  - "Silent Alert Sent" toast (test mode only)
+#### Parent Mode (Full Family Control)
+Enter PIN `1234`:
+- See R 12,450.50 balance
+- Family overview section with 3 members
+- 5 navigation tabs (includes Family tab)
+- Access to family screen and child controls
+- All features enabled
+
+#### Child Mode (Restricted)
+Enter PIN `5678` (Lesedi - 14 years):
+- See R 350.00 balance
+- 4 navigation tabs (no Family tab)
+- Can make payments based on permissions
+- Daily limit: R150, Per transaction: R100
+
+Enter PIN `4321` (Amogelang - 10 years):
+- See R 125.00 balance
+- More restricted permissions
+- Cannot make payments (locked by parent)
+- Daily limit: R50, Per transaction: R30
+
+#### Duress Mode
+Enter PIN `9999`:
+- Current role's fake balance
+- Restricted features (Top Up, Freeze disabled)
+- Minimal transactions shown
+- "Silent Alert Sent" toast (test mode only)
 
 ---
 
@@ -112,39 +182,53 @@ flutter run
 lib/
 ├── core/
 │   ├── data/
-│   │   └── fake_transactions.dart         # Mock data (Safe/Duress)
+│   │   ├── fake_transactions.dart         # Mock data (Safe/Duress)
+│   │   └── fake_family_data.dart          # Family members & permissions (NEW)
 │   ├── navigation/
-│   │   ├── app_router.dart                # GoRouter config
-│   │   └── main_scaffold.dart             # Main scaffold + nav bar
+│   │   ├── app_router.dart                # GoRouter config (UPDATED)
+│   │   └── main_scaffold.dart             # Role-based scaffold (UPDATED)
 │   ├── theme/
 │   │   ├── app_colors.dart                # Color palette + gradients
 │   │   └── app_theme.dart                 # ThemeData (Outfit font)
 │   └── widgets/
 │       ├── animated_mesh_gradient.dart    # Animated background
-│       ├── floating_nav_bar.dart          # Bottom navigation
+│       ├── floating_nav_bar.dart          # Role-based nav bar (UPDATED)
 │       └── glass_container.dart           # Glass morphism widgets
 │
 ├── features/
 │   ├── auth/
 │   │   ├── domain/
-│   │   │   ├── auth_state.dart            # Auth state model
-│   │   │   └── user_session.dart          # Session with scope
+│   │   │   ├── auth_state.dart            # Auth state with user info (UPDATED)
+│   │   │   └── user_session.dart          # Session with scope & role (UPDATED)
 │   │   ├── providers/
-│   │   │   ├── auth_provider.dart         # Auth management
-│   │   │   └── session_provider.dart      # Session management
+│   │   │   ├── auth_provider.dart         # Role-based auth (UPDATED)
+│   │   │   └── session_provider.dart      # Session management (UPDATED)
 │   │   └── presentation/
-│   │       ├── login_screen.dart          # Login UI
+│   │       ├── login_screen.dart          # Login UI (UPDATED)
 │   │       └── widgets/
 │   │           ├── pin_dots.dart          # 4-dot indicator
 │   │           └── pin_keypad.dart        # Glass keypad
 │   │
 │   ├── home/
 │   │   └── presentation/
-│   │       ├── home_screen.dart           # Dashboard
+│   │       ├── home_screen.dart           # Dashboard with family section (UPDATED)
 │   │       └── widgets/
 │   │           ├── gyroscope_balance_card.dart  # Tilting card
 │   │           ├── pulse_indicator.dart         # Shield status
-│   │           └── transaction_list.dart        # Transaction feed
+│   │           ├── transaction_list.dart        # Transaction feed
+│   │           ├── family_overview_section.dart # Family cards (NEW)
+│   │           └── family_member_mini_card.dart # Family member widget (NEW)
+│   │
+│   ├── family/                            # NEW FEATURE
+│   │   └── presentation/
+│   │       ├── family_screen.dart         # Family management (NEW)
+│   │       └── child_control_panel_screen.dart  # Control panel (NEW)
+│   │
+│   ├── onboarding/
+│   │   └── presentation/
+│   │       ├── role_selection_screen.dart       # Role selection (NEW)
+│   │       ├── create_family_screen.dart        # Parent flow (NEW)
+│   │       └── join_family_screen.dart          # Child flow (NEW)
 │   │
 │   ├── payment/
 │   │   └── presentation/

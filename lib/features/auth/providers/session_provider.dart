@@ -10,13 +10,21 @@ class SessionNotifier extends StateNotifier<SessionState> {
 
   /// PHASE 1: Create mock session based on PIN type
   /// PHASE 2: This will be replaced with actual token validation
-  void createMockSession({required bool isDuressMode}) {
+  /// ROADMAP Task 1.15: Added role parameter for parent/child differentiation
+  void createMockSession({
+    required bool isDuressMode,
+    String? userId,
+    String? userName,
+    String? role,
+    double? balance,
+  }) {
     final session = UserSession(
-      userId: 'mock-user-001',
-      userName: 'Thabo Mokoena',
+      userId: userId ?? 'mock-user-001',
+      userName: userName ?? 'Thabo Mokoena',
       scope: isDuressMode ? SessionScope.restricted : SessionScope.admin,
-      balance: isDuressMode ? 150.0 : 12450.50, // Fake vs Real balance
+      balance: balance ?? (isDuressMode ? 150.0 : 12450.50), // Fake vs Real balance
       sessionToken: 'mock-jwt-token',
+      role: role ?? 'parent', // Default to parent
     );
 
     state = SessionState(session: session);
