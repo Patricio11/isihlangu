@@ -35,7 +35,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
     final unreadCount = _notifications.where((n) => !n.isRead).length;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.colors.background,
       appBar: AppBar(
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,7 +45,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
               Text(
                 '$unreadCount unread',
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: AppColors.textTertiary,
+                  color: context.colors.textTertiary,
                   fontSize: 12,
                 ),
               ),
@@ -143,7 +143,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
           Icon(
             Icons.notifications_none_rounded,
             size: 80,
-            color: AppColors.textTertiary,
+            color: context.colors.textTertiary,
           )
               .animate()
               .fadeIn(duration: 600.ms)
@@ -152,7 +152,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
           Text(
             'No notifications',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: AppColors.textSecondary,
+                  color: context.colors.textSecondary,
                   fontWeight: FontWeight.w600,
                 ),
           )
@@ -165,7 +165,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                 ? 'You\'re all caught up!'
                 : 'No ${_getFilterLabel(_selectedFilter!)} notifications',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textTertiary,
+                  color: context.colors.textTertiary,
                 ),
           )
               .animate()
@@ -217,7 +217,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.backgroundSecondary,
+        backgroundColor: context.colors.backgroundSecondary,
         title: Row(
           children: [
             if (notification.icon != null) ...[
@@ -227,8 +227,8 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
             Expanded(
               child: Text(
                 notification.title,
-                style: const TextStyle(
-                  color: AppColors.textPrimary,
+                style: TextStyle(
+                  color: context.colors.textPrimary,
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                 ),
@@ -242,8 +242,8 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
           children: [
             Text(
               notification.message,
-              style: const TextStyle(
-                color: AppColors.textSecondary,
+              style: TextStyle(
+                color: context.colors.textSecondary,
                 fontSize: 14,
               ),
             ),
@@ -253,13 +253,13 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                 Icon(
                   Icons.access_time_rounded,
                   size: 14,
-                  color: AppColors.textTertiary,
+                  color: context.colors.textTertiary,
                 ),
                 const SizedBox(width: 6),
                 Text(
                   _formatTimestamp(notification.timestamp),
-                  style: const TextStyle(
-                    color: AppColors.textTertiary,
+                  style: TextStyle(
+                    color: context.colors.textTertiary,
                     fontSize: 12,
                   ),
                 ),
@@ -341,11 +341,11 @@ class _FilterChip extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          gradient: isSelected ? AppColors.primaryGradient : null,
-          color: isSelected ? null : AppColors.glassSurface,
+          gradient: isSelected ? context.colors.primaryGradient : null,
+          color: isSelected ? null : context.colors.glassSurface,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isSelected ? Colors.transparent : AppColors.glassBorder,
+            color: isSelected ? Colors.transparent : context.colors.glassBorder,
           ),
         ),
         child: Row(
@@ -355,14 +355,14 @@ class _FilterChip extends StatelessWidget {
               Icon(
                 icon,
                 size: 16,
-                color: isSelected ? Colors.white : AppColors.textSecondary,
+                color: isSelected ? Colors.white : context.colors.textSecondary,
               ),
               const SizedBox(width: 6),
             ],
             Text(
               label,
               style: TextStyle(
-                color: isSelected ? Colors.white : AppColors.textSecondary,
+                color: isSelected ? Colors.white : context.colors.textSecondary,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                 fontSize: 14,
               ),
@@ -396,7 +396,7 @@ class _NotificationTile extends StatelessWidget {
       background: Container(
         margin: const EdgeInsets.symmetric(horizontal: 4),
         decoration: BoxDecoration(
-          gradient: AppColors.dangerGradient,
+          gradient: context.colors.dangerGradient,
           borderRadius: BorderRadius.circular(16),
         ),
         alignment: Alignment.centerRight,
@@ -447,7 +447,7 @@ class _NotificationTile extends StatelessWidget {
                           child: Text(
                             notification.title,
                             style: theme.textTheme.titleSmall?.copyWith(
-                              color: AppColors.textPrimary,
+                              color: context.colors.textPrimary,
                               fontWeight: notification.isRead ? FontWeight.w500 : FontWeight.w700,
                             ),
                             maxLines: 1,
@@ -459,8 +459,8 @@ class _NotificationTile extends StatelessWidget {
                             width: 8,
                             height: 8,
                             margin: const EdgeInsets.only(left: 8),
-                            decoration: const BoxDecoration(
-                              color: AppColors.primary,
+                            decoration: BoxDecoration(
+                              color: context.colors.primary,
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -470,7 +470,7 @@ class _NotificationTile extends StatelessWidget {
                     Text(
                       notification.message,
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
+                        color: context.colors.textSecondary,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -479,7 +479,7 @@ class _NotificationTile extends StatelessWidget {
                     Text(
                       _formatTimestamp(notification.timestamp),
                       style: theme.textTheme.labelSmall?.copyWith(
-                        color: AppColors.textTertiary,
+                        color: context.colors.textTertiary,
                         fontSize: 11,
                       ),
                     ),
@@ -519,11 +519,11 @@ class _NotificationTile extends StatelessWidget {
   Gradient _getTypeGradient(NotificationType type) {
     switch (type) {
       case NotificationType.transaction:
-        return AppColors.primaryGradient;
+        return context.colors.primaryGradient;
       case NotificationType.security:
-        return AppColors.dangerGradient;
+        return context.colors.dangerGradient;
       case NotificationType.promotion:
-        return AppColors.successGradient;
+        return context.colors.successGradient;
       case NotificationType.system:
         return const LinearGradient(
           colors: [Color(0xFF64748B), Color(0xFF475569)],
