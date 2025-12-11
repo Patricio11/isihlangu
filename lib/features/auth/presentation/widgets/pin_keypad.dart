@@ -86,7 +86,7 @@ class _DigitKey extends StatelessWidget {
             child: Text(
               digit,
               style: theme.textTheme.headlineMedium?.copyWith(
-                color: AppColors.textPrimary,
+                color: context.colors.textPrimary,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -119,10 +119,10 @@ class _DeleteKey extends StatelessWidget {
             onPressed();
           },
           borderRadius: BorderRadius.circular(40),
-          child: const Center(
+          child: Center(
             child: Icon(
               Icons.backspace_outlined,
-              color: AppColors.textSecondary,
+              color: context.colors.textSecondary,
               size: 28,
             ),
           ),

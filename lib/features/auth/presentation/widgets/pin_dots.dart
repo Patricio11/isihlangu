@@ -47,15 +47,15 @@ class _PinDot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = hasError
-        ? AppColors.danger
+        ? context.colors.danger
         : isFilled
-            ? AppColors.primary
-            : AppColors.glassBorder;
+            ? context.colors.primary
+            : context.colors.glassBorder;
 
     final boxShadow = isFilled && !hasError
         ? [
             BoxShadow(
-              color: AppColors.primary.withOpacity(0.5),
+              color: context.colors.primary.withValues(alpha: 0.5),
               blurRadius: 12,
               spreadRadius: 2,
             ),
