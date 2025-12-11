@@ -21,30 +21,36 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   int _currentPage = 0;
   int _skipTapCount = 0;
 
-  final List<OnboardingPageData> _pages = const [
-    OnboardingPageData(
-      icon: Icons.shield_rounded,
-      title: 'Your Money, Protected',
-      description: 'Bank with confidence knowing your funds are secure with military-grade encryption and advanced safety features.',
-      gradient: context.colors.primaryGradient,
-    ),
-    OnboardingPageData(
-      icon: Icons.family_restroom_rounded,
-      title: 'Family Finance Made Simple',
-      description: 'Manage your family\'s money together. Set allowances, assign chores, and teach financial responsibility.',
-      gradient: LinearGradient(
-        colors: [Color(0xFF3B82F6), Color(0xFF2563EB)],
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
+  late final List<OnboardingPageData> _pages;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _pages = [
+      OnboardingPageData(
+        icon: Icons.shield_rounded,
+        title: 'Your Money, Protected',
+        description: 'Bank with confidence knowing your funds are secure with military-grade encryption and advanced safety features.',
+        gradient: context.colors.primaryGradient,
       ),
-    ),
-    OnboardingPageData(
-      icon: Icons.security_rounded,
-      title: 'Duress Protection',
-      description: 'Stay safe in emergencies with our unique duress mode. Your safety is our top priority.',
-      gradient: context.colors.dangerGradient,
-    ),
-  ];
+      OnboardingPageData(
+        icon: Icons.family_restroom_rounded,
+        title: 'Family Finance Made Simple',
+        description: 'Manage your family\'s money together. Set allowances, assign chores, and teach financial responsibility.',
+        gradient: const LinearGradient(
+          colors: [Color(0xFF3B82F6), Color(0xFF2563EB)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      OnboardingPageData(
+        icon: Icons.security_rounded,
+        title: 'Duress Protection',
+        description: 'Stay safe in emergencies with our unique duress mode. Your safety is our top priority.',
+        gradient: context.colors.dangerGradient,
+      ),
+    ];
+  }
 
   @override
   void dispose() {

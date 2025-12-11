@@ -122,10 +122,10 @@ class _PermissionPrimeScreenState extends State<PermissionPrimeScreen> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
-        title: const Row(
+        title: Row(
           children: [
             Icon(Icons.warning_rounded, color: context.colors.warning),
-            SizedBox(width: 12),
+            const SizedBox(width: 12),
             Expanded(
               child: Text(
                 'Skip Permissions?',
@@ -134,7 +134,7 @@ class _PermissionPrimeScreenState extends State<PermissionPrimeScreen> {
             ),
           ],
         ),
-        content: const Text(
+        content: Text(
           'Without these permissions, Shield cannot collect evidence during duress situations. You can enable them later in Settings.',
           style: TextStyle(color: context.colors.textSecondary),
         ),
@@ -151,7 +151,7 @@ class _PermissionPrimeScreenState extends State<PermissionPrimeScreen> {
               context.pop();
               _continue();
             },
-            child: const Text(
+            child: Text(
               'Skip Anyway',
               style: TextStyle(
                 color: context.colors.warning,
@@ -188,7 +188,7 @@ class _PermissionPrimeScreenState extends State<PermissionPrimeScreen> {
                     if (!allPermissionsGranted)
                       TextButton(
                         onPressed: isRequestingPermissions ? null : _skip,
-                        child: const Text(
+                        child: Text(
                           'Skip for Now',
                           style: TextStyle(color: context.colors.textSecondary),
                         ),
@@ -209,7 +209,7 @@ class _PermissionPrimeScreenState extends State<PermissionPrimeScreen> {
                         child: Container(
                           width: 100,
                           height: 100,
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             gradient: context.colors.primaryGradient,
                             shape: BoxShape.circle,
                           ),
@@ -310,7 +310,7 @@ class _PermissionPrimeScreenState extends State<PermissionPrimeScreen> {
                         padding: const EdgeInsets.all(16),
                         child: Row(
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.info_outline_rounded,
                               color: context.colors.primary,
                               size: 24,
@@ -489,8 +489,8 @@ class _PermissionCard extends StatelessWidget {
                 onPressed: isRequesting ? null : onRequest,
                 height: 44,
                 gradient: isDenied
-                    ? const LinearGradient(
-                        colors: [context.colors.warning, Color(0xFFFFB74D)])
+                    ? LinearGradient(
+                        colors: [context.colors.warning, const Color(0xFFFFB74D)])
                     : context.colors.primaryGradient,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -84,7 +84,7 @@ class _CreateFamilyScreenState extends State<CreateFamilyScreen> {
                 Container(
                   width: 100,
                   height: 100,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     gradient: context.colors.primaryGradient,
                     shape: BoxShape.circle,
                   ),
@@ -181,7 +181,7 @@ class _CreateFamilyScreenState extends State<CreateFamilyScreen> {
                 Container(
                   width: 100,
                   height: 100,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     gradient: context.colors.successGradient,
                     shape: BoxShape.circle,
                   ),
@@ -247,11 +247,11 @@ class _CreateFamilyScreenState extends State<CreateFamilyScreen> {
                         onPressed: _copyFamilyCode,
                         width: double.infinity,
                         height: 48,
-                        child: const Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.copy_rounded, size: 20, color: context.colors.primary),
-                            SizedBox(width: 8),
+                            const SizedBox(width: 8),
                             Text(
                               'Copy Code',
                               style: TextStyle(

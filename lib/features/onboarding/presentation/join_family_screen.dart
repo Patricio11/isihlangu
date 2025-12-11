@@ -85,7 +85,7 @@ class _JoinFamilyScreenState extends State<JoinFamilyScreen> {
                 Container(
                   width: 100,
                   height: 100,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     gradient: context.colors.successGradient,
                     shape: BoxShape.circle,
                   ),
@@ -132,7 +132,7 @@ class _JoinFamilyScreenState extends State<JoinFamilyScreen> {
                   padding: const EdgeInsets.all(20),
                   child: TextField(
                     controller: _familyCodeController,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: context.colors.textPrimary,
                       fontSize: 24,
                       fontWeight: FontWeight.w600,
@@ -165,7 +165,7 @@ class _JoinFamilyScreenState extends State<JoinFamilyScreen> {
                   padding: const EdgeInsets.all(16),
                   child: Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.info_outline_rounded,
                         size: 20,
                         color: context.colors.info,
@@ -219,7 +219,7 @@ class _JoinFamilyScreenState extends State<JoinFamilyScreen> {
                 Container(
                   width: 100,
                   height: 100,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     gradient: context.colors.successGradient,
                     shape: BoxShape.circle,
                   ),
@@ -265,7 +265,7 @@ class _JoinFamilyScreenState extends State<JoinFamilyScreen> {
                   padding: const EdgeInsets.all(24),
                   child: Column(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.family_restroom_rounded,
                         size: 64,
                         color: context.colors.primary,
