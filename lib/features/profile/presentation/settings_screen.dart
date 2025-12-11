@@ -15,7 +15,7 @@ class SettingsScreen extends ConsumerWidget {
     final settings = ref.watch(settingsProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.colors.background,
       appBar: AppBar(
         title: const Text('Settings'),
       ),
@@ -67,7 +67,7 @@ class SettingsScreen extends ConsumerWidget {
             title: 'Security Alerts',
             subtitle: 'Important security notifications',
             value: settings.securityAlerts,
-            iconColor: AppColors.danger,
+            iconColor: context.colors.danger,
             onChanged: (value) {
               ref.read(settingsProvider.notifier).toggleSecurityAlerts(value);
             },
@@ -83,13 +83,13 @@ class SettingsScreen extends ConsumerWidget {
             trailing: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: AppColors.primary.withAlpha(26),
+                color: context.colors.primary.withAlpha(26),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Text(
+              child: Text(
                 'Dark',
                 style: TextStyle(
-                  color: AppColors.primary,
+                  color: context.colors.primary,
                   fontWeight: FontWeight.w600,
                   fontSize: 12,
                 ),
@@ -143,7 +143,7 @@ class SettingsScreen extends ConsumerWidget {
             icon: Icons.bug_report_rounded,
             title: 'Reset Settings',
             subtitle: 'Reset all settings to default',
-            iconColor: AppColors.warning,
+            iconColor: context.colors.warning,
             onTap: () => _showResetDialog(context, ref),
           ),
 
@@ -177,11 +177,11 @@ class SettingsScreen extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.backgroundSecondary,
+        backgroundColor: context.colors.backgroundSecondary,
         title: Text(
           'Select Language',
           style: theme.textTheme.titleLarge?.copyWith(
-            color: AppColors.textPrimary,
+            color: context.colors.textPrimary,
           ),
         ),
         content: Column(
@@ -192,12 +192,12 @@ class SettingsScreen extends ConsumerWidget {
               title: Text(
                 lang['name']!,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  color: isSelected ? AppColors.primary : AppColors.textPrimary,
+                  color: isSelected ? context.colors.primary : context.colors.textPrimary,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                 ),
               ),
               trailing: isSelected
-                  ? const Icon(Icons.check, color: AppColors.primary)
+                  ? Icon(Icons.check, color: context.colors.primary)
                   : null,
               onTap: () {
                 ref.read(settingsProvider.notifier).setLanguage(lang['code']!);
@@ -221,11 +221,11 @@ class SettingsScreen extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.backgroundSecondary,
+        backgroundColor: context.colors.backgroundSecondary,
         title: Text(
           'Currency Format',
           style: theme.textTheme.titleLarge?.copyWith(
-            color: AppColors.textPrimary,
+            color: context.colors.textPrimary,
           ),
         ),
         content: Column(
@@ -236,12 +236,12 @@ class SettingsScreen extends ConsumerWidget {
               title: Text(
                 format['name']!,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  color: isSelected ? AppColors.primary : AppColors.textPrimary,
+                  color: isSelected ? context.colors.primary : context.colors.textPrimary,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                 ),
               ),
               trailing: isSelected
-                  ? const Icon(Icons.check, color: AppColors.primary)
+                  ? Icon(Icons.check, color: context.colors.primary)
                   : null,
               onTap: () {
                 ref.read(settingsProvider.notifier).setCurrencyFormat(format['code']!);
@@ -261,17 +261,17 @@ class SettingsScreen extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.backgroundSecondary,
+        backgroundColor: context.colors.backgroundSecondary,
         title: Text(
           'Reset Settings',
           style: theme.textTheme.titleLarge?.copyWith(
-            color: AppColors.textPrimary,
+            color: context.colors.textPrimary,
           ),
         ),
         content: Text(
           'This will reset all settings to their default values. Are you sure?',
           style: theme.textTheme.bodyMedium?.copyWith(
-            color: AppColors.textSecondary,
+            color: context.colors.textSecondary,
           ),
         ),
         actions: [
@@ -286,7 +286,7 @@ class SettingsScreen extends ConsumerWidget {
               CustomToast.showSuccess(context, 'Settings reset successfully');
             },
             style: TextButton.styleFrom(
-              foregroundColor: AppColors.warning,
+              foregroundColor: context.colors.warning,
             ),
             child: const Text('Reset'),
           ),
