@@ -38,7 +38,7 @@ class FamilyScreen extends StatelessWidget {
 
     return Scaffold(
       extendBodyBehindAppBar: true,
-      backgroundColor: AppColors.background,
+      backgroundColor: context.colors.background,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -72,8 +72,8 @@ class FamilyScreen extends StatelessWidget {
                         Container(
                           width: 80,
                           height: 80,
-                          decoration: const BoxDecoration(
-                            gradient: AppColors.primaryGradient,
+                          decoration: BoxDecoration(
+                            gradient: context.colors.primaryGradient,
                             shape: BoxShape.circle,
                           ),
                           child: const Icon(
@@ -89,7 +89,7 @@ class FamilyScreen extends StatelessWidget {
                         Text(
                           FakeFamilyData.familyName,
                           style: theme.textTheme.headlineSmall?.copyWith(
-                            color: AppColors.textPrimary,
+                            color: context.colors.textPrimary,
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center,
@@ -101,7 +101,7 @@ class FamilyScreen extends StatelessWidget {
                         Text(
                           '${members.length} members',
                           style: theme.textTheme.bodyMedium?.copyWith(
-                            color: AppColors.textSecondary,
+                            color: context.colors.textSecondary,
                           ),
                         ),
 
@@ -111,22 +111,22 @@ class FamilyScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.account_balance_wallet_rounded,
                               size: 16,
-                              color: AppColors.textTertiary,
+                              color: context.colors.textTertiary,
                             ),
                             const SizedBox(width: 8),
                             Text(
                               'Total Balance: ',
                               style: theme.textTheme.bodySmall?.copyWith(
-                                color: AppColors.textTertiary,
+                                color: context.colors.textTertiary,
                               ),
                             ),
                             Text(
                               'R ${FakeFamilyData.totalFamilyBalance.toStringAsFixed(2)}',
                               style: theme.textTheme.bodySmall?.copyWith(
-                                color: AppColors.textPrimary,
+                                color: context.colors.textPrimary,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -155,7 +155,7 @@ class FamilyScreen extends StatelessWidget {
                       Text(
                         'Family Code',
                         style: theme.textTheme.titleMedium?.copyWith(
-                          color: AppColors.textPrimary,
+                          color: context.colors.textPrimary,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -171,7 +171,7 @@ class FamilyScreen extends StatelessWidget {
                                   Text(
                                     FakeFamilyData.familyCode,
                                     style: theme.textTheme.headlineSmall?.copyWith(
-                                      color: AppColors.primary,
+                                      color: context.colors.primary,
                                       fontWeight: FontWeight.bold,
                                       letterSpacing: 2,
                                     ),
@@ -180,7 +180,7 @@ class FamilyScreen extends StatelessWidget {
                                   Text(
                                     'Share with family members',
                                     style: theme.textTheme.bodySmall?.copyWith(
-                                      color: AppColors.textTertiary,
+                                      color: context.colors.textTertiary,
                                     ),
                                   ),
                                 ],
@@ -192,12 +192,12 @@ class FamilyScreen extends StatelessWidget {
                               child: Container(
                                 padding: const EdgeInsets.all(12),
                                 decoration: BoxDecoration(
-                                  color: AppColors.primary.withValues(alpha: 0.15),
+                                  color: context.colors.primary.withValues(alpha: 0.15),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.copy_rounded,
-                                  color: AppColors.primary,
+                                  color: context.colors.primary,
                                   size: 20,
                                 ),
                               ),
@@ -224,7 +224,7 @@ class FamilyScreen extends StatelessWidget {
                   child: Text(
                     'Parent',
                     style: theme.textTheme.titleMedium?.copyWith(
-                      color: AppColors.textPrimary,
+                      color: context.colors.textPrimary,
                       fontWeight: FontWeight.bold,
                     ),
                   )
@@ -263,7 +263,7 @@ class FamilyScreen extends StatelessWidget {
                     child: Text(
                       'Children',
                       style: theme.textTheme.titleMedium?.copyWith(
-                        color: AppColors.textPrimary,
+                        color: context.colors.textPrimary,
                         fontWeight: FontWeight.bold,
                       ),
                     )
@@ -347,8 +347,8 @@ class _FamilyMemberCard extends StatelessWidget {
               height: 56,
               decoration: BoxDecoration(
                 gradient: isParent
-                    ? AppColors.primaryGradient
-                    : AppColors.successGradient,
+                    ? context.colors.primaryGradient
+                    : context.colors.successGradient,
                 shape: BoxShape.circle,
               ),
               child: Center(
@@ -376,7 +376,7 @@ class _FamilyMemberCard extends StatelessWidget {
                         child: Text(
                           member.name,
                           style: theme.textTheme.titleMedium?.copyWith(
-                            color: AppColors.textPrimary,
+                            color: context.colors.textPrimary,
                             fontWeight: FontWeight.w600,
                           ),
                           overflow: TextOverflow.ellipsis,
@@ -390,13 +390,13 @@ class _FamilyMemberCard extends StatelessWidget {
                             vertical: 2,
                           ),
                           decoration: BoxDecoration(
-                            color: AppColors.success.withValues(alpha: 0.2),
+                            color: context.colors.success.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
                             '${member.age} yrs',
                             style: theme.textTheme.labelSmall?.copyWith(
-                              color: AppColors.success,
+                              color: context.colors.success,
                               fontSize: 10,
                               fontWeight: FontWeight.w600,
                             ),
@@ -408,7 +408,7 @@ class _FamilyMemberCard extends StatelessWidget {
                   Text(
                     'R ${member.balance.toStringAsFixed(2)}',
                     style: theme.textTheme.titleSmall?.copyWith(
-                      color: AppColors.textSecondary,
+                      color: context.colors.textSecondary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -417,16 +417,16 @@ class _FamilyMemberCard extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 6),
                       child: Row(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.ac_unit_rounded,
                             size: 14,
-                            color: AppColors.info,
+                            color: context.colors.info,
                           ),
                           const SizedBox(width: 4),
                           Text(
                             'Card Frozen',
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: AppColors.info,
+                              color: context.colors.info,
                               fontSize: 11,
                             ),
                           ),
@@ -439,10 +439,10 @@ class _FamilyMemberCard extends StatelessWidget {
 
             // Arrow (if tappable)
             if (canTap)
-              const Icon(
+              Icon(
                 Icons.arrow_forward_ios_rounded,
                 size: 18,
-                color: AppColors.textTertiary,
+                color: context.colors.textTertiary,
               ),
           ],
         ),

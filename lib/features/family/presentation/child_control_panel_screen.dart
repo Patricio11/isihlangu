@@ -97,19 +97,19 @@ class _ChildControlPanelScreenState extends State<ChildControlPanelScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.glassSurface,
+        backgroundColor: context.colors.glassSurface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
         title: Text(
           permissions.cardFrozen ? 'Unfreeze Card?' : 'Freeze Card?',
-          style: const TextStyle(color: AppColors.textPrimary),
+          style: TextStyle(color: context.colors.textPrimary),
         ),
         content: Text(
           permissions.cardFrozen
               ? 'This will allow ${child.name} to make payments again.'
               : 'This will prevent ${child.name} from making any payments.',
-          style: const TextStyle(color: AppColors.textSecondary),
+          style: TextStyle(color: context.colors.textSecondary),
         ),
         actions: [
           TextButton(
@@ -127,7 +127,7 @@ class _ChildControlPanelScreenState extends State<ChildControlPanelScreen> {
             child: Text(
               permissions.cardFrozen ? 'Unfreeze' : 'Freeze',
               style: TextStyle(
-                color: permissions.cardFrozen ? AppColors.success : AppColors.danger,
+                color: permissions.cardFrozen ? context.colors.success : context.colors.danger,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -144,7 +144,7 @@ class _ChildControlPanelScreenState extends State<ChildControlPanelScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.glassSurface,
+        backgroundColor: context.colors.glassSurface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
@@ -154,20 +154,20 @@ class _ChildControlPanelScreenState extends State<ChildControlPanelScreen> {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: AppColors.danger.withValues(alpha: 0.2),
+                color: context.colors.danger.withValues(alpha: 0.2),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.warning_rounded,
-                color: AppColors.danger,
+                color: context.colors.danger,
                 size: 20,
               ),
             ),
             const SizedBox(width: 12),
-            const Expanded(
+            Expanded(
               child: Text(
                 'Reset to Safe Mode?',
-                style: TextStyle(color: AppColors.textPrimary),
+                style: TextStyle(color: context.colors.textPrimary),
               ),
             ),
           ],
@@ -178,27 +178,27 @@ class _ChildControlPanelScreenState extends State<ChildControlPanelScreen> {
           children: [
             Text(
               'This will restore ${child.name}\'s account to normal mode.',
-              style: const TextStyle(color: AppColors.textSecondary),
+              style: TextStyle(color: context.colors.textSecondary),
             ),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: AppColors.warning.withValues(alpha: 0.1),
+                color: context.colors.warning.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: AppColors.warning.withValues(alpha: 0.3),
+                  color: context.colors.warning.withValues(alpha: 0.3),
                 ),
               ),
-              child: const Row(
+              child: Row(
                 children: [
-                  Icon(Icons.info_outline, color: AppColors.warning, size: 20),
-                  SizedBox(width: 8),
+                  Icon(Icons.info_outline, color: context.colors.warning, size: 20),
+                  const SizedBox(width: 8),
                   Expanded(
                     child: Text(
                       'Only do this if the child is safe.',
                       style: TextStyle(
-                        color: AppColors.warning,
+                        color: context.colors.warning,
                         fontSize: 13,
                         fontWeight: FontWeight.w500,
                       ),
@@ -222,10 +222,10 @@ class _ChildControlPanelScreenState extends State<ChildControlPanelScreen> {
               context.pop();
               await _performRemoteUnlock();
             },
-            child: const Text(
+            child: Text(
               'Reset to Safe Mode',
               style: TextStyle(
-                color: AppColors.success,
+                color: context.colors.success,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -243,8 +243,8 @@ class _ChildControlPanelScreenState extends State<ChildControlPanelScreen> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => const Center(
-        child: CircularProgressIndicator(color: AppColors.primary),
+      builder: (context) => Center(
+        child: CircularProgressIndicator(color: context.colors.primary),
       ),
     );
 
@@ -275,7 +275,7 @@ class _ChildControlPanelScreenState extends State<ChildControlPanelScreen> {
     final childTransactions = FakeTransactions.getTransactions(isDuressMode: false).take(5).toList();
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.colors.background,
       appBar: AppBar(
         title: Text('${child.name}\'s Controls'),
       ),
@@ -300,8 +300,8 @@ class _ChildControlPanelScreenState extends State<ChildControlPanelScreen> {
                         Container(
                           width: 64,
                           height: 64,
-                          decoration: const BoxDecoration(
-                            gradient: AppColors.successGradient,
+                          decoration: BoxDecoration(
+                            gradient: context.colors.successGradient,
                             shape: BoxShape.circle,
                           ),
                           child: Center(
@@ -326,7 +326,7 @@ class _ChildControlPanelScreenState extends State<ChildControlPanelScreen> {
                               Text(
                                 child.name,
                                 style: theme.textTheme.titleLarge?.copyWith(
-                                  color: AppColors.textPrimary,
+                                  color: context.colors.textPrimary,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -334,14 +334,14 @@ class _ChildControlPanelScreenState extends State<ChildControlPanelScreen> {
                               Text(
                                 '${child.age} years old',
                                 style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: AppColors.textSecondary,
+                                  color: context.colors.textSecondary,
                                 ),
                               ),
                               const SizedBox(height: 8),
                               Text(
                                 'Balance: R ${child.balance.toStringAsFixed(2)}',
                                 style: theme.textTheme.titleMedium?.copyWith(
-                                  color: AppColors.primary,
+                                  color: context.colors.primary,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -377,7 +377,7 @@ class _ChildControlPanelScreenState extends State<ChildControlPanelScreen> {
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.danger.withValues(alpha: 0.3),
+                            color: context.colors.danger.withValues(alpha: 0.3),
                             blurRadius: 20,
                             offset: const Offset(0, 10),
                           ),
@@ -472,20 +472,20 @@ class _ChildControlPanelScreenState extends State<ChildControlPanelScreen> {
                               gradient: const LinearGradient(
                                 colors: [Colors.white, Color(0xFFF0F0F0)],
                               ),
-                              child: const Row(
+                              child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
                                     Icons.lock_open_rounded,
-                                    color: AppColors.danger,
+                                    color: context.colors.danger,
                                   ),
-                                  SizedBox(width: 8),
+                                  const SizedBox(width: 8),
                                   Text(
                                     'Reset to Safe Mode',
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
-                                      color: AppColors.danger,
+                                      color: context.colors.danger,
                                     ),
                                   ),
                                 ],
@@ -515,9 +515,9 @@ class _ChildControlPanelScreenState extends State<ChildControlPanelScreen> {
                     width: double.infinity,
                     height: 56,
                     gradient: permissions.cardFrozen
-                        ? AppColors.successGradient
-                        : const LinearGradient(
-                            colors: [AppColors.danger, Color(0xFFE74C3C)],
+                        ? context.colors.successGradient
+                        : LinearGradient(
+                            colors: [context.colors.danger, const Color(0xFFE74C3C)],
                           ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -557,7 +557,7 @@ class _ChildControlPanelScreenState extends State<ChildControlPanelScreen> {
                   child: Text(
                     'Permissions',
                     style: theme.textTheme.titleLarge?.copyWith(
-                      color: AppColors.textPrimary,
+                      color: context.colors.textPrimary,
                       fontWeight: FontWeight.bold,
                     ),
                   )
@@ -637,7 +637,7 @@ class _ChildControlPanelScreenState extends State<ChildControlPanelScreen> {
                   child: Text(
                     'Spending Limits',
                     style: theme.textTheme.titleLarge?.copyWith(
-                      color: AppColors.textPrimary,
+                      color: context.colors.textPrimary,
                       fontWeight: FontWeight.bold,
                     ),
                   )
@@ -701,7 +701,7 @@ class _ChildControlPanelScreenState extends State<ChildControlPanelScreen> {
                   child: Text(
                     'Notification Settings',
                     style: theme.textTheme.titleLarge?.copyWith(
-                      color: AppColors.textPrimary,
+                      color: context.colors.textPrimary,
                       fontWeight: FontWeight.bold,
                     ),
                   )
@@ -780,7 +780,7 @@ class _ChildControlPanelScreenState extends State<ChildControlPanelScreen> {
                       Text(
                         'Recent Transactions',
                         style: theme.textTheme.titleLarge?.copyWith(
-                          color: AppColors.textPrimary,
+                          color: context.colors.textPrimary,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -822,8 +822,8 @@ class _ChildControlPanelScreenState extends State<ChildControlPanelScreen> {
                               height: 48,
                               decoration: BoxDecoration(
                                 color: transaction.isPositive
-                                    ? AppColors.success.withValues(alpha: 0.15)
-                                    : AppColors.danger.withValues(alpha: 0.15),
+                                    ? context.colors.success.withValues(alpha: 0.15)
+                                    : context.colors.danger.withValues(alpha: 0.15),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Icon(
@@ -831,8 +831,8 @@ class _ChildControlPanelScreenState extends State<ChildControlPanelScreen> {
                                     ? Icons.arrow_downward_rounded
                                     : Icons.arrow_upward_rounded,
                                 color: transaction.isPositive
-                                    ? AppColors.success
-                                    : AppColors.danger,
+                                    ? context.colors.success
+                                    : context.colors.danger,
                               ),
                             ),
                             const SizedBox(width: 12),
@@ -843,7 +843,7 @@ class _ChildControlPanelScreenState extends State<ChildControlPanelScreen> {
                                   Text(
                                     transaction.title,
                                     style: theme.textTheme.titleSmall?.copyWith(
-                                      color: AppColors.textPrimary,
+                                      color: context.colors.textPrimary,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
@@ -851,7 +851,7 @@ class _ChildControlPanelScreenState extends State<ChildControlPanelScreen> {
                                   Text(
                                     transaction.category ?? transaction.subtitle,
                                     style: theme.textTheme.bodySmall?.copyWith(
-                                      color: AppColors.textTertiary,
+                                      color: context.colors.textTertiary,
                                     ),
                                   ),
                                 ],
@@ -861,8 +861,8 @@ class _ChildControlPanelScreenState extends State<ChildControlPanelScreen> {
                               '${transaction.isPositive ? '+' : '-'}R ${transaction.amount.toStringAsFixed(2)}',
                               style: theme.textTheme.titleSmall?.copyWith(
                                 color: transaction.isPositive
-                                    ? AppColors.success
-                                    : AppColors.textPrimary,
+                                    ? context.colors.success
+                                    : context.colors.textPrimary,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -922,13 +922,13 @@ class _PermissionToggle extends StatelessWidget {
           height: 40,
           decoration: BoxDecoration(
             color: value && !isDisabled
-                ? AppColors.primary.withValues(alpha: 0.15)
-                : AppColors.textTertiary.withValues(alpha: 0.1),
+                ? context.colors.primary.withValues(alpha: 0.15)
+                : context.colors.textTertiary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Icon(
             icon,
-            color: value && !isDisabled ? AppColors.primary : AppColors.textTertiary,
+            color: value && !isDisabled ? context.colors.primary : context.colors.textTertiary,
             size: 20,
           ),
         ),
@@ -940,7 +940,7 @@ class _PermissionToggle extends StatelessWidget {
               Text(
                 title,
                 style: theme.textTheme.titleSmall?.copyWith(
-                  color: isDisabled ? AppColors.textTertiary : AppColors.textPrimary,
+                  color: isDisabled ? context.colors.textTertiary : context.colors.textPrimary,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -948,7 +948,7 @@ class _PermissionToggle extends StatelessWidget {
               Text(
                 subtitle,
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: AppColors.textTertiary,
+                  color: context.colors.textTertiary,
                   fontSize: 12,
                 ),
               ),
@@ -963,7 +963,7 @@ class _PermissionToggle extends StatelessWidget {
                   HapticService.lightImpact();
                   onChanged?.call(newValue);
                 },
-          activeTrackColor: AppColors.primary,
+          activeTrackColor: context.colors.primary,
         ),
       ],
     );
@@ -1001,14 +1001,14 @@ class _SpendingLimitSlider extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: AppColors.primary,
+              color: context.colors.primary,
               size: 20,
             ),
             const SizedBox(width: 8),
             Text(
               title,
               style: theme.textTheme.titleSmall?.copyWith(
-                color: AppColors.textPrimary,
+                color: context.colors.textPrimary,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -1016,7 +1016,7 @@ class _SpendingLimitSlider extends StatelessWidget {
             Text(
               'R ${value.toStringAsFixed(0)}',
               style: theme.textTheme.titleMedium?.copyWith(
-                color: AppColors.primary,
+                color: context.colors.primary,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -1025,10 +1025,10 @@ class _SpendingLimitSlider extends StatelessWidget {
         const SizedBox(height: 12),
         SliderTheme(
           data: SliderThemeData(
-            activeTrackColor: AppColors.primary,
-            inactiveTrackColor: AppColors.textTertiary.withValues(alpha: 0.2),
-            thumbColor: AppColors.primary,
-            overlayColor: AppColors.primary.withValues(alpha: 0.2),
+            activeTrackColor: context.colors.primary,
+            inactiveTrackColor: context.colors.textTertiary.withValues(alpha: 0.2),
+            thumbColor: context.colors.primary,
+            overlayColor: context.colors.primary.withValues(alpha: 0.2),
             trackHeight: 4,
           ),
           child: Slider(
