@@ -39,14 +39,14 @@ class _SafetyScreenState extends ConsumerState<SafetyScreen> {
 
     return Scaffold(
       extendBodyBehindAppBar: true,
-      backgroundColor: AppColors.background,
+      backgroundColor: context.colors.background,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
           'Safety Center',
           style: theme.textTheme.titleLarge?.copyWith(
-            color: AppColors.textPrimary,
+            color: context.colors.textPrimary,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -82,7 +82,7 @@ class _SafetyScreenState extends ConsumerState<SafetyScreen> {
             Icon(
               Icons.lock_outline,
               size: 80,
-              color: AppColors.textTertiary,
+              color: context.colors.textTertiary,
             )
                 .animate()
                 .fadeIn(duration: 600.ms)
@@ -93,7 +93,7 @@ class _SafetyScreenState extends ConsumerState<SafetyScreen> {
             Text(
               'Access Restricted',
               style: theme.textTheme.headlineMedium?.copyWith(
-                color: AppColors.textPrimary,
+                color: context.colors.textPrimary,
                 fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,
@@ -107,7 +107,7 @@ class _SafetyScreenState extends ConsumerState<SafetyScreen> {
             Text(
               'You don\'t have permission to access safety features',
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: AppColors.textSecondary,
+                color: context.colors.textSecondary,
               ),
               textAlign: TextAlign.center,
             )
@@ -151,11 +151,11 @@ class _SafetyScreenState extends ConsumerState<SafetyScreen> {
                   height: 12,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: _locationBroadcast ? AppColors.success : AppColors.textTertiary,
+                    color: _locationBroadcast ? context.colors.success : context.colors.textTertiary,
                     boxShadow: _locationBroadcast
                         ? [
                             BoxShadow(
-                              color: AppColors.success.withOpacity(0.5),
+                              color: context.colors.success.withValues(alpha: 0.5),
                               blurRadius: 8,
                               spreadRadius: 2,
                             ),
@@ -171,13 +171,13 @@ class _SafetyScreenState extends ConsumerState<SafetyScreen> {
                       Text(
                         'Protection Status',
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: AppColors.textTertiary,
+                          color: context.colors.textTertiary,
                         ),
                       ),
                       Text(
                         _locationBroadcast ? 'Active' : 'Inactive',
                         style: theme.textTheme.titleMedium?.copyWith(
-                          color: _locationBroadcast ? AppColors.success : AppColors.textSecondary,
+                          color: _locationBroadcast ? context.colors.success : context.colors.textSecondary,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -197,7 +197,7 @@ class _SafetyScreenState extends ConsumerState<SafetyScreen> {
           Text(
             'Security Features',
             style: theme.textTheme.titleLarge?.copyWith(
-              color: AppColors.textPrimary,
+              color: context.colors.textPrimary,
               fontWeight: FontWeight.bold,
             ),
           )
@@ -237,7 +237,7 @@ class _SafetyScreenState extends ConsumerState<SafetyScreen> {
           Text(
             'Configuration',
             style: theme.textTheme.titleLarge?.copyWith(
-              color: AppColors.textPrimary,
+              color: context.colors.textPrimary,
               fontWeight: FontWeight.bold,
             ),
           )
@@ -322,17 +322,17 @@ class _SecurityToggle extends StatelessWidget {
             height: 48,
             decoration: BoxDecoration(
               color: value
-                  ? AppColors.primary.withOpacity(0.2)
-                  : AppColors.glassSurface,
+                  ? context.colors.primary.withValues(alpha: 0.2)
+                  : context.colors.glassSurface,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: value ? AppColors.primary : AppColors.glassBorder,
+                color: value ? context.colors.primary : context.colors.glassBorder,
                 width: 1,
               ),
             ),
             child: Icon(
               icon,
-              color: value ? AppColors.primary : AppColors.textTertiary,
+              color: value ? context.colors.primary : context.colors.textTertiary,
               size: 24,
             ),
           ),
@@ -344,7 +344,7 @@ class _SecurityToggle extends StatelessWidget {
                 Text(
                   title,
                   style: theme.textTheme.titleSmall?.copyWith(
-                    color: AppColors.textPrimary,
+                    color: context.colors.textPrimary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -352,7 +352,7 @@ class _SecurityToggle extends StatelessWidget {
                 Text(
                   subtitle,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: AppColors.textTertiary,
+                    color: context.colors.textTertiary,
                   ),
                 ),
               ],
@@ -361,8 +361,7 @@ class _SecurityToggle extends StatelessWidget {
           Switch(
             value: value,
             onChanged: onChanged,
-            activeThumbColor: AppColors.primary,
-            activeTrackColor: AppColors.primary.withOpacity(0.5),
+            activeTrackColor: context.colors.primary,
           ),
         ],
       ),
@@ -402,16 +401,16 @@ class _ConfigurationTile extends StatelessWidget {
                   width: 48,
                   height: 48,
                   decoration: BoxDecoration(
-                    color: AppColors.glassSurface,
+                    color: context.colors.glassSurface,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: AppColors.glassBorder,
+                      color: context.colors.glassBorder,
                       width: 1,
                     ),
                   ),
                   child: Icon(
                     icon,
-                    color: AppColors.textSecondary,
+                    color: context.colors.textSecondary,
                     size: 24,
                   ),
                 ),
@@ -423,7 +422,7 @@ class _ConfigurationTile extends StatelessWidget {
                       Text(
                         title,
                         style: theme.textTheme.titleSmall?.copyWith(
-                          color: AppColors.textPrimary,
+                          color: context.colors.textPrimary,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -431,15 +430,15 @@ class _ConfigurationTile extends StatelessWidget {
                       Text(
                         subtitle,
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: AppColors.textTertiary,
+                          color: context.colors.textTertiary,
                         ),
                       ),
                     ],
                   ),
                 ),
-                const Icon(
+                Icon(
                   Icons.arrow_forward_ios,
-                  color: AppColors.textTertiary,
+                  color: context.colors.textTertiary,
                   size: 16,
                 ),
               ],
