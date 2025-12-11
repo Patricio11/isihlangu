@@ -45,7 +45,7 @@ class OnboardingPage extends StatelessWidget {
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: _getGradientColor(data.gradient).withAlpha(77),
+                  color: _getGradientColor(context, data.gradient).withAlpha(77),
                   blurRadius: 40,
                   spreadRadius: 10,
                 ),
@@ -72,7 +72,7 @@ class OnboardingPage extends StatelessWidget {
           Text(
             data.title,
             style: theme.textTheme.headlineMedium?.copyWith(
-              color: AppColors.textPrimary,
+              color: context.colors.textPrimary,
               fontWeight: FontWeight.bold,
               height: 1.2,
             ),
@@ -93,7 +93,7 @@ class OnboardingPage extends StatelessWidget {
           Text(
             data.description,
             style: theme.textTheme.bodyLarge?.copyWith(
-              color: AppColors.textSecondary,
+              color: context.colors.textSecondary,
               height: 1.6,
             ),
             textAlign: TextAlign.center,
@@ -112,10 +112,10 @@ class OnboardingPage extends StatelessWidget {
   }
 
   /// Extract color from gradient for glow effect
-  Color _getGradientColor(Gradient gradient) {
+  Color _getGradientColor(BuildContext context, Gradient gradient) {
     if (gradient is LinearGradient && gradient.colors.isNotEmpty) {
       return gradient.colors.first;
     }
-    return AppColors.primary;
+    return context.colors.primary;
   }
 }

@@ -39,9 +39,9 @@ class _SplashScreenState extends State<SplashScreen> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              AppColors.background,
-              AppColors.backgroundSecondary,
-              AppColors.background,
+              context.colors.background,
+              context.colors.backgroundSecondary,
+              context.colors.background,
             ],
           ),
         ),
@@ -54,11 +54,11 @@ class _SplashScreenState extends State<SplashScreen> {
                 width: 120,
                 height: 120,
                 decoration: BoxDecoration(
-                  gradient: AppColors.primaryGradient,
+                  gradient: context.colors.primaryGradient,
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.primary.withAlpha(77),
+                      color: context.colors.primary.withAlpha(77),
                       blurRadius: 40,
                       spreadRadius: 10,
                     ),
@@ -85,7 +85,7 @@ class _SplashScreenState extends State<SplashScreen> {
               Text(
                 'SHIELD',
                 style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                      color: AppColors.textPrimary,
+                      color: context.colors.textPrimary,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 8,
                     ),
@@ -105,7 +105,7 @@ class _SplashScreenState extends State<SplashScreen> {
               Text(
                 'Safety-First Banking',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: AppColors.textSecondary,
+                      color: context.colors.textSecondary,
                       letterSpacing: 2,
                     ),
               )

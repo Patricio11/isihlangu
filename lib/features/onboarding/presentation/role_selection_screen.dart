@@ -16,7 +16,7 @@ class RoleSelectionScreen extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.colors.background,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -28,7 +28,7 @@ class RoleSelectionScreen extends StatelessWidget {
               Text(
                 'Welcome to Shield',
                 style: theme.textTheme.displaySmall?.copyWith(
-                  color: AppColors.textPrimary,
+                  color: context.colors.textPrimary,
                   fontWeight: FontWeight.bold,
                 ),
                 textAlign: TextAlign.center,
@@ -42,7 +42,7 @@ class RoleSelectionScreen extends StatelessWidget {
               Text(
                 'Choose your account type',
                 style: theme.textTheme.bodyLarge?.copyWith(
-                  color: AppColors.textSecondary,
+                  color: context.colors.textSecondary,
                 ),
                 textAlign: TextAlign.center,
               )
@@ -57,7 +57,7 @@ class RoleSelectionScreen extends StatelessWidget {
                 icon: Icons.family_restroom_rounded,
                 title: 'I\'m a Parent',
                 subtitle: 'Create a family account and manage your children\'s finances',
-                gradient: AppColors.primaryGradient,
+                gradient: context.colors.primaryGradient,
                 onTap: () {
                   HapticService.mediumImpact();
                   context.push('/onboarding/create-family');
@@ -74,7 +74,7 @@ class RoleSelectionScreen extends StatelessWidget {
                 icon: Icons.person_rounded,
                 title: 'I\'m joining my family',
                 subtitle: 'Enter your family code to join an existing family account',
-                gradient: AppColors.successGradient,
+                gradient: context.colors.successGradient,
                 onTap: () {
                   HapticService.mediumImpact();
                   context.push('/onboarding/join-family');
@@ -154,7 +154,7 @@ class _RoleCard extends StatelessWidget {
                   Text(
                     title,
                     style: theme.textTheme.titleLarge?.copyWith(
-                      color: AppColors.textPrimary,
+                      color: context.colors.textPrimary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -162,7 +162,7 @@ class _RoleCard extends StatelessWidget {
                   Text(
                     subtitle,
                     style: theme.textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSecondary,
+                      color: context.colors.textSecondary,
                     ),
                   ),
                 ],
@@ -170,10 +170,10 @@ class _RoleCard extends StatelessWidget {
             ),
 
             // Arrow
-            const Icon(
+            Icon(
               Icons.arrow_forward_ios_rounded,
               size: 20,
-              color: AppColors.textTertiary,
+              color: context.colors.textTertiary,
             ),
           ],
         ),

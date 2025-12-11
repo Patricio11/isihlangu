@@ -69,7 +69,7 @@ class _CreateFamilyScreenState extends State<CreateFamilyScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.colors.background,
       appBar: AppBar(
         title: const Text('Create Family'),
       ),
@@ -85,7 +85,7 @@ class _CreateFamilyScreenState extends State<CreateFamilyScreen> {
                   width: 100,
                   height: 100,
                   decoration: const BoxDecoration(
-                    gradient: AppColors.primaryGradient,
+                    gradient: context.colors.primaryGradient,
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
@@ -103,7 +103,7 @@ class _CreateFamilyScreenState extends State<CreateFamilyScreen> {
                 Text(
                   'Create Your Family Account',
                   style: theme.textTheme.headlineMedium?.copyWith(
-                    color: AppColors.textPrimary,
+                    color: context.colors.textPrimary,
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
@@ -117,7 +117,7 @@ class _CreateFamilyScreenState extends State<CreateFamilyScreen> {
                 Text(
                   'Give your family a name to get started',
                   style: theme.textTheme.bodyLarge?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: context.colors.textSecondary,
                   ),
                   textAlign: TextAlign.center,
                 )
@@ -131,11 +131,11 @@ class _CreateFamilyScreenState extends State<CreateFamilyScreen> {
                   padding: const EdgeInsets.all(20),
                   child: TextField(
                     controller: _familyNameController,
-                    style: const TextStyle(color: AppColors.textPrimary),
-                    decoration: const InputDecoration(
+                    style: TextStyle(color: context.colors.textPrimary),
+                    decoration: InputDecoration(
                       labelText: 'Family Name',
                       hintText: 'e.g., The Smith Family',
-                      prefixIcon: Icon(Icons.home_rounded, color: AppColors.primary),
+                      prefixIcon: Icon(Icons.home_rounded, color: context.colors.primary),
                       border: InputBorder.none,
                       enabledBorder: InputBorder.none,
                       focusedBorder: InputBorder.none,
@@ -182,7 +182,7 @@ class _CreateFamilyScreenState extends State<CreateFamilyScreen> {
                   width: 100,
                   height: 100,
                   decoration: const BoxDecoration(
-                    gradient: AppColors.successGradient,
+                    gradient: context.colors.successGradient,
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
@@ -200,7 +200,7 @@ class _CreateFamilyScreenState extends State<CreateFamilyScreen> {
                 Text(
                   'Family Created!',
                   style: theme.textTheme.headlineMedium?.copyWith(
-                    color: AppColors.textPrimary,
+                    color: context.colors.textPrimary,
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
@@ -213,7 +213,7 @@ class _CreateFamilyScreenState extends State<CreateFamilyScreen> {
                 Text(
                   'Share this code with family members to invite them',
                   style: theme.textTheme.bodyLarge?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: context.colors.textSecondary,
                   ),
                   textAlign: TextAlign.center,
                 )
@@ -230,14 +230,14 @@ class _CreateFamilyScreenState extends State<CreateFamilyScreen> {
                       Text(
                         'Family Code',
                         style: theme.textTheme.labelMedium?.copyWith(
-                          color: AppColors.textTertiary,
+                          color: context.colors.textTertiary,
                         ),
                       ),
                       const SizedBox(height: 12),
                       Text(
                         FakeFamilyData.familyCode,
                         style: theme.textTheme.displaySmall?.copyWith(
-                          color: AppColors.primary,
+                          color: context.colors.primary,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 4,
                         ),
@@ -250,12 +250,12 @@ class _CreateFamilyScreenState extends State<CreateFamilyScreen> {
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.copy_rounded, size: 20, color: AppColors.primary),
+                            Icon(Icons.copy_rounded, size: 20, color: context.colors.primary),
                             SizedBox(width: 8),
                             Text(
                               'Copy Code',
                               style: TextStyle(
-                                color: AppColors.textPrimary,
+                                color: context.colors.textPrimary,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -293,7 +293,7 @@ class _CreateFamilyScreenState extends State<CreateFamilyScreen> {
                 Text(
                   'You can always find your family code in Settings',
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: AppColors.textTertiary,
+                    color: context.colors.textTertiary,
                   ),
                   textAlign: TextAlign.center,
                 )

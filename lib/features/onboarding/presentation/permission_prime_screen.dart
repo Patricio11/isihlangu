@@ -118,25 +118,25 @@ class _PermissionPrimeScreenState extends State<PermissionPrimeScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.glassSurface,
+        backgroundColor: context.colors.glassSurface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
         title: const Row(
           children: [
-            Icon(Icons.warning_rounded, color: AppColors.warning),
+            Icon(Icons.warning_rounded, color: context.colors.warning),
             SizedBox(width: 12),
             Expanded(
               child: Text(
                 'Skip Permissions?',
-                style: TextStyle(color: AppColors.textPrimary),
+                style: TextStyle(color: context.colors.textPrimary),
               ),
             ),
           ],
         ),
         content: const Text(
           'Without these permissions, Shield cannot collect evidence during duress situations. You can enable them later in Settings.',
-          style: TextStyle(color: AppColors.textSecondary),
+          style: TextStyle(color: context.colors.textSecondary),
         ),
         actions: [
           TextButton(
@@ -154,7 +154,7 @@ class _PermissionPrimeScreenState extends State<PermissionPrimeScreen> {
             child: const Text(
               'Skip Anyway',
               style: TextStyle(
-                color: AppColors.warning,
+                color: context.colors.warning,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -174,7 +174,7 @@ class _PermissionPrimeScreenState extends State<PermissionPrimeScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.colors.background,
       body: AnimatedMeshGradient(
         child: SafeArea(
           child: Column(
@@ -190,7 +190,7 @@ class _PermissionPrimeScreenState extends State<PermissionPrimeScreen> {
                         onPressed: isRequestingPermissions ? null : _skip,
                         child: const Text(
                           'Skip for Now',
-                          style: TextStyle(color: AppColors.textSecondary),
+                          style: TextStyle(color: context.colors.textSecondary),
                         ),
                       ),
                   ],
@@ -210,7 +210,7 @@ class _PermissionPrimeScreenState extends State<PermissionPrimeScreen> {
                           width: 100,
                           height: 100,
                           decoration: const BoxDecoration(
-                            gradient: AppColors.primaryGradient,
+                            gradient: context.colors.primaryGradient,
                             shape: BoxShape.circle,
                           ),
                           child: const Icon(
@@ -230,7 +230,7 @@ class _PermissionPrimeScreenState extends State<PermissionPrimeScreen> {
                       Text(
                         'Enable Protection',
                         style: theme.textTheme.headlineMedium?.copyWith(
-                          color: AppColors.textPrimary,
+                          color: context.colors.textPrimary,
                           fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.center,
@@ -249,7 +249,7 @@ class _PermissionPrimeScreenState extends State<PermissionPrimeScreen> {
                       Text(
                         'To provide maximum protection during emergencies, Shield needs these permissions:',
                         style: theme.textTheme.bodyLarge?.copyWith(
-                          color: AppColors.textSecondary,
+                          color: context.colors.textSecondary,
                         ),
                         textAlign: TextAlign.center,
                       )
@@ -312,7 +312,7 @@ class _PermissionPrimeScreenState extends State<PermissionPrimeScreen> {
                           children: [
                             const Icon(
                               Icons.info_outline_rounded,
-                              color: AppColors.primary,
+                              color: context.colors.primary,
                               size: 24,
                             ),
                             const SizedBox(width: 12),
@@ -320,7 +320,7 @@ class _PermissionPrimeScreenState extends State<PermissionPrimeScreen> {
                               child: Text(
                                 'These permissions are only used during duress mode to collect evidence for your safety.',
                                 style: theme.textTheme.bodySmall?.copyWith(
-                                  color: AppColors.textSecondary,
+                                  color: context.colors.textSecondary,
                                 ),
                               ),
                             ),
@@ -420,8 +420,8 @@ class _PermissionCard extends StatelessWidget {
                 height: 48,
                 decoration: BoxDecoration(
                   gradient: isGranted
-                      ? AppColors.successGradient
-                      : AppColors.primaryGradient,
+                      ? context.colors.successGradient
+                      : context.colors.primaryGradient,
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -438,7 +438,7 @@ class _PermissionCard extends StatelessWidget {
                     Text(
                       title,
                       style: theme.textTheme.titleMedium?.copyWith(
-                        color: AppColors.textPrimary,
+                        color: context.colors.textPrimary,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -450,14 +450,14 @@ class _PermissionCard extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         color: isGranted
-                            ? AppColors.success.withValues(alpha: 0.2)
-                            : AppColors.warning.withValues(alpha: 0.2),
+                            ? context.colors.success.withValues(alpha: 0.2)
+                            : context.colors.warning.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
                         isGranted ? 'Granted' : importance,
                         style: TextStyle(
-                          color: isGranted ? AppColors.success : AppColors.warning,
+                          color: isGranted ? context.colors.success : context.colors.warning,
                           fontSize: 11,
                           fontWeight: FontWeight.w600,
                         ),
@@ -475,7 +475,7 @@ class _PermissionCard extends StatelessWidget {
           Text(
             description,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: AppColors.textSecondary,
+              color: context.colors.textSecondary,
             ),
           ),
 
@@ -490,8 +490,8 @@ class _PermissionCard extends StatelessWidget {
                 height: 44,
                 gradient: isDenied
                     ? const LinearGradient(
-                        colors: [AppColors.warning, Color(0xFFFFB74D)])
-                    : AppColors.primaryGradient,
+                        colors: [context.colors.warning, Color(0xFFFFB74D)])
+                    : context.colors.primaryGradient,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

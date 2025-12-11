@@ -26,7 +26,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       icon: Icons.shield_rounded,
       title: 'Your Money, Protected',
       description: 'Bank with confidence knowing your funds are secure with military-grade encryption and advanced safety features.',
-      gradient: AppColors.primaryGradient,
+      gradient: context.colors.primaryGradient,
     ),
     OnboardingPageData(
       icon: Icons.family_restroom_rounded,
@@ -42,7 +42,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       icon: Icons.security_rounded,
       title: 'Duress Protection',
       description: 'Stay safe in emergencies with our unique duress mode. Your safety is our top priority.',
-      gradient: AppColors.dangerGradient,
+      gradient: context.colors.dangerGradient,
     ),
   ];
 
@@ -90,7 +90,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     final isLastPage = _currentPage == _pages.length - 1;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.colors.background,
       body: SafeArea(
         child: Column(
           children: [
@@ -104,7 +104,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   child: Text(
                     'Skip',
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textSecondary,
+                      color: context.colors.textSecondary,
                     ),
                   ),
                 ),
@@ -137,8 +137,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     height: 8,
                     decoration: BoxDecoration(
                       color: _currentPage == index
-                          ? AppColors.primary
-                          : AppColors.textTertiary.withAlpha(77),
+                          ? context.colors.primary
+                          : context.colors.textTertiary.withAlpha(77),
                       borderRadius: BorderRadius.circular(4),
                     ),
                   ),

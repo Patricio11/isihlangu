@@ -70,7 +70,7 @@ class _JoinFamilyScreenState extends State<JoinFamilyScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.colors.background,
       appBar: AppBar(
         title: const Text('Join Family'),
       ),
@@ -86,7 +86,7 @@ class _JoinFamilyScreenState extends State<JoinFamilyScreen> {
                   width: 100,
                   height: 100,
                   decoration: const BoxDecoration(
-                    gradient: AppColors.successGradient,
+                    gradient: context.colors.successGradient,
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
@@ -104,7 +104,7 @@ class _JoinFamilyScreenState extends State<JoinFamilyScreen> {
                 Text(
                   'Join Your Family',
                   style: theme.textTheme.headlineMedium?.copyWith(
-                    color: AppColors.textPrimary,
+                    color: context.colors.textPrimary,
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
@@ -118,7 +118,7 @@ class _JoinFamilyScreenState extends State<JoinFamilyScreen> {
                 Text(
                   'Enter the family code shared by your parent',
                   style: theme.textTheme.bodyLarge?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: context.colors.textSecondary,
                   ),
                   textAlign: TextAlign.center,
                 )
@@ -133,7 +133,7 @@ class _JoinFamilyScreenState extends State<JoinFamilyScreen> {
                   child: TextField(
                     controller: _familyCodeController,
                     style: const TextStyle(
-                      color: AppColors.textPrimary,
+                      color: context.colors.textPrimary,
                       fontSize: 24,
                       fontWeight: FontWeight.w600,
                       letterSpacing: 4,
@@ -168,14 +168,14 @@ class _JoinFamilyScreenState extends State<JoinFamilyScreen> {
                       const Icon(
                         Icons.info_outline_rounded,
                         size: 20,
-                        color: AppColors.info,
+                        color: context.colors.info,
                       ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
                           'Ask your parent for the family code from their app',
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: AppColors.textSecondary,
+                            color: context.colors.textSecondary,
                           ),
                         ),
                       ),
@@ -220,7 +220,7 @@ class _JoinFamilyScreenState extends State<JoinFamilyScreen> {
                   width: 100,
                   height: 100,
                   decoration: const BoxDecoration(
-                    gradient: AppColors.successGradient,
+                    gradient: context.colors.successGradient,
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
@@ -238,7 +238,7 @@ class _JoinFamilyScreenState extends State<JoinFamilyScreen> {
                 Text(
                   'Welcome to the Family!',
                   style: theme.textTheme.headlineMedium?.copyWith(
-                    color: AppColors.textPrimary,
+                    color: context.colors.textPrimary,
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
@@ -251,7 +251,7 @@ class _JoinFamilyScreenState extends State<JoinFamilyScreen> {
                 Text(
                   'You\'ve successfully joined ${FakeFamilyData.familyName}',
                   style: theme.textTheme.bodyLarge?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: context.colors.textSecondary,
                   ),
                   textAlign: TextAlign.center,
                 )
@@ -268,13 +268,13 @@ class _JoinFamilyScreenState extends State<JoinFamilyScreen> {
                       const Icon(
                         Icons.family_restroom_rounded,
                         size: 64,
-                        color: AppColors.primary,
+                        color: context.colors.primary,
                       ),
                       const SizedBox(height: 16),
                       Text(
                         FakeFamilyData.familyName,
                         style: theme.textTheme.titleLarge?.copyWith(
-                          color: AppColors.textPrimary,
+                          color: context.colors.textPrimary,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -282,7 +282,7 @@ class _JoinFamilyScreenState extends State<JoinFamilyScreen> {
                       Text(
                         '${FakeFamilyData.allMembers.length} members',
                         style: theme.textTheme.bodyMedium?.copyWith(
-                          color: AppColors.textSecondary,
+                          color: context.colors.textSecondary,
                         ),
                       ),
                     ],
