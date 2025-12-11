@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/glass_container.dart';
 import '../../../core/widgets/animated_mesh_gradient.dart';
+import '../../../core/utils/haptics.dart';
 import '../../auth/providers/session_provider.dart';
 import 'widgets/radar_widget.dart';
 
@@ -120,7 +122,108 @@ class _SafetyScreenState extends ConsumerState<SafetyScreen> {
     );
   }
 
+  /// Build Parent Map Card
+  /// Large interactive card for parents to access Family Live Map
+  Widget _buildParentMapCard(ThemeData theme) {
+    return GlassContainer(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        children: [
+          // Map Icon
+          Container(
+            width: 120,
+            height: 120,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: LinearGradient(
+                colors: [
+                  context.colors.primary,
+                  context.colors.primary.withValues(alpha: 0.6),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: context.colors.primary.withValues(alpha: 0.3),
+                  blurRadius: 24,
+                  spreadRadius: 4,
+                ),
+              ],
+            ),
+            child: Icon(
+              Icons.map_outlined,
+              size: 60,
+              color: Colors.white,
+            ),
+          ),
+
+          const SizedBox(height: 24),
+
+          // Title
+          Text(
+            'Family Live Map',
+            style: theme.textTheme.headlineSmall?.copyWith(
+              color: context.colors.textPrimary,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
+
+          const SizedBox(height: 8),
+
+          // Subtitle
+          Text(
+            'Track your children\'s real-time locations and safe zones',
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: context.colors.textSecondary,
+            ),
+            textAlign: TextAlign.center,
+          ),
+
+          const SizedBox(height: 24),
+
+          // View Map Button
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {
+                HapticService.mediumImpact();
+                context.push('/family/map');
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: context.colors.primary,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.location_on_rounded),
+                  const SizedBox(width: 8),
+                  Text(
+                    'View Live Map',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildAdminView(ThemeData theme) {
+    final session = ref.watch(sessionProvider).session;
+    final isParent = session?.isParent ?? false;
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -128,16 +231,23 @@ class _SafetyScreenState extends ConsumerState<SafetyScreen> {
         children: [
           const SizedBox(height: 20),
 
-          // Radar Display
-          Center(
-            child: RadarWidget(
-              isActive: _locationBroadcast,
-              size: 200,
-            )
+          // Parent View: Family Live Map Button
+          // Child View: Radar Display
+          if (isParent)
+            _buildParentMapCard(theme)
                 .animate()
                 .fadeIn(duration: 800.ms)
-                .scale(duration: 800.ms, curve: Curves.easeOutBack),
-          ),
+                .scale(duration: 800.ms, curve: Curves.easeOutBack)
+          else
+            Center(
+              child: RadarWidget(
+                isActive: _locationBroadcast,
+                size: 200,
+              )
+                  .animate()
+                  .fadeIn(duration: 800.ms)
+                  .scale(duration: 800.ms, curve: Curves.easeOutBack),
+            ),
 
           const SizedBox(height: 32),
 
