@@ -74,10 +74,10 @@ class _TransactionTile extends StatelessWidget {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: AppColors.glassSurface,
+              color: context.colors.glassSurface,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: AppColors.glassBorder,
+                color: context.colors.glassBorder,
                 width: 1,
               ),
             ),
@@ -99,7 +99,7 @@ class _TransactionTile extends StatelessWidget {
                 Text(
                   transaction.title,
                   style: theme.textTheme.titleSmall?.copyWith(
-                    color: AppColors.textPrimary,
+                    color: context.colors.textPrimary,
                     fontWeight: FontWeight.w600,
                   ),
                   maxLines: 1,
@@ -109,7 +109,7 @@ class _TransactionTile extends StatelessWidget {
                 Text(
                   transaction.subtitle,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: AppColors.textTertiary,
+                    color: context.colors.textTertiary,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -118,7 +118,7 @@ class _TransactionTile extends StatelessWidget {
                 Text(
                   dateFormat.format(transaction.timestamp),
                   style: theme.textTheme.labelSmall?.copyWith(
-                    color: AppColors.textTertiary,
+                    color: context.colors.textTertiary,
                     fontSize: 11,
                   ),
                 ),
@@ -136,8 +136,8 @@ class _TransactionTile extends StatelessWidget {
                 currencyFormat.format(transaction.amount.abs()),
                 style: theme.textTheme.titleMedium?.copyWith(
                   color: transaction.isPositive
-                      ? AppColors.success
-                      : AppColors.textPrimary,
+                      ? context.colors.success
+                      : context.colors.textPrimary,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -145,13 +145,13 @@ class _TransactionTile extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: _getTypeColor(transaction.type).withOpacity(0.15),
+                  color: _getTypeColor(context, transaction.type).withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
                   _getTypeLabel(transaction.type),
                   style: theme.textTheme.labelSmall?.copyWith(
-                    color: _getTypeColor(transaction.type),
+                    color: _getTypeColor(context, transaction.type),
                     fontSize: 10,
                     fontWeight: FontWeight.w600,
                   ),
@@ -187,16 +187,16 @@ class _TransactionTile extends StatelessWidget {
     }
   }
 
-  Color _getTypeColor(TransactionType type) {
+  Color _getTypeColor(BuildContext context, TransactionType type) {
     switch (type) {
       case TransactionType.sent:
-        return AppColors.info;
+        return context.colors.info;
       case TransactionType.received:
-        return AppColors.success;
+        return context.colors.success;
       case TransactionType.purchase:
-        return AppColors.primary;
+        return context.colors.primary;
       case TransactionType.refund:
-        return AppColors.warning;
+        return context.colors.warning;
     }
   }
 
@@ -230,20 +230,20 @@ class _EmptyState extends StatelessWidget {
             Icon(
               Icons.receipt_long_outlined,
               size: 64,
-              color: AppColors.textTertiary,
+              color: context.colors.textTertiary,
             ),
             const SizedBox(height: 16),
             Text(
               'No transactions yet',
               style: theme.textTheme.titleMedium?.copyWith(
-                color: AppColors.textSecondary,
+                color: context.colors.textSecondary,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               'Your activity will appear here',
               style: theme.textTheme.bodySmall?.copyWith(
-                color: AppColors.textTertiary,
+                color: context.colors.textTertiary,
               ),
             ),
           ],

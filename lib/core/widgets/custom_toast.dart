@@ -17,8 +17,8 @@ class CustomToast {
       context,
       message: message,
       icon: Icons.check_circle_rounded,
-      gradient: AppColors.successGradient,
-      glowColor: AppColors.success,
+      gradient: context.colors.successGradient,
+      glowColor: context.colors.success,
       duration: duration,
     );
   }
@@ -34,8 +34,8 @@ class CustomToast {
       context,
       message: message,
       icon: Icons.cancel_rounded,
-      gradient: AppColors.dangerGradient,
-      glowColor: AppColors.danger,
+      gradient: context.colors.dangerGradient,
+      glowColor: context.colors.danger,
       duration: duration,
     );
   }
@@ -51,8 +51,8 @@ class CustomToast {
       context,
       message: message,
       icon: Icons.info_rounded,
-      gradient: AppColors.primaryGradient,
-      glowColor: AppColors.primary,
+      gradient: context.colors.primaryGradient,
+      glowColor: context.colors.primary,
       duration: duration,
     );
   }
@@ -68,8 +68,8 @@ class CustomToast {
       context,
       message: message,
       icon: Icons.warning_rounded,
-      gradient: AppColors.warningGradient,
-      glowColor: AppColors.warning,
+      gradient: context.colors.warningGradient,
+      glowColor: context.colors.warning,
       duration: duration,
     );
   }
@@ -85,8 +85,8 @@ class CustomToast {
       context,
       message: 'Silent Alert Sent (Test Mode)',
       icon: Icons.shield_rounded,
-      gradient: AppColors.dangerGradient,
-      glowColor: AppColors.danger,
+      gradient: context.colors.dangerGradient,
+      glowColor: context.colors.danger,
       duration: duration,
     );
   }
@@ -150,7 +150,7 @@ class _ToastWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: glowColor.withOpacity(0.4),
+                color: glowColor.withValues(alpha: 0.4),
                 blurRadius: 20,
                 spreadRadius: 0,
                 offset: const Offset(0, 4),

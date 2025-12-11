@@ -38,7 +38,7 @@ class FamilyOverviewSection extends StatelessWidget {
                   Text(
                     'Family',
                     style: theme.textTheme.titleLarge?.copyWith(
-                      color: AppColors.textPrimary,
+                      color: context.colors.textPrimary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -46,7 +46,7 @@ class FamilyOverviewSection extends StatelessWidget {
                   Text(
                     FakeFamilyData.familyName,
                     style: theme.textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSecondary,
+                      color: context.colors.textSecondary,
                     ),
                   ),
                 ],
@@ -63,7 +63,7 @@ class FamilyOverviewSection extends StatelessWidget {
                       Text(
                         'View All',
                         style: TextStyle(
-                          color: AppColors.primary,
+                          color: context.colors.primary,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -71,7 +71,7 @@ class FamilyOverviewSection extends StatelessWidget {
                       Icon(
                         Icons.arrow_forward_ios_rounded,
                         size: 14,
-                        color: AppColors.primary,
+                        color: context.colors.primary,
                       ),
                     ],
                   ),
@@ -124,19 +124,19 @@ class FamilyOverviewSection extends StatelessWidget {
               Icon(
                 Icons.account_balance_wallet_rounded,
                 size: 16,
-                color: AppColors.textTertiary,
+                color: context.colors.textTertiary,
               ),
               const SizedBox(width: 8),
               Text(
                 'Total Family Balance: ',
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: AppColors.textTertiary,
+                  color: context.colors.textTertiary,
                 ),
               ),
               Text(
                 'R ${FakeFamilyData.totalFamilyBalance.toStringAsFixed(2)}',
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: AppColors.textPrimary,
+                  color: context.colors.textPrimary,
                   fontWeight: FontWeight.bold,
                 ),
               ),

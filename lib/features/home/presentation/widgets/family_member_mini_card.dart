@@ -36,8 +36,8 @@ class FamilyMemberMiniCard extends StatelessWidget {
                 height: 56,
                 decoration: BoxDecoration(
                   gradient: isChild
-                      ? AppColors.successGradient
-                      : AppColors.primaryGradient,
+                      ? context.colors.successGradient
+                      : context.colors.primaryGradient,
                   shape: BoxShape.circle,
                 ),
                 child: Center(
@@ -58,7 +58,7 @@ class FamilyMemberMiniCard extends StatelessWidget {
               Text(
                 member.name.split(' ').first, // First name only
                 style: theme.textTheme.titleSmall?.copyWith(
-                  color: AppColors.textPrimary,
+                  color: context.colors.textPrimary,
                   fontWeight: FontWeight.w600,
                 ),
                 maxLines: 1,
@@ -73,13 +73,13 @@ class FamilyMemberMiniCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
-                    color: AppColors.success.withValues(alpha: 0.2),
+                    color: context.colors.success.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
                     '${member.age} yrs',
                     style: theme.textTheme.labelSmall?.copyWith(
-                      color: AppColors.success,
+                      color: context.colors.success,
                       fontSize: 10,
                       fontWeight: FontWeight.w600,
                     ),
@@ -92,7 +92,7 @@ class FamilyMemberMiniCard extends StatelessWidget {
               Text(
                 'R ${member.balance.toStringAsFixed(2)}',
                 style: theme.textTheme.titleMedium?.copyWith(
-                  color: AppColors.textPrimary,
+                  color: context.colors.textPrimary,
                   fontWeight: FontWeight.bold,
                 ),
                 maxLines: 1,
@@ -106,16 +106,16 @@ class FamilyMemberMiniCard extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.ac_unit_rounded,
                         size: 12,
-                        color: AppColors.info,
+                        color: context.colors.info,
                       ),
                       const SizedBox(width: 4),
                       Text(
                         'Frozen',
                         style: theme.textTheme.labelSmall?.copyWith(
-                          color: AppColors.info,
+                          color: context.colors.info,
                           fontSize: 10,
                         ),
                       ),

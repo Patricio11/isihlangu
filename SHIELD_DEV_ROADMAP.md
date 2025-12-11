@@ -728,31 +728,33 @@ lib/
 
 ---
 
-## ✅ MVP COMPLETION CHECKLIST
+### Task 1.16: Family Live Map (Parent View) 🆕
+*Priority: HIGH - Replaces generic "Safety" screen for Parents.*
+*Goal: Google Maps-style tracking with "Deep Slate" custom styling.*
 
-**Onboarding:**
-- [ ] Role selection works
-- [ ] Create family generates code
-- [ ] Join family accepts code
+- [ ] **Map Infrastructure:**
+    - [ ] Install `Maps_flutter` (or `flutter_map` for OpenStreetMap to save costs in Dev).
+    - [ ] **Custom Map Style:** Create a JSON style file to turn the map Dark Blue/Grey to match the App Theme.
+- [ ] **Map UI Components:**
+    - [ ] **Avatar Markers:** Render `FamilyMember` avatars as custom map markers.
+    - [ ] **Pulse Effect:** Add a "ripple" animation around markers to show they are live.
+    - [ ] **Safe Zones:** Draw semi-transparent teal circles around "Home" and "School" coordinates.
+- [ ] **Bottom Sheet "Command Center":**
+    - [ ] Horizontal scrollable list of children.
+    - [ ] **Status Indicators:** Show Battery Level, "Moving/Stationary" status, and Connectivity.
+    - [ ] **Quick Actions:** "Navigate to Child", "Call", "Signal Alert".
+- [ ] **Mock Data:**
+    - [ ] Simulate "Lesedi" moving along a route (update lat/long every 3 seconds).
 
-**Parent Features:**
-- [ ] Parent dashboard shows family members
-- [ ] Family members screen lists all
-- [ ] Child control panel has all toggles
-- [ ] Can view child's transactions
-- [ ] Emergency freeze button works
+**Deliverables:**
+- `lib/features/location/presentation/family_map_screen.dart`
+- `lib/features/location/presentation/widgets/child_marker_widget.dart`
+- `lib/features/location/presentation/widgets/location_status_card.dart`
+- `assets/map_theme/dark_mode_style.json`
 
-**Child Features:**
-- [ ] Permission restrictions apply
-- [ ] Hidden balance when restricted
-- [ ] Frozen card banner shows
-- [ ] Cannot access family screens
-
-**Navigation:**
-- [ ] Parent sees 5 tabs
-- [ ] Child sees 4 tabs
-- [ ] Route guards block children
-- [ ] Debug menu switches roles
+**Mock Behavior:**
+- Tap "Lesedi" → Map zooms to her location.
+- Toggle "Simulate Movement" debug option to see the avatar move.
 
 ---
 
@@ -1404,42 +1406,57 @@ We need to demonstrate the COMPLETE duress flow locally:
 ---
 
 ## PHASE 4: THE INTEGRATIONS & CARD LOGIC (Weeks 7-8)
-*Goal: Connect to Real Banking APIs and Implement the "Unlock-to-Pay" Security.*
+*Goal: Connect Real Banking APIs and Implement the "Interactive Authorization" Security.*
 
 ### Task 4.1: Vendor Selection & Integration
 - [ ] **Due Diligence:** Evaluate APIs for Programmable Banking.
     - *Candidate A:* **Root (RootCode)** - Best for scriptable transaction logic.
     - *Candidate B:* **Stitch / Ukheshe** - Strong for card issuing and virtual wallets.
 - [ ] Set up Sandbox Environment with chosen vendor.
+- [ ] **Core Requirement:** Must support "Synchronous Webhooks" (Pause transaction → Wait for App API response).
 
-### Task 4.2: The "Unlock-to-Pay" Logic (Core Security Feature)
-*The physical/virtual card remains "Frozen" (Limit: R0.00) by default. It only unlocks via App PIN.*
+### Task 4.2: The "Interactive" Payment Engine (Post-Auth Logic)
+*The physical card has a hard limit of R0.00 by default. Tapping triggers a "Permission Request" on the phone.*
 
-- [ ] **Step 1: Default State Implementation**
-    - [ ] Configure card issuer to set hard limit to R0.00 by default.
-    - [ ] Ensure any transaction attempted without unlocking is instantly declined.
+- [ ] **Step 1: The Trigger**
+    - [ ] User taps Physical Card at a store.
+    - [ ] Banking Core holds transaction (Pending state).
+    - [ ] Webhook triggers Shield Backend -> Sends **Push Notification** ("Authorize R250 at Woolworths?").
 
-- [ ] **Step 2: The "Safe Unlock" Flow (PIN 1234)**
-    - [ ] **User Action:** Enter PIN `1234` in App.
-    - [ ] **Edge Function:** `unlock_card_safe()`
-        - [ ] Increases Card Limit to Available Balance (or user-set daily limit).
-        - [ ] Sets a **2-minute Timer**.
-        - [ ] **UI:** Shows "Ready to Tap" countdown timer.
-    - [ ] **After 2 Mins:** Function auto-resets Limit to R0.00.
+- [ ] **Step 2: The Decision (App UI)**
+    - [ ] User taps notification -> Opens Biometric/PIN screen.
+    - [ ] **Scenario A (PIN 1234 - Safe):**
+        - [ ] App sends `APPROVE` signal to Banking Core.
+        - [ ] Transaction completes.
+        - [ ] Limit resets to R0.00 immediately.
+    - [ ] **Scenario B (PIN 9999 - Duress):**
+        - [ ] **Logic:** Check Transaction Amount.
+        - [ ] *If < R500 (Lunch/Groceries):* Send `APPROVE`. (User survives, attacker satisfied).
+        - [ ] *If > R500 (TV/Jewelry):* Send `DECLINE` (Reason: "Insufficient Funds").
+        - [ ] **Action:** Trigger Silent Alarm (GPS + Camera).
 
-- [ ] **Step 3: The "Duress Unlock" Flow (PIN 9999)**
-    - [ ] **User Action:** Enter PIN `9999` in App.
-    - [ ] **Edge Function:** `unlock_card_duress()`
-        - [ ] Increases Card Limit to **R150.00 ONLY** (Lunch Money).
-        - [ ] **Triggers Silent Alarm** (GPS + Push Notification to Parent).
-        - [ ] **UI:** Shows "Ready to Tap" timer (Identical visual to Safe Mode).
-        - [ ] **Scenario:** If user buys lunch (R50) → Approved. If user tries to buy TV (R5000) → Declined ("Insufficient Funds").
+- [ ] **Step 3: The Fallback (No Signal)**
+    - [ ] If user does not respond in 45s -> Auto-Decline ("Timed Out").
 
-### Task 4.3: Location Intelligence (Lunch Mode)
+### Task 4.3: The ATM "Trap" Logic (Pre-Auth)
+*Since ATMs cannot be paused, we use a "Pre-Unlock" strategy.*
+
+- [ ] **Logic:** User must "Unlock" card on App *before* inserting into ATM.
+- [ ] **Scenario A (Safe Mode):**
+    - [ ] User enters `1234`.
+    - [ ] Backend sets ATM Withdrawal Limit to **R5,000** (for 5 mins).
+- [ ] **Scenario B (Duress Mode):**
+    - [ ] User enters `9999` (simulating "unlocking" for the attacker).
+    - [ ] Backend sets ATM Withdrawal Limit to **R200 ONLY**.
+    - [ ] **Outcome:** User inserts card, enters REAL PIN (so ATM doesn't eat card), requests cash.
+    - [ ] **Result:** ATM dispenses R200. Receipt shows "Available Balance: R0.00".
+
+### Task 4.4: Location Intelligence (Lunch Mode)
 - [ ] Add Google Maps widget to "Safety Center".
 - [ ] **Geo-Fencing Logic:**
     - [ ] Define "School Zone" radius.
     - [ ] *Integration:* If using Root, inject logic: `if (transaction.location != school_zone) return decline;`
+
 ---
 
 ## PHASE 5: POLISH & SECURITY (Week 9+)

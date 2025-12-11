@@ -73,10 +73,10 @@ class LoginScreen extends ConsumerWidget {
                 content: Text(
                   'Silent Alert Sent (Test Mode)',
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textPrimary,
+                    color: context.colors.textPrimary,
                   ),
                 ),
-                backgroundColor: AppColors.danger,
+                backgroundColor: context.colors.danger,
                 behavior: SnackBarBehavior.floating,
                 duration: const Duration(seconds: 1),
                 shape: RoundedRectangleBorder(
@@ -97,7 +97,7 @@ class LoginScreen extends ConsumerWidget {
     );
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.colors.background,
       body: AnimatedMeshGradient(
         child: SafeArea(
           child: LayoutBuilder(
@@ -129,7 +129,7 @@ class LoginScreen extends ConsumerWidget {
                           style: theme.textTheme.headlineLarge?.copyWith(
                             letterSpacing: 8,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.textPrimary,
+                            color: context.colors.textPrimary,
                           ),
                         )
                             .animate()
@@ -143,7 +143,7 @@ class LoginScreen extends ConsumerWidget {
                           'Secure Banking',
                           style: theme.textTheme.bodyMedium?.copyWith(
                             letterSpacing: 2,
-                            color: AppColors.textTertiary,
+                            color: context.colors.textTertiary,
                           ),
                         )
                             .animate()
@@ -156,7 +156,7 @@ class LoginScreen extends ConsumerWidget {
                         Text(
                           'Enter your PIN',
                           style: theme.textTheme.titleMedium?.copyWith(
-                            color: AppColors.textSecondary,
+                            color: context.colors.textSecondary,
                           ),
                         )
                             .animate()
@@ -183,7 +183,7 @@ class LoginScreen extends ConsumerWidget {
                               ? Text(
                                   authState.error!,
                                   style: theme.textTheme.bodySmall?.copyWith(
-                                    color: AppColors.danger,
+                                    color: context.colors.danger,
                                   ),
                                 )
                                     .animate()
@@ -214,7 +214,7 @@ class LoginScreen extends ConsumerWidget {
                           ),
                           label: const Text('New User? Get Started'),
                           style: TextButton.styleFrom(
-                            foregroundColor: AppColors.primary,
+                            foregroundColor: context.colors.primary,
                           ),
                         )
                             .animate()
@@ -239,13 +239,13 @@ class LoginScreen extends ConsumerWidget {
       height: 100,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        gradient: AppColors.primaryGradient,
-        boxShadow: AppColors.glowTeal,
+        gradient: context.colors.primaryGradient,
+        boxShadow: context.colors.glowTeal,
       ),
-      child: const Icon(
+      child: Icon(
         Icons.shield_outlined,
         size: 50,
-        color: AppColors.background,
+        color: context.colors.background,
       ),
     );
   }

@@ -107,7 +107,7 @@ class EmptyState extends StatelessWidget {
             Icon(
               icon,
               size: 80,
-              color: (iconColor ?? AppColors.textTertiary).withAlpha(128),
+              color: (iconColor ?? context.colors.textTertiary).withAlpha(128),
             )
                 .animate()
                 .fadeIn(duration: 600.ms)
@@ -116,7 +116,7 @@ class EmptyState extends StatelessWidget {
             Text(
               title,
               style: theme.textTheme.headlineSmall?.copyWith(
-                color: AppColors.textPrimary,
+                color: context.colors.textPrimary,
                 fontWeight: FontWeight.w600,
               ),
               textAlign: TextAlign.center,
@@ -128,7 +128,7 @@ class EmptyState extends StatelessWidget {
             Text(
               message,
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: AppColors.textSecondary,
+                color: context.colors.textSecondary,
               ),
               textAlign: TextAlign.center,
             )

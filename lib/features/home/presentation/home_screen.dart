@@ -56,7 +56,7 @@ class HomeScreen extends ConsumerWidget {
 
     return Scaffold(
       extendBodyBehindAppBar: true,
-      backgroundColor: AppColors.background,
+      backgroundColor: context.colors.background,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -80,8 +80,8 @@ class HomeScreen extends ConsumerWidget {
                     top: 8,
                     child: Container(
                       padding: const EdgeInsets.all(4),
-                      decoration: const BoxDecoration(
-                        color: AppColors.danger,
+                      decoration: BoxDecoration(
+                        color: context.colors.danger,
                         shape: BoxShape.circle,
                       ),
                       constraints: const BoxConstraints(
@@ -114,7 +114,7 @@ class HomeScreen extends ConsumerWidget {
                 width: 36,
                 height: 36,
                 decoration: BoxDecoration(
-                  gradient: AppColors.primaryGradient,
+                  gradient: context.colors.primaryGradient,
                   shape: BoxShape.circle,
                 ),
                 child: Center(
@@ -215,7 +215,7 @@ class HomeScreen extends ConsumerWidget {
                       Text(
                         'Recent Activity',
                         style: theme.textTheme.titleLarge?.copyWith(
-                          color: AppColors.textPrimary,
+                          color: context.colors.textPrimary,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -226,7 +226,7 @@ class HomeScreen extends ConsumerWidget {
                         child: Text(
                           'See All',
                           style: theme.textTheme.bodyMedium?.copyWith(
-                            color: AppColors.primary,
+                            color: context.colors.primary,
                           ),
                         ),
                       ),
@@ -273,13 +273,13 @@ class HomeScreen extends ConsumerWidget {
         Text(
           greeting,
           style: theme.textTheme.bodySmall?.copyWith(
-            color: AppColors.textTertiary,
+            color: context.colors.textTertiary,
           ),
         ),
         Text(
           userName.split(' ').first, // First name only
           style: theme.textTheme.titleMedium?.copyWith(
-            color: AppColors.textPrimary,
+            color: context.colors.textPrimary,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -296,7 +296,7 @@ class HomeScreen extends ConsumerWidget {
           _ActionButton(
             icon: Icons.payment,
             label: 'Pay',
-            color: AppColors.primary,
+            color: context.colors.primary,
             onPressed: () {
               // TODO: Navigate to pay screen
             },
@@ -304,7 +304,7 @@ class HomeScreen extends ConsumerWidget {
           _ActionButton(
             icon: Icons.add_circle_outline,
             label: 'Top Up',
-            color: AppColors.success,
+            color: context.colors.success,
             onPressed: isDuressMode
                 ? null
                 : () {
@@ -314,7 +314,7 @@ class HomeScreen extends ConsumerWidget {
           _ActionButton(
             icon: Icons.lock_outline,
             label: 'Freeze',
-            color: AppColors.warning,
+            color: context.colors.warning,
             onPressed: isDuressMode
                 ? null
                 : () {
@@ -324,7 +324,7 @@ class HomeScreen extends ConsumerWidget {
           _ActionButton(
             icon: Icons.credit_card,
             label: 'Card',
-            color: AppColors.info,
+            color: context.colors.info,
             onPressed: () {
               HapticService.lightImpact();
               context.push('/card');
@@ -362,7 +362,7 @@ class _ActionButton extends StatelessWidget {
           height: 70,
           padding: EdgeInsets.zero,
           borderRadius: BorderRadius.circular(35),
-          color: isDisabled ? AppColors.glassSurface : color.withOpacity(0.15),
+          color: isDisabled ? context.colors.glassSurface : color.withValues(alpha: 0.15),
           child: Material(
             color: Colors.transparent,
             child: InkWell(
@@ -371,7 +371,7 @@ class _ActionButton extends StatelessWidget {
               child: Center(
                 child: Icon(
                   icon,
-                  color: isDisabled ? AppColors.textTertiary : color,
+                  color: isDisabled ? context.colors.textTertiary : color,
                   size: 28,
                 ),
               ),
@@ -382,7 +382,7 @@ class _ActionButton extends StatelessWidget {
         Text(
           label,
           style: theme.textTheme.labelSmall?.copyWith(
-            color: isDisabled ? AppColors.textTertiary : AppColors.textSecondary,
+            color: isDisabled ? context.colors.textTertiary : context.colors.textSecondary,
           ),
           textAlign: TextAlign.center,
         ),

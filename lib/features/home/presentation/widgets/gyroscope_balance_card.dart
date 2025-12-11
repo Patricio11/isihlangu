@@ -88,15 +88,15 @@ class _GyroscopeBalanceCardState extends State<GyroscopeBalanceCard> {
           padding: const EdgeInsets.all(24),
           margin: const EdgeInsets.symmetric(horizontal: 20),
           borderRadius: BorderRadius.circular(24),
-          boxShadow: widget.isRestricted ? null : AppColors.glowTeal,
+          boxShadow: widget.isRestricted ? null : context.colors.glowTeal,
           gradient: widget.isRestricted
               ? null
               : LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    AppColors.primary.withOpacity(0.1),
-                    AppColors.primaryDark.withOpacity(0.05),
+                    context.colors.primary.withValues(alpha: 0.1),
+                    context.colors.primaryDark.withValues(alpha: 0.05),
                   ],
                 ),
           child: Column(
@@ -112,8 +112,8 @@ class _GyroscopeBalanceCardState extends State<GyroscopeBalanceCard> {
                       Icon(
                         Icons.shield,
                         color: widget.isRestricted
-                            ? AppColors.textTertiary
-                            : AppColors.primary,
+                            ? context.colors.textTertiary
+                            : context.colors.primary,
                         size: 24,
                       ),
                       const SizedBox(width: 8),
@@ -121,8 +121,8 @@ class _GyroscopeBalanceCardState extends State<GyroscopeBalanceCard> {
                         'Shield Account',
                         style: theme.textTheme.titleMedium?.copyWith(
                           color: widget.isRestricted
-                              ? AppColors.textTertiary
-                              : AppColors.textSecondary,
+                              ? context.colors.textTertiary
+                              : context.colors.textSecondary,
                         ),
                       ),
                     ],
@@ -132,10 +132,10 @@ class _GyroscopeBalanceCardState extends State<GyroscopeBalanceCard> {
                     width: 40,
                     height: 28,
                     decoration: BoxDecoration(
-                      color: AppColors.glassSurface,
+                      color: context.colors.glassSurface,
                       borderRadius: BorderRadius.circular(6),
                       border: Border.all(
-                        color: AppColors.glassBorder,
+                        color: context.colors.glassBorder,
                         width: 1,
                       ),
                     ),
@@ -143,8 +143,8 @@ class _GyroscopeBalanceCardState extends State<GyroscopeBalanceCard> {
                       child: Icon(
                         Icons.contactless,
                         color: widget.isRestricted
-                            ? AppColors.textTertiary
-                            : AppColors.primary,
+                            ? context.colors.textTertiary
+                            : context.colors.primary,
                         size: 18,
                       ),
                     ),
@@ -161,7 +161,7 @@ class _GyroscopeBalanceCardState extends State<GyroscopeBalanceCard> {
                   Text(
                     'Available Balance',
                     style: theme.textTheme.bodySmall?.copyWith(
-                      color: AppColors.textTertiary,
+                      color: context.colors.textTertiary,
                       letterSpacing: 0.5,
                     ),
                   ),
@@ -170,8 +170,8 @@ class _GyroscopeBalanceCardState extends State<GyroscopeBalanceCard> {
                     currencyFormat.format(widget.balance),
                     style: theme.textTheme.displaySmall?.copyWith(
                       color: widget.isRestricted
-                          ? AppColors.textSecondary
-                          : AppColors.textPrimary,
+                          ? context.colors.textSecondary
+                          : context.colors.textPrimary,
                       fontWeight: FontWeight.bold,
                       letterSpacing: -1,
                     ),
@@ -191,7 +191,7 @@ class _GyroscopeBalanceCardState extends State<GyroscopeBalanceCard> {
                       Text(
                         'ACCOUNT NUMBER',
                         style: theme.textTheme.labelSmall?.copyWith(
-                          color: AppColors.textTertiary,
+                          color: context.colors.textTertiary,
                           fontSize: 10,
                           letterSpacing: 0.5,
                         ),
@@ -200,7 +200,7 @@ class _GyroscopeBalanceCardState extends State<GyroscopeBalanceCard> {
                       Text(
                         '**** 4892',
                         style: theme.textTheme.bodyMedium?.copyWith(
-                          color: AppColors.textSecondary,
+                          color: context.colors.textSecondary,
                           fontWeight: FontWeight.w600,
                           letterSpacing: 1,
                         ),
@@ -210,7 +210,7 @@ class _GyroscopeBalanceCardState extends State<GyroscopeBalanceCard> {
                   if (!widget.isRestricted)
                     Icon(
                       Icons.more_horiz,
-                      color: AppColors.textTertiary,
+                      color: context.colors.textTertiary,
                       size: 24,
                     ),
                 ],

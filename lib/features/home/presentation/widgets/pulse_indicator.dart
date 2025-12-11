@@ -90,7 +90,7 @@ class _PulseIndicatorState extends State<PulseIndicator>
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: AppColors.success.withOpacity(_opacityAnimation.value),
+                        color: context.colors.success.withValues(alpha: _opacityAnimation.value),
                         width: 3,
                       ),
                     ),
@@ -105,15 +105,15 @@ class _PulseIndicatorState extends State<PulseIndicator>
             height: widget.size,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: AppColors.glassSurface,
+              color: context.colors.glassSurface,
               border: Border.all(
-                color: widget.isActive ? AppColors.success : AppColors.textTertiary,
+                color: widget.isActive ? context.colors.success : context.colors.textTertiary,
                 width: 2,
               ),
               boxShadow: widget.isActive
                   ? [
                       BoxShadow(
-                        color: AppColors.success.withOpacity(0.4),
+                        color: context.colors.success.withValues(alpha: 0.4),
                         blurRadius: 16,
                         spreadRadius: 2,
                       ),
@@ -122,7 +122,7 @@ class _PulseIndicatorState extends State<PulseIndicator>
             ),
             child: Icon(
               Icons.shield,
-              color: widget.isActive ? AppColors.success : AppColors.textTertiary,
+              color: widget.isActive ? context.colors.success : context.colors.textTertiary,
               size: widget.size * 0.5,
             ),
           ),
