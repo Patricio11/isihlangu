@@ -59,9 +59,9 @@ class _ShimmerLoaderState extends State<ShimmerLoader>
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                AppColors.shimmerBase,
-                AppColors.shimmerHighlight,
-                AppColors.shimmerBase,
+                context.colors.shimmerBase,
+                context.colors.shimmerHighlight,
+                context.colors.shimmerBase,
               ],
               stops: [
                 0.0,
@@ -100,10 +100,10 @@ class BalanceCardSkeleton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          color: AppColors.glassSurface,
+          color: context.colors.glassSurface,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: AppColors.glassBorder,
+            color: context.colors.glassBorder,
             width: 1,
           ),
         ),
@@ -163,10 +163,10 @@ class TransactionListSkeleton extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.glassSurface,
+                color: context.colors.glassSurface,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: AppColors.glassBorder,
+                  color: context.colors.glassBorder,
                   width: 1,
                 ),
               ),

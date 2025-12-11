@@ -21,19 +21,22 @@ class EmptyState extends StatelessWidget {
   });
 
   /// No transactions empty state
-  factory EmptyState.noTransactions({VoidCallback? onAddTransaction}) {
+  factory EmptyState.noTransactions({
+    required BuildContext context,
+    VoidCallback? onAddTransaction,
+  }) {
     return EmptyState(
       icon: Icons.receipt_long_outlined,
       title: 'No Transactions Yet',
       message: 'Your first transaction will appear here',
-      iconColor: AppColors.primary,
+      iconColor: context.colors.primary,
       action: onAddTransaction != null
           ? ElevatedButton.icon(
               onPressed: onAddTransaction,
               icon: const Icon(Icons.add),
               label: const Text('Make a Payment'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
+                backgroundColor: context.colors.primary,
                 foregroundColor: Colors.white,
               ),
             )
@@ -42,19 +45,22 @@ class EmptyState extends StatelessWidget {
   }
 
   /// No contacts empty state
-  factory EmptyState.noContacts({VoidCallback? onAddContact}) {
+  factory EmptyState.noContacts({
+    required BuildContext context,
+    VoidCallback? onAddContact,
+  }) {
     return EmptyState(
       icon: Icons.people_outline,
       title: 'No Contacts',
       message: 'Add your first trusted contact to get started',
-      iconColor: AppColors.info,
+      iconColor: context.colors.info,
       action: onAddContact != null
           ? ElevatedButton.icon(
               onPressed: onAddContact,
               icon: const Icon(Icons.person_add),
               label: const Text('Add Contact'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
+                backgroundColor: context.colors.primary,
                 foregroundColor: Colors.white,
               ),
             )
@@ -63,34 +69,37 @@ class EmptyState extends StatelessWidget {
   }
 
   /// No tasks empty state (child view)
-  factory EmptyState.noTasks() {
-    return const EmptyState(
+  factory EmptyState.noTasks(BuildContext context) {
+    return EmptyState(
       icon: Icons.check_circle_outline,
       title: 'No Chores Available',
       message: 'Check back later for new tasks',
-      iconColor: AppColors.success,
+      iconColor: context.colors.success,
     );
   }
 
   /// All caught up (notifications)
-  factory EmptyState.allCaughtUp() {
-    return const EmptyState(
+  factory EmptyState.allCaughtUp(BuildContext context) {
+    return EmptyState(
       icon: Icons.notifications_none,
       title: 'All Caught Up!',
       message: 'You have no new notifications',
-      iconColor: AppColors.primary,
+      iconColor: context.colors.primary,
     );
   }
 
   /// Search no results
-  factory EmptyState.noResults({String? query}) {
+  factory EmptyState.noResults({
+    required BuildContext context,
+    String? query,
+  }) {
     return EmptyState(
       icon: Icons.search_off,
       title: 'No Results Found',
       message: query != null
           ? 'No results for "$query"'
           : 'Try adjusting your search',
-      iconColor: AppColors.textTertiary,
+      iconColor: context.colors.textTertiary,
     );
   }
 

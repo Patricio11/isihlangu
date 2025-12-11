@@ -151,10 +151,10 @@ class _NavBarItem extends StatelessWidget {
     final theme = Theme.of(context);
 
     Color getColor() {
-      if (isDisabled) return AppColors.textTertiary;
-      if (isActive) return AppColors.primary;
-      if (isHighlight) return AppColors.success;
-      return AppColors.textSecondary;
+      if (isDisabled) return context.colors.textTertiary;
+      if (isActive) return context.colors.primary;
+      if (isHighlight) return context.colors.success;
+      return context.colors.textSecondary;
     }
 
     return Expanded(
@@ -173,7 +173,7 @@ class _NavBarItem extends StatelessWidget {
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: isActive
-                        ? AppColors.primary.withValues(alpha: 0.15)
+                        ? context.colors.primary.withValues(alpha: 0.15)
                         : Colors.transparent,
                     borderRadius: BorderRadius.circular(12),
                   ),

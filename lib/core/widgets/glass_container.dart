@@ -114,6 +114,9 @@ class GlassButton extends StatelessWidget {
     this.boxShadow,
   });
 
+  // Note: Factory constructors cannot access BuildContext
+  // These factories are deprecated - use GlassButton with explicit gradient parameter
+  @Deprecated('Use GlassButton with gradient parameter from context.colors')
   factory GlassButton.primary({
     required VoidCallback? onPressed,
     required Widget child,
@@ -131,6 +134,7 @@ class GlassButton extends StatelessWidget {
     );
   }
 
+  @Deprecated('Use GlassButton with gradient parameter from context.colors')
   factory GlassButton.danger({
     required VoidCallback? onPressed,
     required Widget child,
@@ -184,7 +188,7 @@ class GlassButton extends StatelessWidget {
           child: Ink(
             decoration: BoxDecoration(
               gradient: gradient,
-              color: gradient == null ? (color ?? AppColors.primary) : null,
+              color: gradient == null ? (color ?? context.colors.primary) : null,
               borderRadius: borderRadius,
             ),
             child: Container(
@@ -240,7 +244,7 @@ class CircularGlassButton extends StatelessWidget {
               child: Center(
                 child: Icon(
                   icon,
-                  color: iconColor ?? AppColors.primary,
+                  color: iconColor ?? context.colors.primary,
                   size: size * 0.4,
                 ),
               ),
@@ -286,7 +290,7 @@ class GlassCard extends StatelessWidget {
     final effectiveGlow = hasGlow
         ? [
             BoxShadow(
-              color: (glowColor ?? AppColors.primary).withValues(alpha: 0.3),
+              color: (glowColor ?? context.colors.primary).withValues(alpha: 0.3),
               blurRadius: 20,
               spreadRadius: 0,
             ),

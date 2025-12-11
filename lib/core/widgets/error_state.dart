@@ -87,13 +87,13 @@ class ErrorState extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: AppColors.danger.withAlpha(26),
+                color: context.colors.danger.withAlpha(26),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 icon,
                 size: 64,
-                color: AppColors.danger,
+                color: context.colors.danger,
               ),
             )
                 .animate()
@@ -104,7 +104,7 @@ class ErrorState extends StatelessWidget {
             Text(
               title,
               style: theme.textTheme.headlineSmall?.copyWith(
-                color: AppColors.textPrimary,
+                color: context.colors.textPrimary,
                 fontWeight: FontWeight.w600,
               ),
               textAlign: TextAlign.center,
@@ -116,7 +116,7 @@ class ErrorState extends StatelessWidget {
             Text(
               message,
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: AppColors.textSecondary,
+                color: context.colors.textSecondary,
                 height: 1.5,
               ),
               textAlign: TextAlign.center,
@@ -134,7 +134,7 @@ class ErrorState extends StatelessWidget {
                 icon: const Icon(Icons.refresh_rounded),
                 label: const Text('Try Again'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
+                  backgroundColor: context.colors.primary,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                   shape: RoundedRectangleBorder(

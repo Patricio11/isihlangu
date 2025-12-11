@@ -23,8 +23,8 @@ class ShieldRefreshIndicator extends StatelessWidget {
         await onRefresh();
         HapticService.success();
       },
-      color: AppColors.primary,
-      backgroundColor: AppColors.backgroundSecondary,
+      color: context.colors.primary,
+      backgroundColor: context.colors.backgroundSecondary,
       strokeWidth: 3,
       displacement: 60,
       child: child,
@@ -166,7 +166,7 @@ class _ShieldRefreshHeader extends StatelessWidget {
                 size: const Size(40, 40),
                 painter: _ShieldIconPainter(
                   fillProgress: isRefreshing ? 1.0 : progress,
-                  color: AppColors.primary,
+                  color: context.colors.primary,
                 ),
               ),
             );

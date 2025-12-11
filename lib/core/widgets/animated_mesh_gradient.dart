@@ -46,6 +46,7 @@ class _AnimatedMeshGradientState extends State<AnimatedMeshGradient>
           painter: MeshGradientPainter(
             animation: _controller.value,
             isDark: isDark,
+            context: context,
           ),
           child: widget.child,
         );
@@ -58,7 +59,13 @@ class MeshGradientPainter extends CustomPainter {
   final double animation;
   final bool isDark;
 
-  MeshGradientPainter({required this.animation, required this.isDark});
+  final BuildContext context;
+
+  MeshGradientPainter({
+    required this.animation,
+    required this.isDark,
+    required this.context,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -66,17 +73,11 @@ class MeshGradientPainter extends CustomPainter {
     final baseGradient = LinearGradient(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
-      colors: isDark
-          ? [
-              AppColors.darkBackground,
-              AppColors.darkBackgroundSecondary,
-              AppColors.darkBackground,
-            ]
-          : [
-              AppColors.lightBackground,
-              AppColors.lightBackgroundSecondary,
-              AppColors.lightBackground,
-            ],
+      colors: [
+        context.colors.background,
+        context.colors.backgroundSecondary,
+        context.colors.background,
+      ],
     );
 
     final baseRect = Rect.fromLTWH(0, 0, size.width, size.height);
@@ -91,7 +92,7 @@ class MeshGradientPainter extends CustomPainter {
       size,
       offsetX: size.width * 0.2 + math.sin(animation * 2 * math.pi) * 50,
       offsetY: size.height * 0.3 + math.cos(animation * 2 * math.pi) * 50,
-      color: AppColors.primary.withValues(alpha: blobOpacity),
+      color: context.colors.primary.withValues(alpha: blobOpacity),
       radius: 150,
     );
 
@@ -100,7 +101,7 @@ class MeshGradientPainter extends CustomPainter {
       size,
       offsetX: size.width * 0.8 + math.cos(animation * 2 * math.pi) * 40,
       offsetY: size.height * 0.6 + math.sin(animation * 2 * math.pi) * 40,
-      color: AppColors.primaryDark.withValues(alpha: blobOpacity * 0.8),
+      color: context.colors.primaryDark.withValues(alpha: blobOpacity * 0.8),
       radius: 180,
     );
 
@@ -109,7 +110,7 @@ class MeshGradientPainter extends CustomPainter {
       size,
       offsetX: size.width * 0.5 + math.sin(animation * 2 * math.pi + 1) * 60,
       offsetY: size.height * 0.8 + math.cos(animation * 2 * math.pi + 1) * 60,
-      color: AppColors.info.withValues(alpha: blobOpacity * 0.6),
+      color: context.colors.info.withValues(alpha: blobOpacity * 0.6),
       radius: 120,
     );
   }
@@ -161,24 +162,16 @@ class StaticGradientBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: isDark
-              ? [
-                  AppColors.darkBackground,
-                  AppColors.darkBackgroundSecondary,
-                  AppColors.darkBackground,
-                ]
-              : [
-                  AppColors.lightBackground,
-                  AppColors.lightBackgroundSecondary,
-                  AppColors.lightBackground,
-                ],
+          colors: [
+            context.colors.background,
+            context.colors.backgroundSecondary,
+            context.colors.background,
+          ],
         ),
       ),
       child: child,

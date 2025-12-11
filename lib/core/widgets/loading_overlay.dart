@@ -40,7 +40,7 @@ class LoadingOverlay extends StatelessWidget {
       child: Material(
         color: isTransparent
             ? Colors.transparent
-            : AppColors.background.withAlpha(230),
+            : context.colors.background.withAlpha(230),
         child: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -51,7 +51,7 @@ class LoadingOverlay extends StatelessWidget {
                 Text(
                   message!,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: context.colors.textSecondary,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -125,7 +125,7 @@ class _AnimatedShieldLoaderState extends State<AnimatedShieldLoader>
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: (widget.color ?? AppColors.primary)
+                    color: (widget.color ?? context.colors.primary)
                         .withAlpha((100 * _pulseController.value).toInt()),
                     blurRadius: 20 * _pulseController.value,
                     spreadRadius: 5 * _pulseController.value,
@@ -134,7 +134,7 @@ class _AnimatedShieldLoaderState extends State<AnimatedShieldLoader>
               ),
               child: CustomPaint(
                 painter: _ShieldLoaderPainter(
-                  color: widget.color ?? AppColors.primary,
+                  color: widget.color ?? context.colors.primary,
                 ),
               ),
             ),
