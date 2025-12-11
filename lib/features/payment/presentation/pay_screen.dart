@@ -29,13 +29,26 @@ class _PayScreenState extends ConsumerState<PayScreen> {
   String? _selectedContact;
   bool _showSlider = false;
 
-  final List<Contact> _frequentContacts = [
-    Contact(id: '1', name: 'Sipho', avatar: '👨', color: AppColors.primary),
-    Contact(id: '2', name: 'Thandiwe', avatar: '👩', color: AppColors.success),
-    Contact(id: '3', name: 'Bongani', avatar: '👨‍💼', color: AppColors.warning),
-    Contact(id: '4', name: 'Zanele', avatar: '👩‍💼', color: AppColors.info),
-    Contact(id: '5', name: 'Mpho', avatar: '🧑', color: AppColors.danger),
-  ];
+  late final List<Contact> _frequentContacts;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize contacts in initState to access BuildContext
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        setState(() {
+          _frequentContacts = [
+            Contact(id: '1', name: 'Sipho', avatar: '👨', color: context.colors.primary),
+            Contact(id: '2', name: 'Thandiwe', avatar: '👩', color: context.colors.success),
+            Contact(id: '3', name: 'Bongani', avatar: '👨‍💼', color: context.colors.warning),
+            Contact(id: '4', name: 'Zanele', avatar: '👩‍💼', color: context.colors.info),
+            Contact(id: '5', name: 'Mpho', avatar: '🧑', color: context.colors.danger),
+          ];
+        });
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -189,7 +202,7 @@ class _PayScreenState extends ConsumerState<PayScreen> {
 
     return Scaffold(
       extendBodyBehindAppBar: true,
-      backgroundColor: AppColors.background,
+      backgroundColor: context.colors.background,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -200,7 +213,7 @@ class _PayScreenState extends ConsumerState<PayScreen> {
         title: Text(
           'Send Money',
           style: theme.textTheme.titleLarge?.copyWith(
-            color: AppColors.textPrimary,
+            color: context.colors.textPrimary,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -218,7 +231,7 @@ class _PayScreenState extends ConsumerState<PayScreen> {
                 Text(
                   'Available Balance',
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: AppColors.textTertiary,
+                    color: context.colors.textTertiary,
                   ),
                   textAlign: TextAlign.center,
                 )
@@ -232,7 +245,7 @@ class _PayScreenState extends ConsumerState<PayScreen> {
                   NumberFormat.currency(symbol: 'R ', decimalDigits: 2)
                       .format(session.balance),
                   style: theme.textTheme.headlineMedium?.copyWith(
-                    color: AppColors.textPrimary,
+                    color: context.colors.textPrimary,
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
@@ -247,7 +260,7 @@ class _PayScreenState extends ConsumerState<PayScreen> {
                 Text(
                   'How much?',
                   style: theme.textTheme.titleMedium?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: context.colors.textSecondary,
                   ),
                 )
                     .animate()
@@ -265,21 +278,21 @@ class _PayScreenState extends ConsumerState<PayScreen> {
                       FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
                     ],
                     style: theme.textTheme.displayMedium?.copyWith(
-                      color: AppColors.textPrimary,
+                      color: context.colors.textPrimary,
                       fontWeight: FontWeight.bold,
                     ),
-                    cursorColor: AppColors.primary,
+                    cursorColor: context.colors.primary,
                     decoration: InputDecoration(
                       filled: false,
                       fillColor: Colors.transparent,
                       hintText: '0.00',
                       hintStyle: theme.textTheme.displayMedium?.copyWith(
-                        color: AppColors.textTertiary.withValues(alpha: 0.4),
+                        color: context.colors.textTertiary.withValues(alpha: 0.4),
                         fontWeight: FontWeight.bold,
                       ),
                       prefixText: 'R ',
                       prefixStyle: theme.textTheme.displayMedium?.copyWith(
-                        color: AppColors.primary,
+                        color: context.colors.primary,
                         fontWeight: FontWeight.bold,
                       ),
                       border: InputBorder.none,
@@ -302,7 +315,7 @@ class _PayScreenState extends ConsumerState<PayScreen> {
                 Text(
                   'Send to',
                   style: theme.textTheme.titleMedium?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: context.colors.textSecondary,
                   ),
                 )
                     .animate()
@@ -314,23 +327,25 @@ class _PayScreenState extends ConsumerState<PayScreen> {
                 // Contacts scroll
                 SizedBox(
                   height: 100,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: _frequentContacts.length,
-                    separatorBuilder: (context, index) => const SizedBox(width: 16),
-                    itemBuilder: (context, index) {
-                      final contact = _frequentContacts[index];
-                      final isSelected = _selectedContact == contact.id;
+                  child: _frequentContacts.isEmpty
+                      ? const SizedBox.shrink()
+                      : ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: _frequentContacts.length,
+                          separatorBuilder: (context, index) => const SizedBox(width: 16),
+                          itemBuilder: (context, index) {
+                            final contact = _frequentContacts[index];
+                            final isSelected = _selectedContact == contact.id;
 
-                      return _ContactChip(
-                        contact: contact,
-                        isSelected: isSelected,
-                        onTap: () => _onContactSelected(contact.id),
-                      ).animate()
-                          .fadeIn(duration: 400.ms, delay: (450 + index * 50).ms)
-                          .slideY(begin: 0.3, end: 0, duration: 400.ms, delay: (450 + index * 50).ms);
-                    },
-                  ),
+                            return _ContactChip(
+                              contact: contact,
+                              isSelected: isSelected,
+                              onTap: () => _onContactSelected(contact.id),
+                            ).animate()
+                                .fadeIn(duration: 400.ms, delay: (450 + index * 50).ms)
+                                .slideY(begin: 0.3, end: 0, duration: 400.ms, delay: (450 + index * 50).ms);
+                          },
+                        ),
                 ),
 
                 const SizedBox(height: 48),
@@ -349,10 +364,10 @@ class _PayScreenState extends ConsumerState<PayScreen> {
                   Container(
                     height: 70,
                     decoration: BoxDecoration(
-                      color: AppColors.glassSurface,
+                      color: context.colors.glassSurface,
                       borderRadius: BorderRadius.circular(35),
                       border: Border.all(
-                        color: AppColors.glassBorder,
+                        color: context.colors.glassBorder,
                         width: 2,
                       ),
                     ),
@@ -360,7 +375,7 @@ class _PayScreenState extends ConsumerState<PayScreen> {
                       child: Text(
                         'Enter amount and select recipient',
                         style: theme.textTheme.bodyMedium?.copyWith(
-                          color: AppColors.textTertiary,
+                          color: context.colors.textTertiary,
                         ),
                       ),
                     ),
@@ -414,15 +429,15 @@ class _ContactChip extends StatelessWidget {
             height: 60,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: contact.color.withOpacity(0.2),
+              color: contact.color.withValues(alpha: 0.2),
               border: Border.all(
-                color: isSelected ? contact.color : AppColors.glassBorder,
+                color: isSelected ? contact.color : context.colors.glassBorder,
                 width: isSelected ? 3 : 1,
               ),
               boxShadow: isSelected
                   ? [
                       BoxShadow(
-                        color: contact.color.withOpacity(0.5),
+                        color: contact.color.withValues(alpha: 0.5),
                         blurRadius: 16,
                         spreadRadius: 2,
                       ),
@@ -440,7 +455,7 @@ class _ContactChip extends StatelessWidget {
           Text(
             contact.name,
             style: theme.textTheme.bodySmall?.copyWith(
-              color: isSelected ? AppColors.textPrimary : AppColors.textSecondary,
+              color: isSelected ? context.colors.textPrimary : context.colors.textSecondary,
               fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
             ),
           ),
@@ -477,12 +492,12 @@ class _PaymentSuccessDialog extends StatelessWidget {
               height: 80,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.success.withOpacity(0.2),
-                border: Border.all(color: AppColors.success, width: 3),
+                color: context.colors.success.withValues(alpha: 0.2),
+                border: Border.all(color: context.colors.success, width: 3),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.check,
-                color: AppColors.success,
+                color: context.colors.success,
                 size: 40,
               ),
             )
@@ -494,7 +509,7 @@ class _PaymentSuccessDialog extends StatelessWidget {
             Text(
               'Payment Sent!',
               style: theme.textTheme.headlineSmall?.copyWith(
-                color: AppColors.textPrimary,
+                color: context.colors.textPrimary,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -504,7 +519,7 @@ class _PaymentSuccessDialog extends StatelessWidget {
             Text(
               NumberFormat.currency(symbol: 'R ', decimalDigits: 2).format(amount),
               style: theme.textTheme.displaySmall?.copyWith(
-                color: AppColors.primary,
+                color: context.colors.primary,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -514,7 +529,7 @@ class _PaymentSuccessDialog extends StatelessWidget {
             Text(
               'to $contactName',
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: AppColors.textSecondary,
+                color: context.colors.textSecondary,
               ),
             ),
 
@@ -536,7 +551,7 @@ class _PaymentSuccessDialog extends StatelessWidget {
                       width: 6,
                       height: 6,
                       decoration: BoxDecoration(
-                        color: AppColors.success.withOpacity(0.5),
+                        color: context.colors.success.withValues(alpha: 0.5),
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -544,7 +559,7 @@ class _PaymentSuccessDialog extends StatelessWidget {
                     Text(
                       'Secured',
                       style: theme.textTheme.labelSmall?.copyWith(
-                        color: AppColors.textTertiary.withOpacity(0.6),
+                        color: context.colors.textTertiary.withValues(alpha: 0.6),
                         fontSize: 9,
                       ),
                     ),
@@ -586,12 +601,12 @@ class _PaymentErrorDialog extends StatelessWidget {
               height: 80,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.danger.withOpacity(0.2),
-                border: Border.all(color: AppColors.danger, width: 3),
+                color: context.colors.danger.withValues(alpha: 0.2),
+                border: Border.all(color: context.colors.danger, width: 3),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.error_outline,
-                color: AppColors.danger,
+                color: context.colors.danger,
                 size: 40,
               ),
             )
@@ -604,7 +619,7 @@ class _PaymentErrorDialog extends StatelessWidget {
             Text(
               isNetworkError ? 'Connection Error' : 'Payment Failed',
               style: theme.textTheme.headlineSmall?.copyWith(
-                color: AppColors.textPrimary,
+                color: context.colors.textPrimary,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -615,7 +630,7 @@ class _PaymentErrorDialog extends StatelessWidget {
             Text(
               errorMessage,
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: AppColors.textSecondary,
+                color: context.colors.textSecondary,
               ),
               textAlign: TextAlign.center,
             ),
