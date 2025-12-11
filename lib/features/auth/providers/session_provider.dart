@@ -55,13 +55,18 @@ class SessionNotifier extends StateNotifier<SessionState> {
   }
 
   /// Clear session on logout
-  void clearSession() {
+  Future<void> clearSession() async {
+    // Clear persistent duress state if active (development only)
+    // In production, only parent can unlock duress mode
+    final duressManager = await DuressStateManager.getInstance();
+    await duressManager.emergencyReset();
+
     state = const SessionState();
   }
 
   /// Logout (alias for clearSession)
-  void logout() {
-    clearSession();
+  Future<void> logout() async {
+    await clearSession();
   }
 
   /// Update balance (for testing)

@@ -34,6 +34,14 @@ class LoginScreen extends ConsumerWidget {
     final authNotifier = ref.read(authProvider.notifier);
     final theme = Theme.of(context);
 
+    // Clear PIN when returning to login screen (e.g., after logout)
+    // This ensures the user starts fresh
+    if (authState.pin.isNotEmpty && !authState.isAuthenticated) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        authNotifier.clearPin();
+      });
+    }
+
     // Set status bar style (skip on web)
     if (!kIsWeb) {
       SystemChrome.setSystemUIOverlayStyle(AppTheme.lightStatusBar);

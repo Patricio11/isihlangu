@@ -227,12 +227,18 @@ class ProfileScreen extends ConsumerWidget {
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () {
+            onPressed: () async {
               HapticService.mediumImpact();
               Navigator.of(context).pop();
-              ref.read(sessionProvider.notifier).logout();
-              context.go('/login');
-              CustomToast.showSuccess(context, 'Logged out successfully');
+
+              // Clear session (includes duress state and auth)
+              await ref.read(sessionProvider.notifier).logout();
+
+              // Navigate to login
+              if (context.mounted) {
+                context.go('/login');
+                CustomToast.showSuccess(context, 'Logged out successfully');
+              }
             },
             style: TextButton.styleFrom(
               foregroundColor: context.colors.danger,
