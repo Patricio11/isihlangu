@@ -20,7 +20,7 @@ class ProfileScreen extends ConsumerWidget {
     final isRestricted = session?.isRestricted ?? false;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.colors.background,
       appBar: AppBar(
         title: const Text('Profile'),
         actions: [
@@ -82,7 +82,7 @@ class ProfileScreen extends ConsumerWidget {
               icon: Icons.shield_outlined,
               title: 'Change Duress PIN',
               subtitle: 'Update your duress protection PIN',
-              iconColor: AppColors.danger,
+              iconColor: context.colors.danger,
               onTap: () {
                 CustomToast.showInfo(context, 'Duress PIN change coming in Phase 2');
               },
@@ -149,7 +149,7 @@ class ProfileScreen extends ConsumerWidget {
             icon: Icons.logout_rounded,
             title: 'Log Out',
             subtitle: 'Sign out of your account',
-            iconColor: AppColors.danger,
+            iconColor: context.colors.danger,
             onTap: () => _showLogoutDialog(context, ref),
           ),
 
@@ -165,28 +165,28 @@ class ProfileScreen extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.backgroundSecondary,
+        backgroundColor: context.colors.backgroundSecondary,
         title: Text(
           'Active Sessions',
           style: theme.textTheme.titleLarge?.copyWith(
-            color: AppColors.textPrimary,
+            color: context.colors.textPrimary,
           ),
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              leading: const Icon(Icons.phone_iphone, color: AppColors.primary),
+              leading: Icon(Icons.phone_iphone, color: context.colors.primary),
               title: Text(
                 FakeUserProfile.currentDevice,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textPrimary,
+                  color: context.colors.textPrimary,
                 ),
               ),
               subtitle: Text(
                 'This device - Active now',
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: AppColors.success,
+                  color: context.colors.success,
                 ),
               ),
             ),
@@ -208,17 +208,17 @@ class ProfileScreen extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.backgroundSecondary,
+        backgroundColor: context.colors.backgroundSecondary,
         title: Text(
           'Log Out',
           style: theme.textTheme.titleLarge?.copyWith(
-            color: AppColors.textPrimary,
+            color: context.colors.textPrimary,
           ),
         ),
         content: Text(
           'Are you sure you want to log out?',
           style: theme.textTheme.bodyMedium?.copyWith(
-            color: AppColors.textSecondary,
+            color: context.colors.textSecondary,
           ),
         ),
         actions: [
@@ -235,7 +235,7 @@ class ProfileScreen extends ConsumerWidget {
               CustomToast.showSuccess(context, 'Logged out successfully');
             },
             style: TextButton.styleFrom(
-              foregroundColor: AppColors.danger,
+              foregroundColor: context.colors.danger,
             ),
             child: const Text('Log Out'),
           ),
