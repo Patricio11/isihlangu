@@ -43,12 +43,12 @@ class SettingsTile extends StatelessWidget {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: (iconColor ?? AppColors.primary).withAlpha(26),
+              color: (iconColor ?? context.colors.primary).withAlpha(26),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(
               icon,
-              color: iconColor ?? AppColors.primary,
+              color: iconColor ?? context.colors.primary,
               size: 20,
             ),
           ),
@@ -63,7 +63,7 @@ class SettingsTile extends StatelessWidget {
                 Text(
                   title,
                   style: theme.textTheme.bodyLarge?.copyWith(
-                    color: AppColors.textPrimary,
+                    color: context.colors.textPrimary,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -72,7 +72,7 @@ class SettingsTile extends StatelessWidget {
                   Text(
                     subtitle!,
                     style: theme.textTheme.bodySmall?.copyWith(
-                      color: AppColors.textTertiary,
+                      color: context.colors.textTertiary,
                     ),
                   ),
                 ],
@@ -87,7 +87,7 @@ class SettingsTile extends StatelessWidget {
           if (onTap != null && trailing == null)
             Icon(
               Icons.chevron_right,
-              color: AppColors.textTertiary,
+              color: context.colors.textTertiary,
               size: 20,
             ),
         ],
@@ -129,7 +129,7 @@ class SettingsToggleTile extends StatelessWidget {
           HapticService.selectionClick();
           onChanged(val);
         },
-        activeColor: AppColors.primary,
+        activeTrackColor: context.colors.primary,
       ),
     );
   }
@@ -153,7 +153,7 @@ class SettingsSectionHeader extends StatelessWidget {
       child: Text(
         title.toUpperCase(),
         style: theme.textTheme.labelSmall?.copyWith(
-          color: AppColors.textTertiary,
+          color: context.colors.textTertiary,
           fontWeight: FontWeight.w600,
           letterSpacing: 1.2,
         ),
