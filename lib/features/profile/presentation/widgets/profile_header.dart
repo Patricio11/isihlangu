@@ -32,11 +32,11 @@ class ProfileHeader extends StatelessWidget {
             width: 80,
             height: 80,
             decoration: BoxDecoration(
-              gradient: AppColors.primaryGradient,
+              gradient: context.colors.primaryGradient,
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.primary.withAlpha(77),
+                  color: context.colors.primary.withAlpha(77),
                   blurRadius: 20,
                   spreadRadius: 2,
                 ),
@@ -66,7 +66,7 @@ class ProfileHeader extends StatelessWidget {
           Text(
             name,
             style: theme.textTheme.headlineSmall?.copyWith(
-              color: AppColors.textPrimary,
+              color: context.colors.textPrimary,
               fontWeight: FontWeight.w600,
             ),
           )
@@ -80,7 +80,7 @@ class ProfileHeader extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
             decoration: BoxDecoration(
-              gradient: AppColors.primaryGradient,
+              gradient: context.colors.primaryGradient,
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
@@ -108,13 +108,13 @@ class ProfileHeader extends StatelessWidget {
               Icon(
                 Icons.calendar_today_rounded,
                 size: 14,
-                color: AppColors.textTertiary,
+                color: context.colors.textTertiary,
               ),
               const SizedBox(width: 6),
               Text(
                 'Member since $memberSince',
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: AppColors.textTertiary,
+                  color: context.colors.textTertiary,
                 ),
               ),
             ],
