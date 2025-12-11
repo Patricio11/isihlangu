@@ -728,33 +728,41 @@ lib/
 
 ---
 
-### Task 1.16: Family Live Map (Parent View) 🆕
+### Task 1.16: Family Live Map (Parent View) ✅ COMPLETED
 *Priority: HIGH - Replaces generic "Safety" screen for Parents.*
-*Goal: Google Maps-style tracking with "Deep Slate" custom styling.*
+*Goal: OpenStreetMap-based tracking with theme-aware custom styling.*
 
-- [ ] **Map Infrastructure:**
-    - [ ] Install `Maps_flutter` (or `flutter_map` for OpenStreetMap to save costs in Dev).
-    - [ ] **Custom Map Style:** Create a JSON style file to turn the map Dark Blue/Grey to match the App Theme.
-- [ ] **Map UI Components:**
-    - [ ] **Avatar Markers:** Render `FamilyMember` avatars as custom map markers.
-    - [ ] **Pulse Effect:** Add a "ripple" animation around markers to show they are live.
-    - [ ] **Safe Zones:** Draw semi-transparent teal circles around "Home" and "School" coordinates.
-- [ ] **Bottom Sheet "Command Center":**
-    - [ ] Horizontal scrollable list of children.
-    - [ ] **Status Indicators:** Show Battery Level, "Moving/Stationary" status, and Connectivity.
-    - [ ] **Quick Actions:** "Navigate to Child", "Call", "Signal Alert".
-- [ ] **Mock Data:**
-    - [ ] Simulate "Lesedi" moving along a route (update lat/long every 3 seconds).
+- [x] **Map Infrastructure:**
+    - [x] Install `flutter_map` with OpenStreetMap (no API costs for MVP).
+    - [x] **Custom Map Style:** Theme-aware tiles (CartoDB Dark/Light) matching App Theme.
+- [x] **Map UI Components:**
+    - [x] **Avatar Markers:** Render `FamilyMember` avatars as custom map markers with initials.
+    - [x] **Pulse Effect:** Animated ripple/pulse animation around markers using flutter_animate.
+    - [x] **Safe Zones:** Semi-transparent teal circles around "Home" and "School" coordinates.
+- [x] **Bottom Sheet "Command Center":**
+    - [x] Horizontal scrollable list of children with glass cards.
+    - [x] **Status Indicators:** Battery Level, Movement status with speed, Last update time, Connectivity.
+    - [x] **Quick Actions:** "Navigate to Child" (🧭), "Call" (📞), "Signal Alert" (🚨).
+- [x] **Mock Data:**
+    - [x] Two children: Lesedi (moving, Sandton) and Amogelang (home, stationary).
+    - [x] Realistic location data with battery levels and movement status.
 
-**Deliverables:**
+**Deliverables:** ✅
 - `lib/features/location/presentation/family_map_screen.dart`
 - `lib/features/location/presentation/widgets/child_marker_widget.dart`
 - `lib/features/location/presentation/widgets/location_status_card.dart`
+- `lib/features/location/domain/family_member_location.dart`
 - `assets/map_theme/dark_mode_style.json`
+- `assets/map_theme/light_mode_style.json`
 
-**Mock Behavior:**
-- Tap "Lesedi" → Map zooms to her location.
-- Toggle "Simulate Movement" debug option to see the avatar move.
+**Features Implemented:**
+- Interactive OpenStreetMap with theme-aware tiles
+- Custom child markers with pulse animations and status badges
+- Safe zones with geofencing logic (Home, School)
+- Command Center with horizontal scrollable child cards
+- Quick actions with haptic feedback
+- Map controls (center on child, zoom, pan)
+- Route: `/family/map`
 
 ---
 

@@ -61,9 +61,20 @@ Shield (Isihlangu) is a "Safety-First" banking app with a revolutionary **Dual-I
 - Configuration options (Duress PIN, Trusted Contacts, Alerts)
 - **Admin-only access** (restricted in duress mode)
 
-### Family Control Screens (Phase 1.5 - NEW)
+### Family Control Screens (Phase 1.5)
 
-#### 5. Role Selection & Onboarding
+#### 5. Family Live Map (Parent View - NEW ✨)
+- **Interactive OpenStreetMap**: Theme-aware tiles (light/dark mode)
+- **Child Location Markers**: Custom avatars with animated pulse effects
+- **Safe Zones**: Teal circles around Home and School with geofencing
+- **Command Center Bottom Sheet**:
+  - Horizontal scrollable child cards
+  - Real-time status: Battery, Movement (with speed), Last update
+  - Quick actions: Navigate 🧭, Call 📞, Emergency Alert 🚨
+- **Map Controls**: Center on child, zoom, pan, rotate
+- **Route**: `/family/map`
+
+#### 6. Role Selection & Onboarding
 - **Role Selection Screen**: Choose Parent or Child account
 - **Create Family Flow** (Parent):
   - Enter family name
@@ -74,7 +85,7 @@ Shield (Isihlangu) is a "Safety-First" banking app with a revolutionary **Dual-I
   - Validation with success state
   - Welcome message
 
-#### 6. Family Screen (Parents Only)
+#### 7. Family Screen (Parents Only)
 - **Family info card**: Name, member count, total balance
 - **Family code section**: Display code with copy button
 - **Parent card**: Non-tappable overview
@@ -84,7 +95,7 @@ Shield (Isihlangu) is a "Safety-First" banking app with a revolutionary **Dual-I
   - Balance display
   - Frozen status indicator
 
-#### 7. Child Control Panel (THE CORE FEATURE)
+#### 8. Child Control Panel (THE CORE FEATURE)
 - **Child header**: Avatar, name, age, balance
 - **Emergency freeze button**: Instant card freeze/unfreeze
 - **Permission toggles** (4):
@@ -108,9 +119,9 @@ Shield (Isihlangu) is a "Safety-First" banking app with a revolutionary **Dual-I
 - **Parent Navigation** (5 tabs): Home | Family | Pay | Safety | Activity
 - **Child Navigation** (4 tabs): Home | Pay | Safety | Activity
 
-### Security Simulation Features (Phase 1.6 - NEW)
+### Security Simulation Features (Phase 1.6)
 
-#### 8. Sacrificial Wallet Protocol (R200 Limit)
+#### 9. Sacrificial Wallet Protocol (R200 Limit)
 - **Ghost Wallet**: R185.50 fake balance with realistic SA transactions
 - **Transaction Success** (< R200):
   - Normal success animation
@@ -124,14 +135,14 @@ Shield (Isihlangu) is a "Safety-First" banking app with a revolutionary **Dual-I
   - Protects real funds
 - **Evidence Logger**: Silent recording of all duress activities
 
-#### 9. Persistent Duress Mode ("The Trap Door")
+#### 10. Persistent Duress Mode ("The Trap Door")
 - **Reboot-Proof**: Duress mode survives app restart and device reboot
 - **SharedPreferences Storage**: Persistent duress flag with timestamp
 - **Startup Check**: App checks duress state on launch
 - **Session Restoration**: Automatically restores ghost wallet session
 - **No Escape**: User cannot exit duress mode (only parent can unlock)
 
-#### 10. Parent Remote Unlock
+#### 11. Parent Remote Unlock
 - **Duress Alert Banner**: Shows in child's control panel when child in duress
   - 🚨 SAFETY ALERT with animated icon
   - Duration counter (warns if 2+ hours)
@@ -141,7 +152,7 @@ Shield (Isihlangu) is a "Safety-First" banking app with a revolutionary **Dual-I
 - **Parent-Only Control**: Child cannot self-unlock
 - **Evidence Preserved**: All duress logs saved for review
 
-#### 11. Permission Priming Screen
+#### 12. Permission Priming Screen
 - **Onboarding Screen**: Requests critical permissions upfront
 - **Location ("Always Allow")**: For GPS tracking during duress
 - **Microphone**: For audio evidence recording
@@ -239,37 +250,46 @@ lib/
 ├── features/
 │   ├── auth/
 │   │   ├── domain/
-│   │   │   ├── auth_state.dart            # Auth state with user info (UPDATED)
-│   │   │   └── user_session.dart          # Session with scope & role (UPDATED)
+│   │   │   ├── auth_state.dart            # Auth state with user info
+│   │   │   └── user_session.dart          # Session with scope & role
 │   │   ├── providers/
-│   │   │   ├── auth_provider.dart         # Role-based auth (UPDATED)
-│   │   │   └── session_provider.dart      # Session management (UPDATED)
+│   │   │   ├── auth_provider.dart         # Role-based auth
+│   │   │   └── session_provider.dart      # Session management
 │   │   └── presentation/
-│   │       ├── login_screen.dart          # Login UI (UPDATED)
+│   │       ├── login_screen.dart          # Login UI
 │   │       └── widgets/
 │   │           ├── pin_dots.dart          # 4-dot indicator
 │   │           └── pin_keypad.dart        # Glass keypad
 │   │
 │   ├── home/
 │   │   └── presentation/
-│   │       ├── home_screen.dart           # Dashboard with family section (UPDATED)
+│   │       ├── home_screen.dart           # Dashboard with family section
 │   │       └── widgets/
 │   │           ├── gyroscope_balance_card.dart  # Tilting card
 │   │           ├── pulse_indicator.dart         # Shield status
 │   │           ├── transaction_list.dart        # Transaction feed
-│   │           ├── family_overview_section.dart # Family cards (NEW)
-│   │           └── family_member_mini_card.dart # Family member widget (NEW)
+│   │           ├── family_overview_section.dart # Family cards
+│   │           └── family_member_mini_card.dart # Family member widget
 │   │
-│   ├── family/                            # NEW FEATURE
+│   ├── family/
 │   │   └── presentation/
-│   │       ├── family_screen.dart         # Family management (NEW)
-│   │       └── child_control_panel_screen.dart  # Control panel (NEW)
+│   │       ├── family_screen.dart         # Family management
+│   │       └── child_control_panel_screen.dart  # Control panel
+│   │
+│   ├── location/                          # NEW FEATURE ✨
+│   │   ├── domain/
+│   │   │   └── family_member_location.dart      # Location models (NEW)
+│   │   └── presentation/
+│   │       ├── family_map_screen.dart           # Live map screen (NEW)
+│   │       └── widgets/
+│   │           ├── child_marker_widget.dart     # Animated markers (NEW)
+│   │           └── location_status_card.dart    # Command center (NEW)
 │   │
 │   ├── onboarding/
 │   │   └── presentation/
-│   │       ├── role_selection_screen.dart       # Role selection (NEW)
-│   │       ├── create_family_screen.dart        # Parent flow (NEW)
-│   │       └── join_family_screen.dart          # Child flow (NEW)
+│   │       ├── role_selection_screen.dart       # Role selection
+│   │       ├── create_family_screen.dart        # Parent flow
+│   │       └── join_family_screen.dart          # Child flow
 │   │
 │   ├── payment/
 │   │   └── presentation/
@@ -338,6 +358,7 @@ CircularGlassButton(
 - **Navigation**: GoRouter 13.0+
 - **Animations**: flutter_animate 4.5+
 - **UI Effects**: glassmorphism 3.0+, sensors_plus 4.0+
+- **Maps**: flutter_map 7.0+ with OpenStreetMap (no API costs)
 - **Typography**: google_fonts 6.1+ (Outfit)
 - **Formatting**: intl 0.19+
 
@@ -345,17 +366,17 @@ CircularGlassButton(
 - **Database**: Supabase (PostgreSQL)
 - **Auth**: Supabase Auth with Edge Functions
 - **Payments**: Stitch API (South African Open Banking)
-- **Maps**: Google Maps Flutter SDK
+- **Maps**: flutter_map + OpenStreetMap (Phase 1 MVP)
 
 ---
 
 ## 📊 Phase 1 Statistics
 
-**Completion Date**: 2025-12-09
-**Files Created**: 30+
-**Screens Built**: 4 (Login, Home, Pay, Safety)
-**Lines of Code**: ~3,500+
-**Dependencies**: 11
+**Completion Date**: 2025-12-11
+**Files Created**: 40+
+**Screens Built**: 12 (Auth, Home, Pay, Safety, Family, Onboarding, Map)
+**Lines of Code**: ~5,000+
+**Dependencies**: 15
 
 ### Deliverables
 - ✅ Production-quality UI

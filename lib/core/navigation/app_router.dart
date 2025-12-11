@@ -15,6 +15,7 @@ import '../../features/card/presentation/card_screen.dart';
 import '../../features/activity/presentation/transaction_detail_screen.dart';
 import '../../features/notifications/presentation/notifications_screen.dart';
 import '../../features/family/presentation/child_control_panel_screen.dart';
+import '../../features/location/presentation/family_map_screen.dart';
 import '../../core/data/fake_transactions.dart';
 import 'main_scaffold.dart';
 
@@ -182,6 +183,14 @@ class AppRouter {
           final childId = state.pathParameters['childId']!;
           return ChildControlPanelScreen(childId: childId);
         },
+      ),
+
+      // Family Map (outside shell - full screen)
+      // ROADMAP Task 1.16: Family Live Map (Parent View)
+      GoRoute(
+        path: '/family/map',
+        name: 'family-map',
+        builder: (context, state) => const FamilyMapScreen(),
       ),
     ],
   );
