@@ -417,7 +417,7 @@ class _NotificationTile extends StatelessWidget {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  gradient: _getTypeGradient(notification.type),
+                  gradient: _getTypeGradient(context, notification.type),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Center(
@@ -516,7 +516,7 @@ class _NotificationTile extends StatelessWidget {
     }
   }
 
-  Gradient _getTypeGradient(NotificationType type) {
+  Gradient _getTypeGradient(BuildContext context, NotificationType type) {
     switch (type) {
       case NotificationType.transaction:
         return context.colors.primaryGradient;
