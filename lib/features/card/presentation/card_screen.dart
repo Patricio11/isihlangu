@@ -31,7 +31,7 @@ class _CardScreenState extends ConsumerState<CardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.colors.background,
       appBar: AppBar(
         title: const Text('My Card'),
         actions: [
@@ -66,7 +66,7 @@ class _CardScreenState extends ConsumerState<CardScreen> {
                 child: _QuickActionButton(
                   icon: _isFrozen ? Icons.ac_unit : Icons.lock_outline,
                   label: _isFrozen ? 'Unfreeze' : 'Freeze Card',
-                  color: _isFrozen ? AppColors.primary : AppColors.danger,
+                  color: _isFrozen ? context.colors.primary : context.colors.danger,
                   onTap: _toggleFreeze,
                 ),
               ),
@@ -75,7 +75,7 @@ class _CardScreenState extends ConsumerState<CardScreen> {
                 child: _QuickActionButton(
                   icon: Icons.content_copy_rounded,
                   label: 'Copy Number',
-                  color: AppColors.info,
+                  color: context.colors.info,
                   onTap: _copyCardNumber,
                 ),
               ),
@@ -174,7 +174,7 @@ class _CardScreenState extends ConsumerState<CardScreen> {
             icon: Icons.credit_card_outlined,
             title: 'Generate Virtual Card',
             subtitle: 'Create a temporary card for one-time use',
-            iconColor: AppColors.info,
+            iconColor: context.colors.info,
             onTap: () {
               _showVirtualCardDialog(context);
             },
@@ -189,7 +189,7 @@ class _CardScreenState extends ConsumerState<CardScreen> {
             icon: Icons.report_problem_outlined,
             title: 'Report Lost or Stolen',
             subtitle: 'Block card and request replacement',
-            iconColor: AppColors.warning,
+            iconColor: context.colors.warning,
             onTap: () {
               _showReportDialog(context);
             },
@@ -230,7 +230,7 @@ class _CardScreenState extends ConsumerState<CardScreen> {
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.backgroundSecondary,
+      backgroundColor: context.colors.backgroundSecondary,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -240,11 +240,11 @@ class _CardScreenState extends ConsumerState<CardScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              leading: const Icon(Icons.download_rounded, color: AppColors.primary),
+              leading: Icon(Icons.download_rounded, color: context.colors.primary),
               title: Text(
                 'Download Card Statement',
                 style: theme.textTheme.bodyLarge?.copyWith(
-                  color: AppColors.textPrimary,
+                  color: context.colors.textPrimary,
                 ),
               ),
               onTap: () {
@@ -253,11 +253,11 @@ class _CardScreenState extends ConsumerState<CardScreen> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.settings_rounded, color: AppColors.primary),
+              leading: Icon(Icons.settings_rounded, color: context.colors.primary),
               title: Text(
                 'Advanced Settings',
                 style: theme.textTheme.bodyLarge?.copyWith(
-                  color: AppColors.textPrimary,
+                  color: context.colors.textPrimary,
                 ),
               ),
               onTap: () {
@@ -277,17 +277,17 @@ class _CardScreenState extends ConsumerState<CardScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.backgroundSecondary,
+        backgroundColor: context.colors.backgroundSecondary,
         title: Text(
           'Generate Virtual Card',
           style: theme.textTheme.titleLarge?.copyWith(
-            color: AppColors.textPrimary,
+            color: context.colors.textPrimary,
           ),
         ),
         content: Text(
           'Create a temporary virtual card that expires after 24 hours. Perfect for one-time online purchases.',
           style: theme.textTheme.bodyMedium?.copyWith(
-            color: AppColors.textSecondary,
+            color: context.colors.textSecondary,
           ),
         ),
         actions: [
@@ -314,17 +314,17 @@ class _CardScreenState extends ConsumerState<CardScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.backgroundSecondary,
+        backgroundColor: context.colors.backgroundSecondary,
         title: Text(
           'Report Card',
           style: theme.textTheme.titleLarge?.copyWith(
-            color: AppColors.danger,
+            color: context.colors.danger,
           ),
         ),
         content: Text(
           'This will immediately block your card and prevent all transactions. Are you sure?',
           style: theme.textTheme.bodyMedium?.copyWith(
-            color: AppColors.textSecondary,
+            color: context.colors.textSecondary,
           ),
         ),
         actions: [
@@ -339,7 +339,7 @@ class _CardScreenState extends ConsumerState<CardScreen> {
               CustomToast.showInfo(context, 'Full feature coming in Phase 2');
             },
             style: TextButton.styleFrom(
-              foregroundColor: AppColors.danger,
+              foregroundColor: context.colors.danger,
             ),
             child: const Text('Report Lost/Stolen'),
           ),
@@ -377,7 +377,7 @@ class _QuickActionButton extends StatelessWidget {
           Text(
             label,
             style: theme.textTheme.bodySmall?.copyWith(
-              color: AppColors.textPrimary,
+              color: context.colors.textPrimary,
               fontWeight: FontWeight.w500,
             ),
             textAlign: TextAlign.center,
