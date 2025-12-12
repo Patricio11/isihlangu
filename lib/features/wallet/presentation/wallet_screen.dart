@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/glass_container.dart';
 import '../../../core/data/fake_wallets.dart';
@@ -31,9 +32,14 @@ class WalletScreen extends ConsumerWidget {
     }
 
     // CRITICAL: Duress mode cannot access wallets
-    // Only show fake balance on home screen in duress mode
+    // Redirect to home - wallet option is completely hidden in duress mode
     if (session.isRestricted) {
-      return _buildRestrictedView(context, theme);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context.go('/home');
+      });
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
     }
 
     return Scaffold(
@@ -149,63 +155,6 @@ class WalletScreen extends ConsumerWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  /// Build Restricted View (Duress Mode)
-  /// Duress mode users should never see this screen
-  /// They are redirected away or shown this message
-  Widget _buildRestrictedView(BuildContext context, ThemeData theme) {
-    return Scaffold(
-      backgroundColor: context.colors.background,
-      appBar: AppBar(
-        title: const Text('My Wallets'),
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(32),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.wallet_outlined,
-                size: 80,
-                color: context.colors.textTertiary,
-              )
-                  .animate()
-                  .fadeIn(duration: 600.ms)
-                  .scale(duration: 600.ms),
-
-              const SizedBox(height: 24),
-
-              Text(
-                'Wallets Unavailable',
-                style: theme.textTheme.headlineMedium?.copyWith(
-                  color: context.colors.textPrimary,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              )
-                  .animate()
-                  .fadeIn(duration: 600.ms, delay: 200.ms)
-                  .slideY(begin: 0.2, end: 0, duration: 600.ms, delay: 200.ms),
-
-              const SizedBox(height: 16),
-
-              Text(
-                'This feature is not available right now. Please try again later.',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: context.colors.textSecondary,
-                ),
-                textAlign: TextAlign.center,
-              )
-                  .animate()
-                  .fadeIn(duration: 600.ms, delay: 300.ms)
-                  .slideY(begin: 0.2, end: 0, duration: 600.ms, delay: 300.ms),
-            ],
-          ),
-        ),
       ),
     );
   }
