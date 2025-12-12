@@ -2,7 +2,7 @@
 
 **A dark-mode fintech application for South Africa with advanced security features.**
 
-**Phase 1: COMPLETE ✅** (2025-12-12) | [View Roadmap](SHIELD_DEV_ROADMAP.md) | [Setup Guide](SETUP.md)
+**Phase 1 + 1.5: COMPLETE ✅** (2025-12-12) | [View Roadmap](SHIELD_DEV_ROADMAP.md) | [Setup Guide](SETUP.md)
 
 ---
 
@@ -15,12 +15,13 @@ Shield (Isihlangu) is a "Safety-First" banking app with a revolutionary **Dual-I
 1. **Safe Mode**: User enters Real PIN → Full banking access with role-based features
 2. **Duress Mode**: User enters Panic PIN (9999) → Simulates low-balance account + Silent GPS alerts + Locks real funds
 3. **Family Control**: Parents manage children's accounts with granular permissions and spending limits
+4. **Finance Tools**: Multi-wallet management, spending analytics, beneficiary contacts (Safe Mode only)
 
 **Security by Stealth**: Both modes look identical - attackers cannot tell which mode is active.
 
 ---
 
-## ✅ What's Been Built (Phase 1.6 Complete)
+## ✅ What's Been Built (Phase 1.6 + 1.5 Complete)
 
 ### Core Authentication Screens
 
@@ -120,6 +121,48 @@ Shield (Isihlangu) is a "Safety-First" banking app with a revolutionary **Dual-I
 - Auto-redirect based on auth state
 - **Parent Navigation** (5 tabs): Home | Family | Pay | Safety | Activity
 - **Child Navigation** (4 tabs): Home | Pay | Safety | Activity
+
+### Finance Tools (Phase 1.5 - Safe Mode Only) ✨
+
+#### 13. WalletScreen - Multi-Wallet Management
+- **Total Balance Summary**: R13,900.50 across 3 wallets
+- **Main Wallet**: R12,450.50 - Primary spending
+- **Lunch Money**: R250.00 - School wallet
+- **Savings Pot**: R1,200.00/R3,500.00 (34% complete)
+  - Goal: New Bike by March 15, 2025
+  - Progress bar with percentage
+  - Days remaining countdown
+- **Quick Actions**: Move Money, Add Money
+- **Security**: SAFE MODE ONLY - Route blocked in duress mode
+
+#### 14. StatisticsScreen - Spending Insights
+- **Monthly Overview**: R4,250.75 (9.3% vs last month)
+- **Budget Tracking**: R4,250.75 / R5,000 budget (85% used)
+- **Category Breakdown**:
+  - Groceries (35.8%), Transport (23.1%), Entertainment (15.9%)
+  - Restaurants (12.8%), Shopping (9.1%), Other (3.4%)
+- **6-Month Trend Chart**: Bar chart with average line
+- **Insights**: Top spending day, most frequent merchant, largest category
+- **Security**: SAFE MODE ONLY - Blocked in duress mode
+
+#### 15. ContactsScreen - Beneficiary Management
+- **Favorites Section**: 3 starred contacts with quick access
+- **All Contacts**: 8 total contacts with bank details
+- **Contact Cards**: Avatar, name, phone, bank, transaction history
+- **Search Functionality**: Real-time filtering
+- **Quick Actions**: Call, Edit, Delete, Toggle Favorite
+- **Security**: View-only in duress mode (no add/edit/delete)
+
+#### 16. HelpScreen - Support & FAQ
+- **Searchable FAQ**: 12 comprehensive Q&A items
+- **Category Filters**: Security, Payments, Wallets, Family, Troubleshooting
+- **Expandable Accordions**: Tap to reveal full answers
+- **Support Contacts**:
+  - Phone: 0800 SHIELD (744 353)
+  - Email: support@shield.co.za
+  - WhatsApp: +27 82 SHIELD
+  - Emergency: 0800 111 222 (24/7)
+- **Security**: Available to all users
 
 ### Security Simulation Features (Phase 1.6)
 
@@ -280,12 +323,30 @@ lib/
 │   │
 │   ├── location/                          # NEW FEATURE ✨
 │   │   ├── domain/
-│   │   │   └── family_member_location.dart      # Location models (NEW)
+│   │   │   └── family_member_location.dart      # Location models
 │   │   └── presentation/
-│   │       ├── family_map_screen.dart           # Live map screen (NEW)
+│   │       ├── family_map_screen.dart           # Live map screen
 │   │       └── widgets/
-│   │           ├── child_marker_widget.dart     # Animated markers (NEW)
-│   │           └── location_status_card.dart    # Command center (NEW)
+│   │           ├── child_marker_widget.dart     # Animated markers
+│   │           └── location_status_card.dart    # Command center
+│   │
+│   ├── wallet/                            # PHASE 1.5 ✨
+│   │   └── presentation/
+│   │       ├── wallet_screen.dart               # Multi-wallet view
+│   │       └── widgets/
+│   │           └── wallet_card.dart             # Wallet card widget
+│   │
+│   ├── statistics/                        # PHASE 1.5 ✨
+│   │   └── presentation/
+│   │       └── statistics_screen.dart           # Spending insights
+│   │
+│   ├── contacts/                          # PHASE 1.5 ✨
+│   │   └── presentation/
+│   │       └── contacts_screen.dart             # Beneficiary management
+│   │
+│   ├── help/                              # PHASE 1.5 ✨
+│   │   └── presentation/
+│   │       └── help_screen.dart                 # Support & FAQ
 │   │
 │   ├── onboarding/
 │   │   └── presentation/

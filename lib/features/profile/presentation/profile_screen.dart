@@ -88,9 +88,9 @@ class ProfileScreen extends ConsumerWidget {
               },
             ),
 
-          // Wallets Section (Phase 1.5 BONUS - Safe Mode Only)
+          // Finance Tools Section (Phase 1.5 BONUS - Safe Mode Only)
           if (!isRestricted) ...[
-            const SettingsSectionHeader(title: 'Wallets'),
+            const SettingsSectionHeader(title: 'Finance Tools'),
 
             SettingsTile(
               icon: Icons.account_balance_wallet_rounded,
@@ -99,6 +99,26 @@ class ProfileScreen extends ConsumerWidget {
               onTap: () {
                 HapticService.lightImpact();
                 context.push('/wallet');
+              },
+            ),
+
+            SettingsTile(
+              icon: Icons.bar_chart_rounded,
+              title: 'Spending Insights',
+              subtitle: 'View analytics and trends',
+              onTap: () {
+                HapticService.lightImpact();
+                context.push('/statistics');
+              },
+            ),
+
+            SettingsTile(
+              icon: Icons.contacts_rounded,
+              title: 'Beneficiaries',
+              subtitle: 'Manage payment contacts',
+              onTap: () {
+                HapticService.lightImpact();
+                context.push('/contacts');
               },
             ),
           ],
@@ -144,7 +164,8 @@ class ProfileScreen extends ConsumerWidget {
             title: 'Help & Support',
             subtitle: 'FAQs and contact us',
             onTap: () {
-              CustomToast.showInfo(context, 'Help center coming in Phase 1.5');
+              HapticService.lightImpact();
+              context.push('/help');
             },
           ),
 

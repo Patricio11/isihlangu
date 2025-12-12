@@ -17,6 +17,9 @@ import '../../features/notifications/presentation/notifications_screen.dart';
 import '../../features/family/presentation/child_control_panel_screen.dart';
 import '../../features/location/presentation/family_map_screen.dart';
 import '../../features/wallet/presentation/wallet_screen.dart';
+import '../../features/statistics/presentation/statistics_screen.dart';
+import '../../features/contacts/presentation/contacts_screen.dart';
+import '../../features/help/presentation/help_screen.dart';
 import '../../core/data/fake_transactions.dart';
 import 'main_scaffold.dart';
 
@@ -196,11 +199,54 @@ class AppRouter {
 
       // Wallet Screen (outside shell - full screen)
       // PHASE 1.5 BONUS: Multi-Wallet View
-      // SAFE MODE ONLY - Duress mode redirects or shows restricted message
+      // SAFE MODE ONLY - Duress mode users CANNOT access this route
       GoRoute(
         path: '/wallet',
         name: 'wallet',
+        redirect: (context, state) {
+          // Block access in duress mode - redirect to home
+          final session = ref.read(sessionProvider).session;
+          if (session?.isRestricted ?? false) {
+            return '/home';
+          }
+          return null; // Allow access in safe mode
+        },
         builder: (context, state) => const WalletScreen(),
+      ),
+
+      // Statistics Screen (outside shell - full screen)
+      // PHASE 1.5 BONUS: Spending Insights & Analytics
+      // SAFE MODE ONLY - Duress mode users CANNOT access this route
+      GoRoute(
+        path: '/statistics',
+        name: 'statistics',
+        redirect: (context, state) {
+          // Block access in duress mode - redirect to home
+          final session = ref.read(sessionProvider).session;
+          if (session?.isRestricted ?? false) {
+            return '/home';
+          }
+          return null; // Allow access in safe mode
+        },
+        builder: (context, state) => const StatisticsScreen(),
+      ),
+
+      // Contacts Screen (outside shell - full screen)
+      // PHASE 1.5 BONUS: Beneficiary Management
+      // Available in both modes but modifications restricted in duress
+      GoRoute(
+        path: '/contacts',
+        name: 'contacts',
+        builder: (context, state) => const ContactsScreen(),
+      ),
+
+      // Help Screen (outside shell - full screen)
+      // PHASE 1.5 BONUS: Support & FAQ
+      // Available to all users
+      GoRoute(
+        path: '/help',
+        name: 'help',
+        builder: (context, state) => const HelpScreen(),
       ),
     ],
   );

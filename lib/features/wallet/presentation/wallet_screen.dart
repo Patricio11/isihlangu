@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/glass_container.dart';
 import '../../../core/data/fake_wallets.dart';
-import '../../auth/providers/session_provider.dart';
 import 'widgets/wallet_card.dart';
 
 /// Wallet Screen - Multi-Wallet View
@@ -25,22 +23,10 @@ class WalletScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final session = ref.watch(sessionProvider).session;
 
-    if (session == null) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
-    }
-
-    // CRITICAL: Duress mode cannot access wallets
-    // Redirect to home - wallet option is completely hidden in duress mode
-    if (session.isRestricted) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        context.go('/home');
-      });
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
-    }
+    // Note: Duress mode users cannot reach this screen
+    // The route guard in app_router.dart redirects them to /home
+    // The "My Wallets" option in profile is also hidden in duress mode
 
     return Scaffold(
       backgroundColor: context.colors.background,
