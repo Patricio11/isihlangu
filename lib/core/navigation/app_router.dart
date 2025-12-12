@@ -16,6 +16,7 @@ import '../../features/activity/presentation/transaction_detail_screen.dart';
 import '../../features/notifications/presentation/notifications_screen.dart';
 import '../../features/family/presentation/child_control_panel_screen.dart';
 import '../../features/location/presentation/family_map_screen.dart';
+import '../../features/wallet/presentation/wallet_screen.dart';
 import '../../core/data/fake_transactions.dart';
 import 'main_scaffold.dart';
 
@@ -191,6 +192,15 @@ class AppRouter {
         path: '/family/map',
         name: 'family-map',
         builder: (context, state) => const FamilyMapScreen(),
+      ),
+
+      // Wallet Screen (outside shell - full screen)
+      // PHASE 1.5 BONUS: Multi-Wallet View
+      // SAFE MODE ONLY - Duress mode redirects or shows restricted message
+      GoRoute(
+        path: '/wallet',
+        name: 'wallet',
+        builder: (context, state) => const WalletScreen(),
       ),
     ],
   );

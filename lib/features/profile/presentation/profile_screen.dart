@@ -88,6 +88,21 @@ class ProfileScreen extends ConsumerWidget {
               },
             ),
 
+          // Wallets Section (Phase 1.5 BONUS - Safe Mode Only)
+          if (!isRestricted) ...[
+            const SettingsSectionHeader(title: 'Wallets'),
+
+            SettingsTile(
+              icon: Icons.account_balance_wallet_rounded,
+              title: 'My Wallets',
+              subtitle: 'Manage your money across wallets',
+              onTap: () {
+                HapticService.lightImpact();
+                context.push('/wallet');
+              },
+            ),
+          ],
+
           // Family Section (Phase 3)
           const SettingsSectionHeader(title: 'Family'),
 
