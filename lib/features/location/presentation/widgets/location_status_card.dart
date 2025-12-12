@@ -167,8 +167,10 @@ class _ChildStatusCard extends StatelessWidget {
         glowColor: context.colors.primary,
         child: SizedBox(
           width: 160,
+          height: 220, // Fixed height to prevent overflow
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               // Avatar and status
               Row(

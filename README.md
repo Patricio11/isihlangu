@@ -2,7 +2,7 @@
 
 **A dark-mode fintech application for South Africa with advanced security features.**
 
-**Phase 1.6: COMPLETE ✅** | [View Roadmap](SHIELD_DEV_ROADMAP.md) | [Setup Guide](SETUP.md)
+**Phase 1: COMPLETE ✅** (2025-12-12) | [View Roadmap](SHIELD_DEV_ROADMAP.md) | [Setup Guide](SETUP.md)
 
 ---
 
@@ -56,7 +56,9 @@ Shield (Isihlangu) is a "Safety-First" banking app with a revolutionary **Dual-I
 - Payment success animation
 
 #### 4. SafetyScreen - Security Center
-- **Animated radar scanner** with sweeping line
+- **Role-based view**: Parents see Family Live Map, Children see Radar Scanner
+- **Parent View**: Large interactive map card with "View Live Map" button
+- **Child View**: Animated radar scanner with sweeping line
 - Security toggles (Ghost Mode, Location Broadcast)
 - Configuration options (Duress PIN, Trusted Contacts, Alerts)
 - **Admin-only access** (restricted in duress mode)
@@ -372,11 +374,11 @@ CircularGlassButton(
 
 ## 📊 Phase 1 Statistics
 
-**Completion Date**: 2025-12-11
-**Files Created**: 40+
+**Completion Date**: 2025-12-12
+**Files Created**: 45+
 **Screens Built**: 12 (Auth, Home, Pay, Safety, Family, Onboarding, Map)
-**Lines of Code**: ~5,000+
-**Dependencies**: 15
+**Lines of Code**: ~5,500+
+**Dependencies**: 16 (added flutter_map + latlong2)
 
 ### Deliverables
 - ✅ Production-quality UI
